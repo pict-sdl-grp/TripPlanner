@@ -6,39 +6,15 @@
     android:layout_height="match_parent"
     tools:context="com.project.sdl.tripplanner.AuthActivity">
 
-    <SurfaceView
-        android:id="@+id/surfaceViewFrame"
-        android:layout_width="1000dp"
-        android:layout_height="fill_parent"
-        android:layout_gravity="center"
-        android:alpha="0.8"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.233"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0"></SurfaceView>
 
     <TextView
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:alpha="2"
-        android:background="@android:color/transparent"
-        android:fontFamily="cursive"
-        android:gravity="center"
-        android:text="Trip Planner"
-        android:textColor="#fff"
-        android:textSize="40dp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/surfaceViewFrame"
-        app:layout_constraintEnd_toStartOf="@+id/surfaceViewFrame"
-        app:layout_constraintHorizontal_bias="0.637"
-        app:layout_constraintStart_toEndOf="@+id/surfaceViewFrame"
-        app:layout_constraintTop_toBottomOf="@+id/surfaceViewFrame"
-        app:layout_constraintVertical_bias="0.719" />
-
+        android:text="Auth Activity"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 </android.support.constraint.ConstraintLayout>

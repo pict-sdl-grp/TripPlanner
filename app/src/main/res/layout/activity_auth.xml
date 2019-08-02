@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.project.sdl.tripplanner.AuthActivity">
+    tools:context="com.project.sdl.tripplanner.AuthPackage.AuthActivity">
 
 
     <TextView

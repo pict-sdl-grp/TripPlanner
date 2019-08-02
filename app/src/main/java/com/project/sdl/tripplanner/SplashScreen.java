@@ -10,6 +10,8 @@ import android.os.Handler;
 import android.view.WindowManager;
 import android.widget.VideoView;
 
+import com.project.sdl.tripplanner.AuthPackage.AuthActivity;
+
 public class SplashScreen extends Activity {
 
     // Splash screen timer

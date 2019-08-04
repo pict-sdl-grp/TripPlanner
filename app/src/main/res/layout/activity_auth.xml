@@ -23,7 +23,7 @@
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/auth_appbar" />
+            app:srcCompat="@drawable/auth_login_appbar" />
 
         <ImageView
             android:id="@+id/auth_appbar_icon"

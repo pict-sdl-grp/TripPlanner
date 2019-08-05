@@ -10,19 +10,30 @@ import android.os.Handler;
 import android.view.WindowManager;
 import android.widget.VideoView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.project.sdl.tripplanner.AuthPackage.AuthActivity;
+import com.project.sdl.tripplanner.UserPackage.UserActivity;
 
 public class SplashScreen extends Activity {
 
     // Splash screen timer
     private static int SPLASH_TIME_OUT = 5000;
     private VideoView videoView;
+    FirebaseAuth isUserAuthenticated;
 
         @Override
     protected void onDestroy() {
         super.onDestroy();
             videoView.pause();
             videoView = null;
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        isUserAuthenticated = FirebaseAuth.getInstance();
+//        isUserAuthenticated.signOut();
     }
 
     @Override
@@ -35,6 +46,7 @@ public class SplashScreen extends Activity {
                 WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
                 WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
         );
+
 
         videoView = (VideoView)findViewById(R.id.videoView);
         Uri uri = Uri.parse("android.resource://"+getPackageName()+"/"+R.raw.video);
@@ -61,8 +73,14 @@ public class SplashScreen extends Activity {
             public void run() {
                 // This method will be executed once the timer is over
                 // Start your app main activity
-                Intent i = new Intent(SplashScreen.this, AuthActivity.class);
-                startActivity(i);
+                if(isUserAuthenticated.getCurrentUser() != null){
+                    Intent i = new Intent(SplashScreen.this, UserActivity.class);
+                    startActivity(i);
+                }else{
+                    Intent i = new Intent(SplashScreen.this, AuthActivity.class);
+                    startActivity(i);
+                }
+
 
                 // close this activity
                 finish();

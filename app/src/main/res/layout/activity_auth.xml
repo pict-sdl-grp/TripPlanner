@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.project.sdl.tripplanner.AuthPackage.AuthActivity">
+
     <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
@@ -64,8 +65,8 @@
             android:id="@+id/signup_relative_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:visibility="invisible"
             android:focusableInTouchMode="true"
+            android:visibility="invisible"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
@@ -155,8 +156,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="68dp"
-            android:visibility="visible"
             android:focusableInTouchMode="true"
+            android:visibility="visible"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
@@ -212,6 +213,7 @@
             android:layout_marginTop="20dp"
             android:background="@drawable/round_corner_button"
             android:backgroundTint="@color/colorPrimary"
+            android:onClick="onClickAuthenticate"
             android:text="Login"
             android:textColor="#fff"
             android:textSize="16dp"
@@ -244,7 +246,6 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="20dp"
             android:linksClickable="false"
-            android:onClick="onChangeAuthmode"
             android:text="Signup"
             android:textAllCaps="false"
             android:textColor="@color/colorPrimary"
@@ -254,6 +255,19 @@
             app:layout_constraintStart_toEndOf="@+id/switch_text1"
             app:layout_constraintTop_toBottomOf="@+id/auth_button"
             app:layout_constraintVertical_bias="1.0" />
+
+        <ProgressBar
+            android:id="@+id/auth_progress"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="20dp"
+            android:visibility="invisible"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/signup_relative_layout" />
 
 
     </android.support.constraint.ConstraintLayout>

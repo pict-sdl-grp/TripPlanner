@@ -100,6 +100,7 @@ public class AuthActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+    //on click auth button:
     public void onClickAuthenticate(View view){
 
         Log.i("onClickAuthenticate: ",authMode.toString());

@@ -120,7 +120,7 @@ public class AuthActivity extends AppCompatActivity implements View.OnClickListe
                                     if (user != null) {
                                         Intent intent = new Intent(getApplicationContext(), UserActivity.class);
                                         startActivity(intent);
-                                        finish();
+                                        finish();//destroy this activity
                                         new Handler().postDelayed(new Runnable() {
                                             @Override
                                             public void run() {

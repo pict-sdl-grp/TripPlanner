@@ -17,8 +17,14 @@ public class UserActivity extends AppCompatActivity {
         mAuth.signOut();
         Intent intent = new Intent(getApplicationContext(), AuthActivity.class);
         startActivity(intent);
+        finish();
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

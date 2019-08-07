@@ -53,7 +53,7 @@ public class AuthActivity extends AppCompatActivity implements View.OnClickListe
     FirebaseAuth mAuth;
     DatabaseReference mDatabase;
 
-
+    //Some change
     public void changeToLoginLayout(){
         login_relative_layout.setVisibility(View.VISIBLE);
         signup_relative_layout.setVisibility(View.INVISIBLE);

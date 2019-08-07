@@ -4,4 +4,6 @@
     <color name="colorSecondary">#737DDB</color>
     <color name="colorPrimaryDark"></color>
     <color name="colorAccent">#FF4081</color>
+    <color name="backgrounDisplay">#eff9f6</color>
+    <color name="textBack">#f3faf8</color>
 </resources>

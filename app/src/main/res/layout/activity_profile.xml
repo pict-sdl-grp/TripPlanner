@@ -2,16 +2,16 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/constraintLayout2"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".MyProfile.profileActivity">
+    android:layout_height="match_parent">
 
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:background="#f3faf8">
+        android:background="#f3faf8"
+        android:orientation="vertical">
 
         <android.support.constraint.ConstraintLayout
             android:id="@+id/constraintLayout"
@@ -24,16 +24,15 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <com.mikhaellopez.circularimageview.CircularImageView
-                android:layout_width="90dp"
-                android:layout_height="91dp"
+                android:layout_width="100dp"
+                android:layout_height="104dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="36dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginBottom="8dp"
                 android:src="@drawable/profile1"
                 app:civ_border_color="#EEEEEE"
-                app:civ_border_width="4dp"
-                app:civ_shadow="true"
+                app:civ_shadow="false"
                 app:civ_shadow_color="#8BC34A"
                 app:civ_shadow_radius="10"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -105,15 +104,34 @@
 
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:background="@color/backgrounDisplay">
 
+
+            <EditText
+                android:id="@+id/countryProf"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="76dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="8dp"
+                android:backgroundTint="#68C4A5"
+                android:ems="10"
+                android:hint="country"
+                android:inputType="textPersonName"
+                android:paddingLeft="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.008"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/phoneProf" />
 
             <EditText
                 android:id="@+id/phoneProf"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="96dp"
+                android:layout_marginStart="76dp"
                 android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
                 android:layout_marginBottom="8dp"
                 android:backgroundTint="#68C4A5"
                 android:ems="10"
@@ -121,37 +139,44 @@
                 android:inputType="phone"
                 android:paddingLeft="16dp"
                 app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.091" />
+                app:layout_constraintVertical_bias="0.02" />
 
 
-            <EditText
-                android:id="@+id/countryProf"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="96dp"
+            <TextView
+                android:id="@+id/aboutYou"
+                android:layout_width="214dp"
+                android:layout_height="94dp"
+                android:layout_marginStart="72dp"
                 android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
                 android:layout_marginBottom="8dp"
-                android:backgroundTint="#68C4A5"
+                android:background="@drawable/bordertext"
                 android:ems="10"
-                android:hint="country"
+                android:hint="about you"
                 android:inputType="textPersonName"
                 android:paddingLeft="16dp"
+                android:paddingTop="10dp"
                 app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.034"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/phoneProf"
-                app:layout_constraintVertical_bias="0.0" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.498" />
 
             <ImageView
                 android:id="@+id/imageView2"
                 android:layout_width="30dp"
                 android:layout_height="41dp"
                 android:layout_marginStart="36dp"
-                android:layout_marginTop="48dp"
+                android:layout_marginTop="16dp"
                 android:layout_marginEnd="8dp"
                 android:src="@drawable/phone"
-                app:layout_constraintEnd_toStartOf="@+id/phoneProf"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -165,41 +190,26 @@
                 android:layout_marginBottom="8dp"
                 android:src="@drawable/country"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/countryProf"
-                app:layout_constraintHorizontal_bias="0.78"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/imageView2"
-                app:layout_constraintVertical_bias="0.0" />
-
-            <TextView
-                android:id="@+id/aboutyouProf"
-                android:layout_width="221dp"
-                android:layout_height="75dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="12dp"
-                android:layout_marginEnd="8dp"
-                android:background="@drawable/bordertext"
-                android:hint="About you"
-                android:lines="2"
-                android:paddingLeft="16dp"
-                android:paddingTop="10dp"
-                android:singleLine="false"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.459"
+                app:layout_constraintHorizontal_bias="0.076"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/countryProf" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.188" />
 
             <ImageView
                 android:id="@+id/imageView4"
-                android:layout_width="29dp"
-                android:layout_height="32dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="24dp"
+                android:layout_width="30dp"
+                android:layout_height="35dp"
+                android:layout_marginStart="36dp"
+                android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
-                app:layout_constraintEnd_toStartOf="@+id/aboutyouProf"
-                app:layout_constraintHorizontal_bias="0.784"
+                android:layout_marginBottom="8dp"
+                app:layout_constraintBottom_toTopOf="@+id/divider3"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/imageView"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.425"
                 app:srcCompat="@drawable/edit" />
 
             <ImageView
@@ -207,13 +217,12 @@
                 android:layout_width="32dp"
                 android:layout_height="29dp"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="48dp"
                 android:layout_marginEnd="8dp"
                 android:visibility="invisible"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.24"
+                app:layout_constraintHorizontal_bias="0.094"
                 app:layout_constraintStart_toEndOf="@+id/phoneProf"
-                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/tick1NotDone"
                 app:srcCompat="@drawable/done" />
 
             <ImageView
@@ -221,26 +230,22 @@
                 android:layout_width="32dp"
                 android:layout_height="30dp"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="100dp"
                 android:layout_marginEnd="8dp"
                 android:visibility="invisible"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.222"
-                app:layout_constraintStart_toEndOf="@+id/countryProf"
-                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintHorizontal_bias="0.081"
+                app:layout_constraintStart_toEndOf="@+id/aboutYou"
+                app:layout_constraintTop_toTopOf="@+id/tick2NotDone"
                 app:srcCompat="@drawable/done" />
 
             <ImageView
                 android:id="@+id/tick3Done"
                 android:layout_width="32dp"
                 android:layout_height="32dp"
-                android:layout_marginStart="8dp"
                 android:layout_marginTop="160dp"
-                android:layout_marginEnd="8dp"
+                android:layout_marginEnd="76dp"
                 android:visibility="invisible"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.24"
-                app:layout_constraintStart_toEndOf="@+id/aboutyouProf"
                 app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@drawable/done" />
 
@@ -250,10 +255,10 @@
                 android:layout_width="32dp"
                 android:layout_height="29dp"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="48dp"
+                android:layout_marginTop="28dp"
                 android:layout_marginEnd="8dp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.222"
+                app:layout_constraintHorizontal_bias="0.081"
                 app:layout_constraintStart_toEndOf="@+id/phoneProf"
                 app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@drawable/not_done" />
@@ -264,10 +269,10 @@
                 android:layout_width="31dp"
                 android:layout_height="31dp"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="100dp"
+                android:layout_marginTop="80dp"
                 android:layout_marginEnd="8dp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.236"
+                app:layout_constraintHorizontal_bias="0.066"
                 app:layout_constraintStart_toEndOf="@+id/phoneProf"
                 app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@drawable/not_done" />
@@ -280,7 +285,7 @@
                 android:layout_marginTop="160dp"
                 android:layout_marginEnd="8dp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.222"
+                app:layout_constraintHorizontal_bias="0.067"
                 app:layout_constraintStart_toEndOf="@+id/phoneProf"
                 app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@drawable/not_done" />
@@ -290,13 +295,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
                 android:layout_marginBottom="8dp"
                 android:background="#000"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/aboutyouProf"
-                app:layout_constraintVertical_bias="0.65" />
+                app:layout_constraintStart_toStartOf="parent" />
 
         </android.support.constraint.ConstraintLayout>
     </LinearLayout>

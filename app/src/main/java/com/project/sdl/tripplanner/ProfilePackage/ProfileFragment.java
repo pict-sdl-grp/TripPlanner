@@ -23,9 +23,6 @@ public class ProfileFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        //removes Notifiaction bar
-//        getActivity().requestWindowFeature(Window.FEATURE_NO_TITLE);
-//        getActivity().getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         View root = inflater.inflate(R.layout.fragment_profile, null);
         editProfile = root.findViewById(R.id.editProf);

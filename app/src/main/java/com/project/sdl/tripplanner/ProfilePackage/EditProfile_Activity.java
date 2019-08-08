@@ -17,6 +17,7 @@ public class EditProfile_Activity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_profile_);
+        getSupportActionBar().hide();
         back_Image = findViewById(R.id.backButtonEdit);
         back_Image.setOnClickListener(new View.OnClickListener() {
             @Override

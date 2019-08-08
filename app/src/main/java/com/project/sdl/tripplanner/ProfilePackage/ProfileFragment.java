@@ -38,6 +38,7 @@ public class ProfileFragment extends Fragment {
     TextView emailDisplay;
     CircularImageView profileImage;
 
+    ImageView setting;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -46,11 +47,19 @@ public class ProfileFragment extends Fragment {
         View root = inflater.inflate(R.layout.fragment_profile, null);
         editProfile = root.findViewById(R.id.editProf);
 
+        setting =   root.findViewById(R.id.settingProf);
         editProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent editProfile_intent = new Intent(getContext(),EditProfile_Activity.class);
                 startActivity(editProfile_intent);
+            }
+        });
+        setting.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent setting_intent=new Intent(getContext(),Setting_Activity.class);
+                startActivity(setting_intent);
             }
         });
 

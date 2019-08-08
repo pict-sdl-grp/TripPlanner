@@ -13,8 +13,8 @@ import com.project.sdl.tripplanner.NotificationsPackage.NotificationsFragment;
 import com.project.sdl.tripplanner.ProfilePackage.ProfileFragment;
 import com.project.sdl.tripplanner.R;
 
-public class UserActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
 
+public class UserActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
 
     private boolean loadFragment(Fragment fragment) {
         //switching fragment
@@ -32,6 +32,7 @@ public class UserActivity extends AppCompatActivity implements BottomNavigationV
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user);
+        getSupportActionBar().hide();
 
         //loading the default fragment
         loadFragment(new HomeFragment());

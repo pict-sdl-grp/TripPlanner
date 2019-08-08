@@ -18,6 +18,7 @@ import android.widget.TextView;
 import android.view.View;
 import android.widget.Toast;
 
+import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -52,7 +53,7 @@ public class AuthActivity extends AppCompatActivity implements View.OnClickListe
     FirebaseAuth mAuth;
     DatabaseReference mDatabase;
 
-
+    //Some change
     public void changeToLoginLayout(){
         login_relative_layout.setVisibility(View.VISIBLE);
         signup_relative_layout.setVisibility(View.INVISIBLE);
@@ -118,6 +119,7 @@ public class AuthActivity extends AppCompatActivity implements View.OnClickListe
                                     if (user != null) {
                                         Intent intent = new Intent(getApplicationContext(), UserActivity.class);
                                         startActivity(intent);
+                                        finish();
                                         new Handler().postDelayed(new Runnable() {
                                             @Override
                                             public void run() {
@@ -170,6 +172,7 @@ public class AuthActivity extends AppCompatActivity implements View.OnClickListe
                                                             if (user != null) {
                                                                 Intent intent = new Intent(getApplicationContext(), UserActivity.class);
                                                                 startActivity(intent);
+                                                                finish();
                                                                 new Handler().postDelayed(new Runnable() {
                                                                     @Override
                                                                     public void run() {

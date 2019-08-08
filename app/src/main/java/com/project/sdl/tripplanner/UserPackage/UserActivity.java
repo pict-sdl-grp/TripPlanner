@@ -1,13 +1,13 @@
 package com.project.sdl.tripplanner.UserPackage;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.project.sdl.tripplanner.AuthPackage.AuthActivity;
 import com.project.sdl.tripplanner.R;
-import android.view.View;
 
 public class UserActivity extends AppCompatActivity {
 

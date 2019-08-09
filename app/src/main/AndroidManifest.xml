@@ -3,16 +3,29 @@
     package="com.project.sdl.tripplanner">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <application
         android:allowBackup="true"
+        android:hardwareAccelerated="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ProfilePackage.EditProfile_Activity" />
-        <!-- Splash screen -->
+        <activity android:name=".NotificationsPackage.BasicMapsActivity"></activity>
+        <!-- SDK CREDENTIALS -->
+        <meta-data
+            android:name="com.here.android.maps.appid"
+            android:value="4SxTSk1WVmA9G62J6qqD" />
+        <meta-data
+            android:name="com.here.android.maps.apptoken"
+            android:value="dHz3QjYEWM_cecRN_aAHqQ" />
+
+        <activity android:name=".ProfilePackage.EditProfile_Activity" /> <!-- Splash screen -->
         <activity
             android:name=".SplashScreen"
             android:label="@string/app_name"

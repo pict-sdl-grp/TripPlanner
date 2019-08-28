@@ -5,7 +5,9 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.widget.Button;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -15,85 +17,80 @@ import com.google.firebase.auth.FirebaseUser;
 import com.project.sdl.tripplanner.AuthPackage.AuthActivity;
 import com.project.sdl.tripplanner.R;
 
+import java.util.ArrayList;
+
 public class Setting_Activity extends AppCompatActivity {
-    Button logout;
-    Button resetpwd;
-    Button verify;
+
+    ListView settingops;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting);
 
-        logout=findViewById(R.id.buttonLogout);
-        resetpwd=findViewById(R.id.buttonResetPwd);
-        verify=findViewById(R.id.buttonverify);
+        settingops=findViewById(R.id.settingOptions);
 
-        // logging out
-        logout.setOnClickListener(new View.OnClickListener() {
+        final ArrayList<String> options=new ArrayList<>();
+        options.add("Logout");
+        options.add("Reset Password");
+        options.add("Verify Email");
+
+        ArrayAdapter<String> opsAdapter=new ArrayAdapter<>(this,android.R.layout.simple_list_item_1,options);
+        settingops.setAdapter(opsAdapter);
+
+        settingops.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onClick(View view) {
-                FirebaseAuth.getInstance().signOut();
-                Intent AuthActivity_intent=new Intent(Setting_Activity.this, AuthActivity.class);
-                finishAffinity();
-//                AuthActivity_intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//                AuthActivity_intent.putExtra("EXIT", true);
-                startActivity(AuthActivity_intent);
-                finish();
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                String selectedOption=options.get(i);
+                if(selectedOption.equals("Logout")) {
+                    FirebaseAuth.getInstance().signOut();
+                    Intent AuthActivity_intent=new Intent(Setting_Activity.this, AuthActivity.class);
+                    finishAffinity();
+                    startActivity(AuthActivity_intent);
+                    finish();
+                }
+                else if(selectedOption.equals("Reset Password")) {
+                    FirebaseUser user=FirebaseAuth.getInstance().getCurrentUser();
+                    String email=user.getEmail();
+                    FirebaseAuth.getInstance().sendPasswordResetEmail(email)
+                            .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    if(task.isSuccessful()) {
+                                        Toast.makeText(Setting_Activity.this, "Check Email to reset your password", Toast.LENGTH_SHORT).show();
+                                    }
+                                    else {
+                                        Toast.makeText(Setting_Activity.this, "Failed to send email", Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+                            });
+                    FirebaseAuth.getInstance().signOut();
+                    Intent AuthActivity_intent=new Intent(Setting_Activity.this, AuthActivity.class);
+                    finishAffinity();
+                    startActivity(AuthActivity_intent);
+                    finish();
+                }
+                else if(selectedOption.equals("Verify Email")) {
+                    final FirebaseUser user=FirebaseAuth.getInstance().getCurrentUser();
+                    user.sendEmailVerification()
+                            .addOnCompleteListener(new OnCompleteListener() {
+                                @Override
+                                public void onComplete(@NonNull Task task) {
+                                    if (task.isSuccessful()) {
+                                        Toast.makeText(Setting_Activity.this,
+                                                "Verification email sent to " + user.getEmail(),
+                                                Toast.LENGTH_SHORT).show();
+                                    }
+                                    else {
+                                        Toast.makeText(Setting_Activity.this,
+                                                "Failed to send verification email.",
+                                                Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+                            });
+                }
 
             }
         });
 
-        // resetting password
-        resetpwd.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                FirebaseUser user=FirebaseAuth.getInstance().getCurrentUser();
-                String email=user.getEmail();
-                FirebaseAuth.getInstance().sendPasswordResetEmail(email)
-                        .addOnCompleteListener(new OnCompleteListener<Void>() {
-                            @Override
-                            public void onComplete(@NonNull Task<Void> task) {
-                                if(task.isSuccessful()) {
-                                    Toast.makeText(Setting_Activity.this, "Check Email to reset your password", Toast.LENGTH_SHORT).show();
-                                }
-                                else {
-                                    Toast.makeText(Setting_Activity.this, "Failed to send email", Toast.LENGTH_SHORT).show();
-                                }
-                            }
-                        });
-                FirebaseAuth.getInstance().signOut();
-                Intent AuthActivity_intent=new Intent(Setting_Activity.this, AuthActivity.class);
-                finishAffinity();
-                startActivity(AuthActivity_intent);
-                finish();
-            }
-        });
-
-        // verifying email
-        verify.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                final FirebaseUser user=FirebaseAuth.getInstance().getCurrentUser();
-
-                user.sendEmailVerification()
-                        .addOnCompleteListener(new OnCompleteListener() {
-                            @Override
-                            public void onComplete(@NonNull Task task) {
-                                findViewById(R.id.buttonverify).setEnabled(true);
-                                if (task.isSuccessful()) {
-                                    Toast.makeText(Setting_Activity.this,
-                                            "Verification email sent to " + user.getEmail(),
-                                            Toast.LENGTH_SHORT).show();
-                                }
-                                else {
-                                    Toast.makeText(Setting_Activity.this,
-                                            "Failed to send verification email.",
-                                            Toast.LENGTH_SHORT).show();
-                                }
-                            }
-                        });
-
-            }
-        });
     }
 }

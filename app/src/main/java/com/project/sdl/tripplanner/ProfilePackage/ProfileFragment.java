@@ -43,9 +43,16 @@ public class ProfileFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-
         View root = inflater.inflate(R.layout.fragment_profile, null);
         editProfile = root.findViewById(R.id.editProf);
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                new ImageLoadTask(user.getPhotoUrl().toString(), profileImage).execute();
+            }
+        },1000);
+
 
         setting =   root.findViewById(R.id.settingProf);
         editProfile.setOnClickListener(new View.OnClickListener() {
@@ -74,13 +81,6 @@ public class ProfileFragment extends Fragment {
         emailDisplay.setText(user.getEmail());
 
         Log.e("AfterInstance: ","This is log after initialising");
-
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                new ImageLoadTask(user.getPhotoUrl().toString(), profileImage).execute();
-            }
-        },1000);
 
         return root;
     }
@@ -117,6 +117,5 @@ public class ProfileFragment extends Fragment {
             super.onPostExecute(result);
             imageView.setImageBitmap(result);
         }
-
     }
 }

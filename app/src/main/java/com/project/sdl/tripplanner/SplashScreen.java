@@ -53,7 +53,7 @@ public class SplashScreen extends Activity {
         );
 
 
-        videoView = (VideoView)findViewById(R.id.videoView);
+        videoView = findViewById(R.id.videoView);
         Uri uri = Uri.parse("android.resource://"+getPackageName()+"/"+R.raw.video);
         videoView.setVideoURI(uri);
         videoView.requestFocus();
@@ -89,7 +89,6 @@ public class SplashScreen extends Activity {
                     Intent i = new Intent(SplashScreen.this, AuthActivity.class);
                     startActivity(i);
                 }
-
 
                 // close this activity
                 finish();

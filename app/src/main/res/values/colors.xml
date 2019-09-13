@@ -8,4 +8,6 @@
     <color name="colorNavText">#01294b</color>
     <color name="backgrounDisplay">#eff9f6</color>
     <color name="textBack">#f3faf8</color>
+    <color name="shimmer_background_color">#7bc5ae</color>
+    <color name="shimmer_background_color1">#b1b1b1</color>
 </resources>

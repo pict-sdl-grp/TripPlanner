@@ -6,6 +6,7 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
+import android.view.WindowManager;
 
 import com.project.sdl.tripplanner.DashboardPackage.DashboardFragment;
 import com.project.sdl.tripplanner.HomePackage.HomeFragment;
@@ -32,7 +33,12 @@ public class UserActivity extends AppCompatActivity implements BottomNavigationV
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user);
-        getSupportActionBar().hide();
+//        getSupportActionBar().hide();
+
+        getWindow().setFlags(
+                WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
+                WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
+        );
 
         //loading the default fragment
         loadFragment(new HomeFragment());

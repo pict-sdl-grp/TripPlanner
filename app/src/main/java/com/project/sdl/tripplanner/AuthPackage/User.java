@@ -1,7 +1,5 @@
 package com.project.sdl.tripplanner.AuthPackage;
 
-import android.widget.Button;
-
 import com.google.firebase.database.IgnoreExtraProperties;
 
 /**
@@ -14,6 +12,7 @@ public class User {
     public String username;
     public String email;
     public String photoUrl;
+    public String currentPlaceId;
 
     public User() {
         // Default constructor required for calls to DataSnapshot.getValue(User.class)

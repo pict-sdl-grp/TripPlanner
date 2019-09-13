@@ -36,14 +36,14 @@
                 app:civ_shadow_color="#8BC34A"
                 app:civ_shadow_radius="10"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/nameProf"
+                app:layout_constraintEnd_toStartOf="@+id/searchIcon"
                 app:layout_constraintHorizontal_bias="0.367"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.329" />
 
             <TextView
-                android:id="@+id/nameProf"
+                android:id="@+id/searchIcon"
                 android:layout_width="210dp"
                 android:layout_height="39dp"
                 android:layout_marginStart="8dp"

@@ -17,4 +17,10 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
+    <style name="transparent" parent="Theme.AppCompat.Light.NoActionBar">//AppCompat is the key; You can choose any other theme than the light-theme, but stick to AppCompat
+        <item name="android:windowTranslucentStatus">false</item>
+        <item name="android:windowDrawsSystemBarBackgrounds">false</item>
+        //Other styling(optional)
+    </style>
+
 </resources>

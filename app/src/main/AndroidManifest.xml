@@ -44,7 +44,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".UserPackage.UserActivity" />
+        <activity android:name=".UserPackage.UserActivity" android:theme="@style/transparent"/>
+        <activity android:name=".HomePackage.AutoSuggestPackage.MainSearchActivity" />
     </application>
 
 </manifest>

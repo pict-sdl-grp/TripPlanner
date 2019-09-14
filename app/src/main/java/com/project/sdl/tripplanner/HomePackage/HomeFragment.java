@@ -56,6 +56,12 @@ public class HomeFragment extends Fragment {
     ImageView scrollImage4;
     ImageView scrollImage5;
     ImageView scrollImage6;
+    TextView scrollText1;
+    TextView scrollText2;
+    TextView scrollText3;
+    TextView scrollText4;
+    TextView scrollText5;
+    TextView scrollText6;
 
     ShimmerLayout shimmerLayout;
     ShimmerLayout shimmerScrollLayout;
@@ -90,6 +96,13 @@ public class HomeFragment extends Fragment {
         scrollImage4 = root.findViewById(R.id.scrollImage4);
         scrollImage5 = root.findViewById(R.id.scrollImage5);
         scrollImage6 = root.findViewById(R.id.scrollImage6);
+
+        scrollText1 = root.findViewById(R.id.scrollText1);
+        scrollText2 = root.findViewById(R.id.scrollText2);
+        scrollText3 = root.findViewById(R.id.scrollText3);
+        scrollText4 = root.findViewById(R.id.scrollText4);
+        scrollText5 = root.findViewById(R.id.scrollText5);
+        scrollText6 = root.findViewById(R.id.scrollText6);
 
 
 
@@ -333,7 +346,18 @@ public class HomeFragment extends Fragment {
         scrollImagesHolder.add(scrollImage4);
         scrollImagesHolder.add(scrollImage5);
         scrollImagesHolder.add(scrollImage6);
+
+        final ArrayList<TextView> scrollTextHolder = new ArrayList<>();
+        scrollTextHolder.add(scrollText1);
+        scrollTextHolder.add(scrollText2);
+        scrollTextHolder.add(scrollText3);
+        scrollTextHolder.add(scrollText4);
+        scrollTextHolder.add(scrollText5);
+        scrollTextHolder.add(scrollText6);
+
+
         final int[] i = {0};
+        final int[] j = {0};
         for(final String id : keySet){
             final FirebaseDatabase database = FirebaseDatabase.getInstance();
             DatabaseReference ref = database.getReference("placesNearYou/"+currentPlaceId+"/"+id+"/places");
@@ -345,7 +369,8 @@ public class HomeFragment extends Fragment {
 
                     try {
                         System.out.printf( "JSON: %s", currentPlaceNearYou.toString(2) );
-
+                        scrollTextHolder.get(j[0]).setText(currentPlaceNearYou.getString("name"));
+                        j[0]++;
                         StorageReference storageRef = storage.getReference();
                         storageRef.child("places/"+id+"/"+currentPlaceNearYou.getJSONArray("imageRefs").get(0)).getBytes(Long.MAX_VALUE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
                             @Override
@@ -354,6 +379,7 @@ public class HomeFragment extends Fragment {
                                 System.out.println(bytes);
                                 Bitmap bm = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
                                 scrollImagesHolder.get(i[0]).setImageBitmap(bm);
+
                                 i[0]++;
 
 

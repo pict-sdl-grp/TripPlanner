@@ -2,7 +2,11 @@ package com.project.sdl.tripplanner.HomePackage.AutoSuggestPackage;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -10,13 +14,32 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.project.sdl.tripplanner.R;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.util.ArrayList;
+
 public class MainSearchActivity extends AppCompatActivity {
+
+    LinearLayout imageHolder;
+    static String currentPlaceId;
+    FirebaseStorage storage;
+    static String modeParam;
+    static String inputIdParam;
 
     DatabaseReference mDatabase;
     private final static int REQUEST_CODE_ASK_PERMISSIONS = 1;
@@ -31,7 +54,7 @@ public class MainSearchActivity extends AppCompatActivity {
 
 
     public void addData(View view){
-        mDatabase = FirebaseDatabase.getInstance().getReference();
+
 
         String key  = mDatabase.child("auto-suggest").push().getKey();
 
@@ -45,6 +68,10 @@ public class MainSearchActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_autosuggest_main);
         Log.i("onCreate: ","start");
+
+        imageHolder = findViewById(R.id.imageHolder);
+        storage = FirebaseStorage.getInstance();
+        mDatabase = FirebaseDatabase.getInstance().getReference();
 //***********************************************************
 //        // Get a reference to our posts
 //        final FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -122,6 +149,67 @@ public class MainSearchActivity extends AppCompatActivity {
             }
             default:
                 super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        }
+    }
+
+    public void onClearImages(View view){
+        imageHolder.removeAllViews();
+    }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        switch(requestCode) {
+            case 1:
+                if(resultCode == RESULT_OK){
+                    try {
+                        final Uri imageUri = data.getData();
+                        final File myFile = new File(String.valueOf(imageUri));
+                        Log.i("onActivityResult",imageUri.toString());
+                        final InputStream imageStream = getContentResolver().openInputStream(imageUri);
+                        final Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
+                        ImageView imageItem = new ImageView(this);
+                        imageItem.setImageBitmap(selectedImage);
+
+                        imageHolder.addView(imageItem);
+
+
+                        Bitmap bitmap = selectedImage;
+                        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                        bitmap.compress(Bitmap.CompressFormat.PNG,100,stream);
+
+                        byte[] byteArray = stream.toByteArray();
+
+                        StorageReference storageRef = storage.getReference();
+                        if(currentPlaceId.length() > 0) {
+                            UploadTask uploadTask = storageRef.child("places/"+currentPlaceId+"/"+myFile.getName()).putBytes(byteArray);
+                            uploadTask.addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception exception) {
+                                    Toast.makeText(getApplicationContext(), "error!!!", Toast.LENGTH_SHORT).show();
+                                }
+                            }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                                @Override
+                                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                    Toast.makeText(getApplicationContext(), "image added!!", Toast.LENGTH_SHORT).show();
+                                    ArrayList<String> imageRefs = new ArrayList<>();
+                                    imageRefs.add(myFile.getName());
+                                    if(inputIdParam.length() > 0){
+                                        mDatabase.child("placesNearYou").child(inputIdParam).child(currentPlaceId).child("places").child("imageRefs").setValue(imageRefs);
+                                    }else{
+                                        mDatabase.child("places").child(currentPlaceId).child("imageRefs").setValue(imageRefs);
+                                    }
+                                }
+                            });
+                        }
+
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    }
+
+                }
         }
     }
 

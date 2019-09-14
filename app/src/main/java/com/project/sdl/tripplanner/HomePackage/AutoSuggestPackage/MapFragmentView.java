@@ -16,6 +16,7 @@
 
 package com.project.sdl.tripplanner.HomePackage.AutoSuggestPackage;
 
+import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -25,14 +26,21 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.HorizontalScrollView;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.SearchView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
 import com.here.android.mpa.common.GeoCoordinate;
 import com.here.android.mpa.common.OnEngineInitListener;
 import com.here.android.mpa.mapping.Map;
@@ -67,13 +75,46 @@ public class MapFragmentView extends AppCompatActivity {
     private AutoSuggestAdapter m_autoSuggestAdapter;
     private List<AutoSuggest> m_autoSuggests;
     private ListView m_resultsListView;
-
-
+    LinearLayout imageHolder;
+    LinearLayout imageForm;
+    EditText mode;
+    EditText inputId;
+    FirebaseStorage storage;
 
     public MapFragmentView(MainSearchActivity activity) {
         m_activity = activity;
         m_searchListener = new SearchListener();
         m_autoSuggests = new ArrayList<>();
+        imageHolder = activity.findViewById(R.id.imageHolder);
+        imageForm = activity.findViewById(R.id.imageForm);
+        mode = activity.findViewById(R.id.mode);
+        inputId = activity.findViewById(R.id.idInput);
+
+        storage = FirebaseStorage.getInstance();
+
+        LinearLayout searchContainer = m_activity.findViewById(R.id.searchContainer);
+        ImageButton imageButton = m_activity.findViewById(R.id.imageButton);
+        HorizontalScrollView horizontalScrollView = m_activity.findViewById(R.id.horizontalScrollView1);
+        Button clearButton = m_activity.findViewById(R.id.clearButton);
+        TextView imageTitle = m_activity.findViewById(R.id.imageTitle);
+
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+        if(String.valueOf(user.getEmail()).equalsIgnoreCase("admin@admin.com")) {
+
+            Toast.makeText(m_activity, "Admin Level!!!!", Toast.LENGTH_SHORT).show();
+
+        }else{
+            searchContainer.removeView(mode);
+            searchContainer.removeView(inputId);
+            searchContainer.removeView(imageForm);
+            searchContainer.removeView(imageButton);
+            searchContainer.removeView(horizontalScrollView);
+            searchContainer.removeView(clearButton);
+            searchContainer.removeView(imageTitle);
+        }
+
+
         /*
          * The map fragment is not required for executing AutoSuggest requests. However in this example,
          * we will use it to simplify of the SDK initialization.
@@ -249,53 +290,86 @@ public class MapFragmentView extends AppCompatActivity {
         }
     }
 
-    private void handlePlace(Place place, AutoSuggest autoSuggest) {
+    private void handlePlace(final Place place, AutoSuggest autoSuggest) {
 
                 //============================================
                 //# To Add Places to Database (Admin Level) #
                 //============================================
-//
-//        AutoSuggestPlace autoSuggestPlace = (AutoSuggestPlace) autoSuggest;
-//        Log.i("autosuggest",autoSuggest.getType().toString());
-//        Log.i("autoSuggestPlace",autoSuggestPlace.getVicinity());
-//        Log.i("handlePlace: ", place.getCategories().get(0).getId());
-//        StringBuilder sb = new StringBuilder();
-//        sb.append("Name: ").append(place.getName() + "\n");
-//        sb.append("Alternative name:").append(place.getAlternativeNames());
-//        showMessage("Schema created", sb.toString(), false);
-//
-//        ArrayList<String> imageRefsParams = new ArrayList();
-//        imageRefsParams.add("none");
-//
-//        Places placeData = new Places(place.getId(),autoSuggest.getType().toString(),place.getName()
-//                ,autoSuggestPlace.getVicinity(),autoSuggestPlace.getCategory(),
-//                autoSuggestPlace.getPosition(),autoSuggestPlace.getBoundingBox(),
-//                autoSuggestPlace.getUrl(),imageRefsParams,place.getViewUri(),place.getRatings(),
-//                place.getUserRatings(),place.getContacts(),place.getEditorials(),place.getRelated(),
-//                place.getAlternativeNames(),place.getAttributionText());
-//
-//        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
-//
-//        //To add places
-////        mDatabase.child("places").child(place.getId()).setValue(placeData);
-//
-////        To add placesNearYou
-////        PlacesNearYou placesNearYou = new PlacesNearYou(place.getId(),placeData);
-////        mDatabase.child("placesNearYou")
-////                .child("356tevwm-f6e196eee83b4aadb172f916c30355cf").child(place.getId()).setValue(placesNearYou);
-
-
-                    //============================================
-                    //# To Show Places Information (User Level)  #
-                    //============================================
-
-
-        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        mDatabase.child("users").child(user.getUid()).child("currentPlaceId").setValue(place.getId());
-        m_activity.finish();
+
+        if(String.valueOf(user.getEmail()).equalsIgnoreCase("admin@admin.com")) {
+
+            AutoSuggestPlace autoSuggestPlace = (AutoSuggestPlace) autoSuggest;
+            Log.i("autosuggest", autoSuggest.getType().toString());
+            Log.i("autoSuggestPlace", autoSuggestPlace.getVicinity());
+            Log.i("handlePlace: ", place.getCategories().get(0).getId());
+            StringBuilder sb = new StringBuilder();
+            sb.append("Name: ").append(place.getName() + "\n");
+            sb.append("Alternative name:").append(place.getAlternativeNames());
+            showMessage("Schema created", sb.toString(), false);
+
+
+            ArrayList<String> imageRefsParams = new ArrayList();
+            imageRefsParams.add("none");
+
+            Places placeData = new Places(place.getId(), autoSuggest.getType().toString(), place.getName()
+                    , autoSuggestPlace.getVicinity(), autoSuggestPlace.getCategory(),
+                    autoSuggestPlace.getPosition(), autoSuggestPlace.getBoundingBox(),
+                    autoSuggestPlace.getUrl(), imageRefsParams, place.getViewUri(), place.getRatings(),
+                    place.getUserRatings(), place.getContacts(), place.getEditorials(), place.getRelated(),
+                    place.getAlternativeNames(), place.getAttributionText());
+
+            DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
+
+            //To add places
+            if (String.valueOf(mode.getText()).equalsIgnoreCase("0")) {
+                Log.i("0", ")))))))))))))");
+                mDatabase.child("places").child(place.getId()).setValue(placeData);
+                imageForm.setVisibility(View.VISIBLE);
+            } else if (String.valueOf(mode.getText()).equalsIgnoreCase("1")) {
+                if (inputId.getText().length() > 0) {
+                    //To add placesNearYou
+                    imageForm.setVisibility(View.VISIBLE);
+                    PlacesNearYou placesNearYou = new PlacesNearYou(place.getId(), placeData);
+                    mDatabase.child("placesNearYou")
+                            .child(String.valueOf(inputId.getText())).child(place.getId()).setValue(placesNearYou);
+                }
+            } else if (String.valueOf(mode.getText()).equalsIgnoreCase("2")) {
+                MainSearchActivity.currentPlaceId = place.getId();
+                MainSearchActivity.inputIdParam = inputId.getText().toString();
+
+                ImageButton pickImage = m_activity.findViewById(R.id.imageButton);
+                pickImage.setOnClickListener(new View.OnClickListener() {
+
+                    @Override
+                    public void onClick(View view) {
+                        Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
+                        photoPickerIntent.setType("image/*");
+                        m_activity.startActivityForResult(photoPickerIntent, 1);
+                    }
+                });
+            } else {
+                Toast.makeText(m_activity, "search & select place 1st!!!", Toast.LENGTH_SHORT).show();
+            }
+
+        }else{
+            //============================================
+            //# To Show Places Information (User Level)  #
+            //============================================
+
+            Log.i("placeId",place.getId()+place.getName());
+            DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
+            mDatabase.child("users").child(user.getUid()).child("currentPlaceId").setValue(place.getId());
+            m_activity.finish();
+        }
+
+
+
+
 
     }
+
+
 
 
 

@@ -125,6 +125,7 @@
                 android:layout_marginTop="227dp"
                 android:layout_marginEnd="65dp"
                 android:clickable="false"
+                android:isIndicator="true"
                 android:numStars="5"
                 android:progressBackgroundTint="#fff"
                 android:progressTint="#FFDF00"
@@ -225,28 +226,28 @@
                         <android.support.v7.widget.CardView
                             android:layout_width="200dp"
                             android:layout_height="200dp"
-                            android:layout_marginLeft="210dp"
+                            android:layout_marginLeft="420dp"
                             app:cardBackgroundColor="#E0F2F1"
                             app:cardCornerRadius="20dp" />
 
                         <android.support.v7.widget.CardView
                             android:layout_width="200dp"
                             android:layout_height="200dp"
-                            android:layout_marginLeft="210dp"
+                            android:layout_marginLeft="630dp"
                             app:cardBackgroundColor="#E0F2F1"
                             app:cardCornerRadius="20dp" />
 
                         <android.support.v7.widget.CardView
                             android:layout_width="200dp"
                             android:layout_height="200dp"
-                            android:layout_marginLeft="210dp"
+                            android:layout_marginLeft="840dp"
                             app:cardBackgroundColor="#E0F2F1"
                             app:cardCornerRadius="20dp" />
 
                         <android.support.v7.widget.CardView
                             android:layout_width="200dp"
                             android:layout_height="200dp"
-                            android:layout_marginLeft="210dp"
+                            android:layout_marginLeft="1050dp"
                             app:cardBackgroundColor="#E0F2F1"
                             app:cardCornerRadius="20dp" />
 
@@ -270,22 +271,41 @@
                 android:padding="10dp"
                 android:orientation="horizontal">
 
-                <android.support.v7.widget.CardView
-                    android:layout_width="200dp"
-                    android:layout_height="200dp"
-                    app:cardBackgroundColor="#1da"
-                    app:cardCornerRadius="20dp">
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                >
+                    <android.support.v7.widget.CardView
+                        android:layout_width="200dp"
+                        android:layout_height="200dp"
+                        app:cardBackgroundColor="#1da"
+                        app:cardCornerRadius="20dp">
 
 
-                    <ImageView
-                        android:layout_width="fill_parent"
-                        android:id="@+id/scrollImage1"
-                        android:layout_height="fill_parent"
-                        android:scaleType="fitXY"
-                        android:src="@drawable/nat4" />
+                        <ImageView
+                            android:layout_width="fill_parent"
+                            android:id="@+id/scrollImage1"
+                            android:layout_height="fill_parent"
+                            android:scaleType="fitXY"
+                            android:src="@drawable/nat4" />
 
-                </android.support.v7.widget.CardView>
+                    </android.support.v7.widget.CardView>
 
+                    <TextView
+                        android:layout_width="200dp"
+                        android:id="@+id/scrollText1"
+                        android:text=""
+                        android:padding="4dp"
+                        android:textSize="14dp"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                >
                 <android.support.v7.widget.CardView
                     android:layout_width="200dp"
                     android:layout_height="200dp"
@@ -302,7 +322,20 @@
                         android:src="@drawable/nat4" />
 
                 </android.support.v7.widget.CardView>
+                <TextView
+                    android:layout_width="200dp"
+                    android:id="@+id/scrollText2"
+                    android:text=""
+                    android:padding="4dp"
+                    android:textSize="14dp"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
 
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                >
                 <android.support.v7.widget.CardView
                     android:layout_width="200dp"
                     android:layout_height="200dp"
@@ -319,7 +352,20 @@
                         android:src="@drawable/nat4" />
 
                 </android.support.v7.widget.CardView>
+                <TextView
+                    android:layout_width="200dp"
+                    android:id="@+id/scrollText3"
+                    android:text=""
+                    android:padding="4dp"
+                    android:textSize="14dp"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
 
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                >
                 <android.support.v7.widget.CardView
                     android:layout_width="200dp"
                     android:layout_height="200dp"
@@ -336,7 +382,20 @@
                         android:src="@drawable/nat4" />
 
                 </android.support.v7.widget.CardView>
+                <TextView
+                    android:layout_width="200dp"
+                    android:id="@+id/scrollText4"
+                    android:text=""
+                    android:padding="4dp"
+                    android:textSize="14dp"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
 
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                >
                 <android.support.v7.widget.CardView
                     android:layout_width="200dp"
                     android:layout_height="200dp"
@@ -353,7 +412,20 @@
                         android:src="@drawable/nat4" />
 
                 </android.support.v7.widget.CardView>
+                <TextView
+                    android:layout_width="200dp"
+                    android:id="@+id/scrollText5"
+                    android:text=""
+                    android:padding="4dp"
+                    android:textSize="14dp"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
 
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                >
                 <android.support.v7.widget.CardView
                     android:layout_width="200dp"
                     android:layout_height="200dp"
@@ -370,6 +442,14 @@
                         android:src="@drawable/nat4" />
 
                 </android.support.v7.widget.CardView>
+                <TextView
+                    android:layout_width="200dp"
+                    android:id="@+id/scrollText6"
+                    android:text=""
+                    android:padding="4dp"
+                    android:textSize="14dp"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
 
             </LinearLayout>
 

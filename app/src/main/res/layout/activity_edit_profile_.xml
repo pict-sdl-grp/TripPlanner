@@ -11,10 +11,11 @@
    <android.support.constraint.ConstraintLayout
        android:layout_width="fill_parent"
        android:layout_height="fill_parent">
+
        <ImageView
            android:id="@+id/profileEdit"
-           android:layout_width="238dp"
-           android:layout_height="136dp"
+           android:layout_width="245dp"
+           android:layout_height="150dp"
            android:layout_marginStart="8dp"
            android:layout_marginTop="60dp"
            android:layout_marginEnd="8dp"
@@ -29,7 +30,7 @@
            android:layout_width="60dp"
            android:layout_height="19dp"
            android:layout_marginStart="8dp"
-           android:layout_marginTop="40dp"
+           android:layout_marginTop="48dp"
            android:layout_marginEnd="8dp"
            android:text="Name:"
            android:textSize="11sp"
@@ -43,75 +44,54 @@
            android:layout_width="280dp"
            android:layout_height="32dp"
            android:layout_marginStart="8dp"
-           android:layout_marginTop="4dp"
            android:layout_marginEnd="8dp"
            android:background="@drawable/bordertext"
+           android:hint="name"
+           android:inputType="text"
            android:paddingLeft="7dp"
            android:paddingTop="5dp"
-           android:hint="name"
+           android:paddingBottom="5dp"
+           android:singleLine="true"
+
+           android:textColor="@color/editProfileText"
+           android:textSize="14sp"
+           app:layout_constraintBottom_toTopOf="@+id/EditText14"
            app:layout_constraintEnd_toEndOf="parent"
            app:layout_constraintHorizontal_bias="0.547"
            app:layout_constraintStart_toStartOf="parent"
-           app:layout_constraintTop_toBottomOf="@+id/EditText6" />
-
-       <TextView
-           android:id="@+id/EditText8"
-           android:layout_width="60dp"
-           android:layout_height="14dp"
-           android:layout_marginStart="8dp"
-           android:layout_marginTop="12dp"
-           android:layout_marginEnd="8dp"
-           android:text="Email:"
-           android:textSize="11sp"
-           app:layout_constraintEnd_toEndOf="parent"
-           app:layout_constraintHorizontal_bias="0.182"
-           app:layout_constraintStart_toStartOf="parent"
-           app:layout_constraintTop_toBottomOf="@+id/nameEdit" />
-
-       <TextView
-           android:id="@+id/emailEdit"
-           android:layout_width="282dp"
-           android:layout_height="32dp"
-           android:layout_marginStart="8dp"
-           android:layout_marginTop="32dp"
-           android:layout_marginEnd="8dp"
-           android:background="@drawable/bordertext"
-           android:paddingLeft="7dp"
-           android:paddingTop="5dp"
-           android:hint="email"
-           app:layout_constraintEnd_toEndOf="parent"
-           app:layout_constraintHorizontal_bias="0.557"
-           app:layout_constraintStart_toStartOf="parent"
-           app:layout_constraintTop_toBottomOf="@+id/nameEdit" />
+           app:layout_constraintTop_toBottomOf="@+id/EditText6"
+           app:layout_constraintVertical_bias="0.0" />
 
        <TextView
            android:id="@+id/EditText14"
            android:layout_width="60dp"
            android:layout_height="19dp"
            android:layout_marginStart="8dp"
-           android:layout_marginTop="12dp"
+           android:layout_marginTop="40dp"
            android:layout_marginEnd="8dp"
            android:text="Country"
            android:textSize="10sp"
            app:layout_constraintEnd_toEndOf="parent"
-           app:layout_constraintHorizontal_bias="0.182"
+           app:layout_constraintHorizontal_bias="0.188"
            app:layout_constraintStart_toStartOf="parent"
-           app:layout_constraintTop_toBottomOf="@+id/emailEdit" />
+           app:layout_constraintTop_toBottomOf="@+id/EditText6" />
 
        <SearchView
            android:id="@+id/countryEdit"
            android:layout_width="281dp"
            android:layout_height="35dp"
            android:layout_marginStart="8dp"
-           android:layout_marginTop="32dp"
+           android:layout_marginTop="28dp"
            android:layout_marginEnd="8dp"
            android:background="@drawable/bordertext"
            android:paddingLeft="7dp"
            android:paddingTop="5dp"
+           android:paddingBottom="5dp"
+           android:textSize="14sp"
            app:layout_constraintEnd_toEndOf="parent"
            app:layout_constraintHorizontal_bias="0.526"
            app:layout_constraintStart_toStartOf="parent"
-           app:layout_constraintTop_toBottomOf="@+id/emailEdit" />
+           app:layout_constraintTop_toBottomOf="@+id/nameEdit" />
 
        <TextView
            android:id="@+id/EditText17"
@@ -139,6 +119,9 @@
            android:inputType="phone"
            android:paddingLeft="7dp"
            android:paddingTop="5dp"
+           android:paddingBottom="5dp"
+           android:singleLine="true"
+           android:textColor="@color/editProfileText"
            android:textSize="14sp"
            app:layout_constraintEnd_toEndOf="parent"
            app:layout_constraintHorizontal_bias="0.475"
@@ -169,36 +152,26 @@
            android:background="@drawable/bordertext"
            android:ems="10"
            android:hint="About yourself"
-           android:inputType="textPersonName"
+           android:inputType="textMultiLine"
            android:paddingLeft="7dp"
-           android:textSize="13sp"
+           android:paddingTop="5dp"
+           android:paddingBottom="5dp"
+           android:textColor="@color/editProfileText"
+           android:textSize="14sp"
            app:layout_constraintEnd_toEndOf="parent"
            app:layout_constraintHorizontal_bias="0.538"
            app:layout_constraintStart_toStartOf="parent"
            app:layout_constraintTop_toBottomOf="@+id/phoneEdit" />
 
        <ImageView
-           android:id="@+id/imageView6"
-           android:layout_width="wrap_content"
-           android:layout_height="wrap_content"
-           android:layout_marginStart="8dp"
-           android:layout_marginTop="36dp"
-           android:layout_marginEnd="8dp"
-           app:layout_constraintEnd_toStartOf="@+id/nameEdit"
-           app:layout_constraintHorizontal_bias="0.741"
-           app:layout_constraintStart_toStartOf="parent"
-           app:layout_constraintTop_toBottomOf="@+id/imageView8"
-           app:srcCompat="@drawable/edit" />
-
-       <ImageView
            android:id="@+id/imageView8"
            android:layout_width="wrap_content"
            android:layout_height="wrap_content"
            android:layout_marginStart="8dp"
-           android:layout_marginTop="256dp"
+           android:layout_marginTop="272dp"
            android:layout_marginEnd="8dp"
            app:layout_constraintEnd_toStartOf="@+id/nameEdit"
-           app:layout_constraintHorizontal_bias="0.741"
+           app:layout_constraintHorizontal_bias="0.896"
            app:layout_constraintStart_toStartOf="parent"
            app:layout_constraintTop_toTopOf="parent"
            app:srcCompat="@drawable/edit" />
@@ -221,12 +194,12 @@
            android:layout_width="wrap_content"
            android:layout_height="wrap_content"
            android:layout_marginStart="8dp"
-           android:layout_marginTop="44dp"
+           android:layout_marginTop="36dp"
            android:layout_marginEnd="8dp"
            app:layout_constraintEnd_toStartOf="@+id/countryEdit"
-           app:layout_constraintHorizontal_bias="0.793"
+           app:layout_constraintHorizontal_bias="0.785"
            app:layout_constraintStart_toStartOf="parent"
-           app:layout_constraintTop_toBottomOf="@+id/imageView6"
+           app:layout_constraintTop_toBottomOf="@+id/imageView8"
            app:srcCompat="@drawable/edit" />
 
        <ImageView

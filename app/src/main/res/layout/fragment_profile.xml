@@ -30,7 +30,7 @@
                 app:layout_constraintTop_toTopOf="parent">
 
                 <com.mikhaellopez.circularimageview.CircularImageView
-                    android:id="@+id/profileImage"
+                    android:id="@+id/profileImageInProfile"
                     android:layout_width="115dp"
                     android:layout_height="127dp"
                     android:layout_marginStart="8dp"
@@ -44,14 +44,14 @@
                     app:civ_shadow_radius="10"
 
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@+id/nameProf"
+                    app:layout_constraintEnd_toStartOf="@+id/nameInProfile"
                     app:layout_constraintHorizontal_bias="0.419"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintVertical_bias="0.309" />
 
                 <TextView
-                    android:id="@+id/nameProf"
+                    android:id="@+id/nameInProfile"
                     android:layout_width="210dp"
                     android:layout_height="39dp"
                     android:layout_marginTop="68dp"
@@ -83,7 +83,7 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <ImageView
-                    android:id="@+id/settingProf"
+                    android:id="@+id/settingInProfile"
                     android:layout_width="36dp"
                     android:layout_height="33dp"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -111,69 +111,9 @@
 
             <android.support.constraint.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="535dp"
+                android:layout_height="450dp"
                 android:background="@color/backgrounDisplay">
 
-
-                <TextView
-                    android:id="@+id/countryProf"
-                    android:layout_width="170dp"
-                    android:layout_height="36dp"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="48dp"
-                    android:layout_marginEnd="8dp"
-                    android:background="@drawable/bordertext"
-                    android:ems="10"
-                    android:hint="current place"
-                    android:inputType="textPersonName"
-                    android:paddingLeft="16dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.026"
-                    app:layout_constraintStart_toEndOf="@+id/imageView"
-                    app:layout_constraintTop_toBottomOf="@+id/phoneProf" />
-
-                <TextView
-                    android:id="@+id/phoneProf"
-                    android:layout_width="171dp"
-                    android:layout_height="35dp"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginBottom="8dp"
-                    android:background="@drawable/bordertext"
-                    android:ems="10"
-                    android:hint="phone"
-                    android:inputType="phone"
-                    android:paddingLeft="16dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.025"
-                    app:layout_constraintStart_toEndOf="@+id/imageView2"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.04" />
-
-
-                <TextView
-                    android:id="@+id/aboutYou"
-                    android:layout_width="179dp"
-                    android:layout_height="104dp"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginBottom="8dp"
-                    android:background="@drawable/bordertext"
-                    android:ems="10"
-                    android:hint="about you"
-                    android:inputType="textMultiLine|textPersonName"
-                    android:paddingLeft="16dp"
-                    android:paddingTop="10dp"
-                    android:text=""
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.051"
-                    app:layout_constraintStart_toEndOf="@+id/imageView4"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.432" />
 
                 <ImageView
                     android:id="@+id/imageView2"
@@ -190,6 +130,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintVertical_bias="0.216" />
+
 
                 <ImageView
                     android:id="@+id/imageView"
@@ -235,7 +176,7 @@
                     app:layout_constraintBottom_toTopOf="@+id/tick2Done"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.114"
-                    app:layout_constraintStart_toEndOf="@+id/phoneProf"
+                    app:layout_constraintStart_toEndOf="@+id/phoneInProfile"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintVertical_bias="0.74"
                     app:srcCompat="@drawable/done" />
@@ -250,10 +191,93 @@
                     android:visibility="invisible"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.019"
-                    app:layout_constraintStart_toEndOf="@+id/countryProf"
+                    app:layout_constraintStart_toEndOf="@+id/currenPlaceInProfile"
                     app:layout_constraintTop_toTopOf="parent"
                     app:srcCompat="@drawable/done" />
 
+                <TextView
+                    android:id="@+id/currenPlaceInProfile"
+                    android:layout_width="170dp"
+                    android:layout_height="36dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="40dp"
+                    android:layout_marginEnd="8dp"
+                    android:background="@drawable/bordertext"
+                    android:ems="10"
+                    android:hint="current place"
+                    android:inputType="textPersonName"
+                    android:paddingLeft="7dp"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp"
+                    android:textSize="14sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.05"
+                    app:layout_constraintStart_toEndOf="@+id/imageView"
+                    app:layout_constraintTop_toBottomOf="@+id/phoneInProfile" />
+
+                <TextView
+                    android:id="@+id/phoneInProfile"
+                    android:layout_width="171dp"
+                    android:layout_height="35dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:background="@drawable/bordertext"
+                    android:ems="10"
+                    android:hint="phone"
+                    android:inputType="phone"
+                    android:paddingLeft="7dp"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp"
+                    android:textSize="14sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.05"
+                    app:layout_constraintStart_toEndOf="@+id/imageView2"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.041" />
+
+                <TextView
+                    android:id="@+id/aboutYouInProfile"
+                    android:layout_width="179dp"
+                    android:layout_height="104dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:background="@drawable/bordertext"
+                    android:ems="10"
+                    android:hint="about you"
+                    android:inputType="textMultiLine|textPersonName"
+                    android:paddingLeft="7dp"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp"
+                    android:textSize="14sp"
+                    android:visibility="visible"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.051"
+                    app:layout_constraintStart_toEndOf="@+id/imageView4"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.432" />
+
+
+                <TextView
+                    android:id="@+id/aboutYou2"
+                    android:layout_width="246dp"
+                    android:layout_height="229dp"
+                    android:paddingLeft="7dp"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp"
+                    android:textSize="14sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.161"
+                    app:layout_constraintStart_toEndOf="@+id/imageView4"
+                    app:layout_constraintTop_toBottomOf="@+id/currenPlaceInProfile"
+                    app:layout_constraintVertical_bias="0.261"
+                    tools:visibility="invisible" />
 
                 <View
                     android:id="@+id/divider3"

@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -32,6 +33,7 @@ public class Setting_Activity extends AppCompatActivity {
         final ArrayList<String> options=new ArrayList<>();
         options.add("Logout");
         options.add("Reset Password");
+        options.add("Change Password");
         options.add("Verify Email");
 
         ArrayAdapter<String> opsAdapter=new ArrayAdapter<>(this,android.R.layout.simple_list_item_1,options);
@@ -87,6 +89,13 @@ public class Setting_Activity extends AppCompatActivity {
                                     }
                                 }
                             });
+                }else if(selectedOption.equals("Change Password")){
+                    Intent changePIntent = new Intent(Setting_Activity.this,changePassword.class);
+                    finishAffinity();
+                    startActivity(changePIntent);
+                    Log.e("Check Intent","Intent Opened");
+                }else{
+                    Log.e("Check Intent","No intent selected");
                 }
 
             }

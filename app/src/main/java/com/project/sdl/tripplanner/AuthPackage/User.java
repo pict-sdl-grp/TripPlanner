@@ -33,7 +33,6 @@ public class User {
     public User(String username,String phoneNo,String aboutYou,String currentPlace,boolean isEmailVerified) {
         this.username = username;
         this.phoneNo = phoneNo;
-        this.email = email;
         this.aboutYou = aboutYou;
         this.currentPlace = currentPlace;
         this.isEmailVerified = isEmailVerified;

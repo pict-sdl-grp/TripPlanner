@@ -22,6 +22,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.mikhaellopez.circularimageview.CircularImageView;
 import com.project.sdl.tripplanner.AuthPackage.User;
 import com.project.sdl.tripplanner.R;
 
@@ -29,6 +30,7 @@ public class EditProfile_Activity extends AppCompatActivity {
 
 
     ImageView back_Image;
+    CircularImageView profileImage;
     Button save;
 
     EditText name;
@@ -52,6 +54,7 @@ public class EditProfile_Activity extends AppCompatActivity {
         back_Image = findViewById(R.id.backButtonEdit);
         save = findViewById(R.id.save);
 
+        profileImage = findViewById(R.id.profileEdit);
         name = findViewById(R.id.nameEdit);
         aboutYou = findViewById(R.id.aboutEdit);
         phoneNo = findViewById(R.id.phoneEdit);

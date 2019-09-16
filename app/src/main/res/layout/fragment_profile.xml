@@ -266,18 +266,19 @@
                 <TextView
                     android:id="@+id/aboutYou2"
                     android:layout_width="246dp"
-                    android:layout_height="229dp"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bordertext"
                     android:paddingLeft="7dp"
                     android:paddingTop="5dp"
                     android:paddingBottom="5dp"
                     android:textSize="14sp"
+                    android:visibility="invisible"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.161"
                     app:layout_constraintStart_toEndOf="@+id/imageView4"
                     app:layout_constraintTop_toBottomOf="@+id/currenPlaceInProfile"
-                    app:layout_constraintVertical_bias="0.261"
-                    tools:visibility="invisible" />
+                    app:layout_constraintVertical_bias="0.105" />
 
                 <View
                     android:id="@+id/divider3"

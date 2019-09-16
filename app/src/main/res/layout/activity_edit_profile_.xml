@@ -12,10 +12,10 @@
        android:layout_width="fill_parent"
        android:layout_height="fill_parent">
 
-       <ImageView
+       <com.mikhaellopez.circularimageview.CircularImageView
            android:id="@+id/profileEdit"
-           android:layout_width="245dp"
-           android:layout_height="150dp"
+           android:layout_width="151dp"
+           android:layout_height="139dp"
            android:layout_marginStart="8dp"
            android:layout_marginTop="60dp"
            android:layout_marginEnd="8dp"
@@ -144,8 +144,8 @@
 
        <EditText
            android:id="@+id/aboutEdit"
-           android:layout_width="278dp"
-           android:layout_height="92dp"
+           android:layout_width="281dp"
+           android:layout_height="101dp"
            android:layout_marginStart="8dp"
            android:layout_marginTop="28dp"
            android:layout_marginEnd="8dp"

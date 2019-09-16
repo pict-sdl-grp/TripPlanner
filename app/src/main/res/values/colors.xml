@@ -9,4 +9,5 @@
     <color name="backgrounDisplay">#eff9f6</color>
     <color name="textBack">#f3faf8</color>
     <color name="editProfileText">#4c4c4c</color>
+    <color name="blanckbacground">#86cfb7</color>
 </resources>

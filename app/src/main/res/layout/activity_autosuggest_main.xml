@@ -108,6 +108,13 @@
         android:layout_height="match_parent"
         android:layout_weight="1">
 
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:visibility="invisible"
+            android:id="@+id/listProgress"
+            android:layout_height="60dp" />
+
         <ListView
             android:id="@+id/resultsListViev"
             style="@android:style/Widget.DeviceDefault.ExpandableListView"

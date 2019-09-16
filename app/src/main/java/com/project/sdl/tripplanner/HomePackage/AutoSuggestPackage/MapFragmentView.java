@@ -32,6 +32,7 @@ import android.widget.HorizontalScrollView;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -80,6 +81,7 @@ public class MapFragmentView extends AppCompatActivity {
     EditText mode;
     EditText inputId;
     FirebaseStorage storage;
+    ProgressBar progressBar;
 
     public MapFragmentView(MainSearchActivity activity) {
         m_activity = activity;
@@ -89,6 +91,7 @@ public class MapFragmentView extends AppCompatActivity {
         imageForm = activity.findViewById(R.id.imageForm);
         mode = activity.findViewById(R.id.mode);
         inputId = activity.findViewById(R.id.idInput);
+        progressBar = activity.findViewById(R.id.listProgress);
 
         storage = FirebaseStorage.getInstance();
 
@@ -252,6 +255,8 @@ public class MapFragmentView extends AppCompatActivity {
                 m_autoSuggestAdapter.notifyDataSetChanged();
             }
         });
+
+        progressBar.setVisibility(View.INVISIBLE);
     }
 
     private void handleSelectedAutoSuggest(final AutoSuggest autoSuggest) {
@@ -283,9 +288,11 @@ public class MapFragmentView extends AppCompatActivity {
     public void setSearchMode(boolean isSearch) {
         if (isSearch) {
             m_mapFragmentContainer.setVisibility(View.INVISIBLE);
+            progressBar.setVisibility(View.VISIBLE);
             m_resultsListView.setVisibility(View.VISIBLE);
         } else {
             m_mapFragmentContainer.setVisibility(View.INVISIBLE);
+            progressBar.setVisibility(View.INVISIBLE);
             m_resultsListView.setVisibility(View.INVISIBLE);
         }
     }

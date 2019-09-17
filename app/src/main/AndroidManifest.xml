@@ -25,6 +25,8 @@
             android:name="com.here.android.maps.apptoken"
             android:value="dHz3QjYEWM_cecRN_aAHqQ" />
 
+        <activity android:name=".ProfilePackage.changePassword"></activity>
+        <activity android:name=".ProfilePackage.Setting_Activity" />
         <activity android:name=".ProfilePackage.EditProfile_Activity" /> <!-- Splash screen -->
         <activity
             android:name=".SplashScreen"
@@ -47,5 +49,7 @@
         <activity android:name=".UserPackage.UserActivity" android:theme="@style/transparent"/>
         <activity android:name=".HomePackage.AutoSuggestPackage.MainSearchActivity" />
     </application>
+
+    <uses-permission android:name="android.permission.INTERNET" />
 
 </manifest>

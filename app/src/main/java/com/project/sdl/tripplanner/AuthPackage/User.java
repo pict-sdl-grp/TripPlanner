@@ -13,6 +13,10 @@ public class User {
     public String email;
     public String photoUrl;
     public String currentPlaceId;
+    public String phoneNo;
+    public String aboutYou;
+    public String currentPlace;
+    public boolean isEmailVerified;
 
     public User() {
         // Default constructor required for calls to DataSnapshot.getValue(User.class)
@@ -22,5 +26,14 @@ public class User {
         this.username = username;
         this.email = email;
         this.photoUrl = photoUrl;
+    }
+
+
+    public User(String username,String phoneNo,String aboutYou,String currentPlace,boolean isEmailVerified) {
+        this.username = username;
+        this.phoneNo = phoneNo;
+        this.aboutYou = aboutYou;
+        this.currentPlace = currentPlace;
+        this.isEmailVerified = isEmailVerified;
     }
 }

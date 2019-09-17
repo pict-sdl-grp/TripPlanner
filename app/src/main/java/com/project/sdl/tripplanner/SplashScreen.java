@@ -7,11 +7,14 @@ import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.WindowManager;
 import android.widget.VideoView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.project.sdl.tripplanner.AuthPackage.AuthActivity;
 import com.project.sdl.tripplanner.UserPackage.UserActivity;
 
@@ -21,6 +24,8 @@ public class SplashScreen extends Activity {
     private static int SPLASH_TIME_OUT = 5000;
     private VideoView videoView;
     FirebaseAuth isUserAuthenticated;
+    private DatabaseReference mDatabase;
+
 
         @Override
     protected void onDestroy() {
@@ -48,7 +53,7 @@ public class SplashScreen extends Activity {
         );
 
 
-        videoView = (VideoView)findViewById(R.id.videoView);
+        videoView = findViewById(R.id.videoView);
         Uri uri = Uri.parse("android.resource://"+getPackageName()+"/"+R.raw.video);
         videoView.setVideoURI(uri);
         videoView.requestFocus();
@@ -76,11 +81,14 @@ public class SplashScreen extends Activity {
                 if(isUserAuthenticated.getCurrentUser() != null){
                     Intent i = new Intent(SplashScreen.this, UserActivity.class);
                     startActivity(i);
+                    FirebaseUser user=FirebaseAuth.getInstance().getCurrentUser();
+                    mDatabase=FirebaseDatabase.getInstance().getReference();
+                    mDatabase.child("users").child(user.getUid()).child("isEmailVerified").setValue(user.isEmailVerified());
+                    Log.i("run: ",String.valueOf(user.isEmailVerified()));
                 }else{
                     Intent i = new Intent(SplashScreen.this, AuthActivity.class);
                     startActivity(i);
                 }
-
 
                 // close this activity
                 finish();

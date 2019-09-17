@@ -33,7 +33,6 @@ public class Setting_Activity extends AppCompatActivity {
         final ArrayList<String> options=new ArrayList<>();
         options.add("Logout");
         options.add("Reset Password");
-        options.add("Change Password");
         options.add("Verify Email");
 
         ArrayAdapter<String> opsAdapter=new ArrayAdapter<>(this,android.R.layout.simple_list_item_1,options);

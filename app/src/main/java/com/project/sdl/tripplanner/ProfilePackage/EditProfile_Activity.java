@@ -50,6 +50,7 @@ public class EditProfile_Activity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         mUser = mAuth.getCurrentUser();
         mRef = FirebaseDatabase.getInstance().getReference();
+        Log.e("mRefPath",""+mRef);
 
         back_Image = findViewById(R.id.backButtonEdit);
         save = findViewById(R.id.save);
@@ -104,7 +105,7 @@ public class EditProfile_Activity extends AppCompatActivity {
     protected void saveToDatabase(){
 
 
-        User userDb = new User(name.getText().toString(),phoneNo.getText().toString(),aboutYou.getText().toString(),"India, Maharashtra",mUser.isEmailVerified());
+        User userDb = new User(name.getText().toString(),mUser.getEmail(),phoneNo.getText().toString(),aboutYou.getText().toString(),"India, Maharashtra",mUser.isEmailVerified());
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 

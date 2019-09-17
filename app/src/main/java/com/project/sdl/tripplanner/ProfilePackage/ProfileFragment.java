@@ -96,6 +96,8 @@ public class ProfileFragment extends Fragment {
         aboutYou1 = root.findViewById(R.id.aboutYouInProfile);
         aboutYou2 = root.findViewById(R.id.aboutYou2);
 
+
+
         displayUserData();
 
         Log.e("AfterInstance: ","This is log after initialising");

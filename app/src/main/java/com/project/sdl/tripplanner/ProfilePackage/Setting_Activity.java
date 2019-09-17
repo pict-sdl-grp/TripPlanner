@@ -33,7 +33,6 @@ public class Setting_Activity extends AppCompatActivity {
         final ArrayList<String> options=new ArrayList<>();
         options.add("Logout");
         options.add("Reset Password");
-        options.add("Change Password");
         options.add("Verify Email");
 
         ArrayAdapter<String> opsAdapter=new ArrayAdapter<>(this,android.R.layout.simple_list_item_1,options);
@@ -89,11 +88,6 @@ public class Setting_Activity extends AppCompatActivity {
                                     }
                                 }
                             });
-                }else if(selectedOption.equals("Change Password")){
-                    Intent changePIntent = new Intent(Setting_Activity.this,changePassword.class);
-                    finishAffinity();
-                    startActivity(changePIntent);
-                    Log.e("Check Intent","Intent Opened");
                 }else{
                     Log.e("Check Intent","No intent selected");
                 }

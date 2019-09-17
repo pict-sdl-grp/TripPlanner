@@ -16,6 +16,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
         <activity android:name=".NotificationsPackage.BasicMapsActivity"></activity>
         <!-- SDK CREDENTIALS -->
         <meta-data
@@ -25,7 +26,7 @@
             android:name="com.here.android.maps.apptoken"
             android:value="dHz3QjYEWM_cecRN_aAHqQ" />
 
-        <activity android:name=".ProfilePackage.changePassword"></activity>
+
         <activity android:name=".ProfilePackage.Setting_Activity" />
         <activity android:name=".ProfilePackage.EditProfile_Activity" /> <!-- Splash screen -->
         <activity

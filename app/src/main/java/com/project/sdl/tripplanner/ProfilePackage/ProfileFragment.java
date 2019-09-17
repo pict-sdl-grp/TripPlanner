@@ -96,6 +96,8 @@ public class ProfileFragment extends Fragment {
         aboutYou1 = root.findViewById(R.id.aboutYouInProfile);
         aboutYou2 = root.findViewById(R.id.aboutYou2);
 
+
+
         displayUserData();
 
         Log.e("AfterInstance: ","This is log after initialising");
@@ -116,7 +118,7 @@ public class ProfileFragment extends Fragment {
                 currentPlace.setText(userData.currentPlace);
                 phoneNo.setText(userData.phoneNo);
 
-                if(userData.aboutYou != ""){
+                if(userData.aboutYou !=null){
                     aboutYou2.setVisibility(View.VISIBLE);
                     aboutYou2.setText(userData.aboutYou);
                     aboutYou1.setVisibility(View.INVISIBLE);

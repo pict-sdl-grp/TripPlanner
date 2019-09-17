@@ -89,11 +89,6 @@ public class Setting_Activity extends AppCompatActivity {
                                     }
                                 }
                             });
-                }else if(selectedOption.equals("Change Password")){
-                    Intent changePIntent = new Intent(Setting_Activity.this,changePassword.class);
-                    finishAffinity();
-                    startActivity(changePIntent);
-                    Log.e("Check Intent","Intent Opened");
                 }else{
                     Log.e("Check Intent","No intent selected");
                 }

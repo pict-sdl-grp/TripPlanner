@@ -116,7 +116,7 @@ public class ProfileFragment extends Fragment {
                 currentPlace.setText(userData.currentPlace);
                 phoneNo.setText(userData.phoneNo);
 
-                if(userData.aboutYou != ""){
+                if(userData.aboutYou !=null){
                     aboutYou2.setVisibility(View.VISIBLE);
                     aboutYou2.setText(userData.aboutYou);
                     aboutYou1.setVisibility(View.INVISIBLE);

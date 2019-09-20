@@ -37,6 +37,8 @@ public class EditProfile_Activity extends AppCompatActivity {
     EditText aboutYou;
     EditText phoneNo;
 
+    String currentPlaceId;
+
     FirebaseUser mUser;
     FirebaseAuth mAuth;
     DatabaseReference mRef;
@@ -91,6 +93,7 @@ public class EditProfile_Activity extends AppCompatActivity {
                 name.setText(userDetails.username);
                 phoneNo.setText(userDetails.phoneNo);
                 aboutYou.setText(userDetails.aboutYou);
+                currentPlaceId = userDetails.currentPlaceId;
 
                 Log.e("Data displayed","Current user " + userDetails.username +" URL: "+ mRef1);
             }
@@ -105,7 +108,7 @@ public class EditProfile_Activity extends AppCompatActivity {
     protected void saveToDatabase(){
 
 
-        User userDb = new User(name.getText().toString(),mUser.getEmail(),phoneNo.getText().toString(),aboutYou.getText().toString(),"India, Maharashtra",mUser.isEmailVerified());
+        User userDb = new User(name.getText().toString(),mUser.getEmail(),phoneNo.getText().toString(),aboutYou.getText().toString(),"India, Maharashtra",mUser.isEmailVerified(),currentPlaceId);
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 

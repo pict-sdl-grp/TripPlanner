@@ -6,4 +6,23 @@
     <string name="title_profile">Profile</string>
     <string name="title_activity_edit_profile_">EditProfile_Activity</string>
     <string name="search_title">Search query</string>
+
+    <string name="title_activity_welcome">Home Screen</string>
+    <string name="next">NEXT</string>
+    <string name="skip">SKIP</string>
+    <string name="start">GOT IT</string>
+
+    <string name="slide_1_title">Welcome to </string>
+    <string name="slide_12_title">TripPlanner</string>
+    <string name="slide_1_desc">The easiest way to search and manage your trips!</string>
+
+    <string name="slide_2_title">Explore</string>
+    <string name="slide_2_desc">Search for places here</string>
+
+    <string name="slide_3_title">Your Trips</string>
+    <string name="slide_3_desc">Personalise your trips here</string>
+
+    <string name="slide_4_title">Your Profile</string>
+    <string name="slide_4_desc">See you profile details and edit them here</string>
+
 </resources>

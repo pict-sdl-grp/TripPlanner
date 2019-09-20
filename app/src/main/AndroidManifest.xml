@@ -10,7 +10,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".GuidePackage.guideFragment"></activity>
+        <activity android:name=".IntroPackage.WelcomeActivity"></activity>
+        <activity android:name=".IntroPackage.PrefManager" />
+        <activity android:name=".GuidePackage.guideFragment" />
         <activity android:name=".GuidePackage.guide_Activity" />
         <activity android:name=".NotificationsPackage.BasicMapsActivity" /> <!-- SDK CREDENTIALS -->
         <activity android:name=".ProfilePackage.Setting_Activity" />
@@ -45,12 +47,12 @@
             android:name="com.here.android.maps.apptoken"
             android:value="dHz3QjYEWM_cecRN_aAHqQ" />
     </application>
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.INTERNET" />
-
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
 </manifest>

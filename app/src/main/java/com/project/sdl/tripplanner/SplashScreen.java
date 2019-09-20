@@ -16,12 +16,13 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.project.sdl.tripplanner.AuthPackage.AuthActivity;
-import com.project.sdl.tripplanner.UserPackage.UserActivity;
+import com.project.sdl.tripplanner.IntroPackage.PrefManager;
+import com.project.sdl.tripplanner.IntroPackage.WelcomeActivity;
 
 public class SplashScreen extends Activity {
 
     // Splash screen timer
-    private static int SPLASH_TIME_OUT = 5000;
+    private static int SPLASH_TIME_OUT = 4000;
     private VideoView videoView;
     FirebaseAuth isUserAuthenticated;
     private DatabaseReference mDatabase;
@@ -79,8 +80,10 @@ public class SplashScreen extends Activity {
                 // This method will be executed once the timer is over
                 // Start your app main activity
                 if(isUserAuthenticated.getCurrentUser() != null){
-                    Intent i = new Intent(SplashScreen.this, UserActivity.class);
-                    startActivity(i);
+//                    Intent i = new Intent(SplashScreen.this, UserActivity.class);
+//                    startActivity(i);
+                    Intent intent = new Intent(getApplicationContext(), WelcomeActivity.class);
+                    startActivity(intent);
                     FirebaseUser user=FirebaseAuth.getInstance().getCurrentUser();
                     mDatabase=FirebaseDatabase.getInstance().getReference();
                     mDatabase.child("users").child(user.getUid()).child("isEmailVerified").setValue(user.isEmailVerified());

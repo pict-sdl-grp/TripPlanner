@@ -25,7 +25,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.mikhaellopez.circularimageview.CircularImageView;
 import com.project.sdl.tripplanner.AuthPackage.User;
+import com.project.sdl.tripplanner.HomePackage.HomeFragment;
 import com.project.sdl.tripplanner.R;
+import com.project.sdl.tripplanner.UserPackage.UserActivity;
 
 import java.io.InputStream;
 import java.net.HttpURLConnection;
@@ -72,15 +74,13 @@ public class ProfileFragment extends Fragment {
         editProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent editProfile_intent = new Intent(getContext(),EditProfile_Activity.class);
-                startActivity(editProfile_intent);
+                startActivity(new Intent(getContext(),EditProfile_Activity.class));
             }
         });
         setting.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent setting_intent=new Intent(getContext(),Setting_Activity.class);
-                startActivity(setting_intent);
+                startActivity(new Intent(getContext(),Setting_Activity.class));
             }
         });
 

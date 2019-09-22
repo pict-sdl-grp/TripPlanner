@@ -7,6 +7,8 @@
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission. ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -16,16 +18,16 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
-        <activity android:name=".NotificationsPackage.BasicMapsActivity"></activity>
-        <!-- SDK CREDENTIALS -->
+        <activity android:name=".HomePackage.PlaceInfoPackage.WritePlaceReview"></activity>
+        <activity android:name=".HomePackage.PlaceInfoPackage.CalenderDialog"/>
+        <activity android:name=".HomePackage.PlaceInfoPackage.PlaceInfo" />
+        <activity android:name=".NotificationsPackage.BasicMapsActivity" /> <!-- SDK CREDENTIALS -->
         <meta-data
             android:name="com.here.android.maps.appid"
             android:value="4SxTSk1WVmA9G62J6qqD" />
         <meta-data
             android:name="com.here.android.maps.apptoken"
             android:value="dHz3QjYEWM_cecRN_aAHqQ" />
-
 
         <activity android:name=".ProfilePackage.Setting_Activity" />
         <activity android:name=".ProfilePackage.EditProfile_Activity" /> <!-- Splash screen -->
@@ -47,10 +49,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".UserPackage.UserActivity" android:theme="@style/transparent"/>
+        <activity
+            android:name=".UserPackage.UserActivity"
+            android:theme="@style/transparent" />
         <activity android:name=".HomePackage.AutoSuggestPackage.MainSearchActivity" />
     </application>
-
-    <uses-permission android:name="android.permission.INTERNET" />
 
 </manifest>

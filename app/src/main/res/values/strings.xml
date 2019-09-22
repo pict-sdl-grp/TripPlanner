@@ -6,4 +6,6 @@
     <string name="title_profile">Profile</string>
     <string name="title_activity_edit_profile_">EditProfile_Activity</string>
     <string name="search_title">Search query</string>
+    <string name="addPhoto"><u>Add Photos</u></string>
+    <string name="writeReview"><u>Write Review</u></string>
 </resources>

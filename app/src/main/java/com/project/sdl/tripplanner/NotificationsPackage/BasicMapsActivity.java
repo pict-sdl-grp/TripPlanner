@@ -10,12 +10,21 @@ import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.here.android.mpa.common.GeoCoordinate;
+import com.here.android.mpa.common.GeoPosition;
+import com.here.android.mpa.common.Image;
 import com.here.android.mpa.common.OnEngineInitListener;
+import com.here.android.mpa.common.PositioningManager;
 import com.here.android.mpa.mapping.Map;
 import com.here.android.mpa.mapping.SupportMapFragment;
 import com.project.sdl.tripplanner.R;
 
+import java.io.IOException;
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -37,6 +46,13 @@ public class BasicMapsActivity extends FragmentActivity {
 
     // map fragment embedded in this activity
     private SupportMapFragment mapFragment = null;
+
+
+
+    private PositioningManager positioningManager = null;
+    private PositioningManager.OnPositionChangedListener positionListener;
+    private GeoCoordinate currentPosition = new GeoCoordinate(37.7397, -121.4252);
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -64,7 +80,41 @@ public class BasicMapsActivity extends FragmentActivity {
                     map.setCenter(new GeoCoordinate(18.542592, 73.8770944, 0.0),
                             Map.Animation.NONE);
                     // Set the zoom level to the average between min and max
-                    map.setZoomLevel((map.getMaxZoomLevel() + map.getMinZoomLevel()) / 2);
+                    map.setZoomLevel(14.2);
+
+                    positioningManager = PositioningManager.getInstance();
+                    positionListener = new PositioningManager.OnPositionChangedListener() {
+                        @Override
+                        public void onPositionUpdated(PositioningManager.LocationMethod method, GeoPosition position, boolean isMapMatched) {
+                            currentPosition = position.getCoordinate();
+                            map.setCenter(position.getCoordinate(), Map.Animation.NONE);
+
+                            DatabaseReference mDatabase= FirebaseDatabase.getInstance().getReference();
+                            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                            mDatabase.child("users").child(user.getUid()).child("currentLocation").setValue(position.getCoordinate());
+                        }
+                        @Override
+                        public void onPositionFixChanged(PositioningManager.LocationMethod method, PositioningManager.LocationStatus status) { }
+                    };
+                    try {
+                        positioningManager.addListener(new WeakReference<>(positionListener));
+                        if(!positioningManager.start(PositioningManager.LocationMethod.GPS_NETWORK)) {
+                            Log.e("HERE", "PositioningManager.start: Failed to start...");
+                        }
+                    } catch (Exception e) {
+                        Log.e("HERE", "Caught: " + e.getMessage());
+                    }
+
+                    Image image = new Image();
+                    try {
+                        image.setImageResource(R.drawable.marker);
+
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    map.getPositionIndicator().setMarker(image).setVisible(true);
+
+
                 } else {
                     Log.e(LOG_TAG, "Cannot initialize SupportMapFragment (" + error + ")");
                 }

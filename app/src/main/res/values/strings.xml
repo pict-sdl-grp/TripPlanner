@@ -6,6 +6,7 @@
     <string name="title_profile">Profile</string>
     <string name="title_activity_edit_profile_">EditProfile_Activity</string>
     <string name="search_title">Search query</string>
+<<<<<<< HEAD
 
     <string name="title_activity_welcome">Home Screen</string>
     <string name="next">NEXT</string>
@@ -25,4 +26,8 @@
     <string name="slide_4_title">Your Profile</string>
     <string name="slide_4_desc">See you profile details and edit them here</string>
 
+=======
+    <string name="addPhoto"><u>Add Photos</u></string>
+    <string name="writeReview"><u>Write Review</u></string>
+>>>>>>> 3e8a46c77dfd2780ab600ccf75f171a314e5db56
 </resources>

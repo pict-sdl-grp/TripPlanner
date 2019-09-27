@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
@@ -29,12 +30,14 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.project.sdl.tripplanner.AuthPackage.User;
 import com.project.sdl.tripplanner.HomePackage.AutoSuggestPackage.MainSearchActivity;
+import com.project.sdl.tripplanner.HomePackage.PlaceInfoPackage.PlaceInfo;
 import com.project.sdl.tripplanner.R;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -70,9 +73,15 @@ public class HomeFragment extends Fragment {
     HorizontalScrollView shimmerHolderForScroll1;
     HorizontalScrollView scroll1;
 
+    LinearLayout linearLayout1;
+
     String currentPlaceId;
+    JSONObject currentLocation;
     JSONObject currentPlace;
     JSONObject currentPlaceNearYou;
+    ArrayList<String> keysetArray;
+    ArrayList<JSONObject> placesArray;
+    ArrayList<byte[]> placesImagesArray;
 
     FirebaseStorage storage;
 
@@ -87,6 +96,7 @@ public class HomeFragment extends Fragment {
         homebg = root.findViewById(R.id.homebg);
         shimmerLayout = root.findViewById(R.id.shimmer_layout);
         shimmerScrollLayout = root.findViewById(R.id.shimmer_scroll_layout);
+        linearLayout1 = root.findViewById(R.id.linearLayout1);
 
         shimmerHolderForScroll1 = root.findViewById(R.id.shimmerHolderForScroll1);
         scroll1 = root.findViewById(R.id.scroll1);
@@ -105,6 +115,9 @@ public class HomeFragment extends Fragment {
         scrollText5 = root.findViewById(R.id.scrollText5);
         scrollText6 = root.findViewById(R.id.scrollText6);
 
+        placesArray = new ArrayList<>();
+
+        placesImagesArray = new ArrayList<byte[]>();
 
 
         storage = FirebaseStorage.getInstance();
@@ -116,6 +129,27 @@ public class HomeFragment extends Fragment {
                 startActivity(intent);
             }
         });
+
+            for(int i=0;i<6;i++) {
+                linearLayout1.getChildAt(i).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Log.i("onClick: ", String.valueOf(view.getTag()));
+                        Intent intent = new Intent(getContext(), PlaceInfo.class);
+                        intent.putExtra("selectedPlace", placesArray.get(Integer.valueOf(String.valueOf(view.getTag()))).toString());
+                        intent.putExtra("selectedPlaceImage",placesImagesArray.get(Integer.valueOf(String.valueOf(view.getTag()))));
+                        intent.putExtra("currentParentId",currentPlaceId);
+                        try {
+                            intent.putExtra("currentLatitude",currentLocation.getString("latitude"));
+                            intent.putExtra("currentLongitude",currentLocation.getString("longitude"));
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        startActivity(intent);
+                    }
+                });
+            }
+
 
 
 
@@ -155,6 +189,7 @@ public class HomeFragment extends Fragment {
         scroll1.setVisibility(View.VISIBLE);
     }
 
+
     public void keepTrackOfUserData(){
         // Attach a listener to read the data at our posts reference
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -168,11 +203,26 @@ public class HomeFragment extends Fragment {
                 startShimmerEffectOnScroll1();
 
                 User currentUserData = dataSnapshot.getValue(User.class);
+                Map<String, Object> userHash = (HashMap<String,Object>) dataSnapshot.getValue();
+                JSONObject jsonUser = new JSONObject(userHash);
 
                 System.out.println(currentUserData.currentPlaceId);
                 currentPlaceId = currentUserData.currentPlaceId;
+                try {
+                    currentLocation = jsonUser.getJSONObject("currentLocation");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
 
                 if(currentUserData.currentPlaceId != null) {
+                    placesArray.clear();
+                    placesImagesArray.clear();
+                    byte[] bytes = new byte[10];
+                    Arrays.fill( bytes, (byte) 1 );
+                    for(int i=0;i<6;i++){
+                        placesImagesArray.add(i,bytes);
+                    }
+
                     checkIfPlaceExistInDatabase(currentUserData.currentPlaceId);
                     checkIfPlacesNearYouExistInDatabase(currentUserData.currentPlaceId);
                 }else{
@@ -340,6 +390,20 @@ public class HomeFragment extends Fragment {
 
     public void keepTrackOfPlacesNearYouData(final String currentPlaceId, final Set<String> keySet){
 
+
+
+            keysetArray = new ArrayList<>(keySet);
+
+            for(int i=0;i<keysetArray.size();i++) {
+                    loadPlacesNearYouScroll(i, keysetArray.get(i), currentPlaceId);
+            }
+
+
+
+    }
+
+    public void loadPlacesNearYouScroll(final int index, final String id, String currentPlaceId){
+
         final ArrayList<ImageView> scrollImagesHolder = new ArrayList<>();
         scrollImagesHolder.add(scrollImage1);
         scrollImagesHolder.add(scrollImage2);
@@ -356,61 +420,61 @@ public class HomeFragment extends Fragment {
         scrollTextHolder.add(scrollText5);
         scrollTextHolder.add(scrollText6);
 
-
-        final int[] i = {0};
-        final int[] j = {0};
-        for(final String id : keySet){
-            final FirebaseDatabase database = FirebaseDatabase.getInstance();
-            DatabaseReference ref = database.getReference("placesNearYou/"+currentPlaceId+"/"+id+"/places");
-            ref.addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    Map<String, Object> autoSuggest = (HashMap<String,Object>) dataSnapshot.getValue();
-                    currentPlaceNearYou = new JSONObject(autoSuggest);
-
-                    try {
-                        System.out.printf( "JSON: %s", currentPlaceNearYou.toString(2) );
-                        scrollTextHolder.get(j[0]).setText(currentPlaceNearYou.getString("name"));
-                        j[0]++;
-                        StorageReference storageRef = storage.getReference();
-                        storageRef.child("places/"+id+"/"+currentPlaceNearYou.getJSONArray("imageRefs").get(0)).getBytes(Long.MAX_VALUE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
-                            @Override
-                            public void onSuccess(byte[] bytes) {
-                                // Use the bytes to display the image
-                                System.out.println(bytes);
-                                Bitmap bm = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-                                scrollImagesHolder.get(i[0]).setImageBitmap(bm);
-
-                                i[0]++;
+        final Bitmap[] bm = new Bitmap[1];
 
 
-                         if(i[0] == keySet.size()){
-                             stopShimmerEffectOnScroll1();
-                         }
+        final FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference ref = database.getReference("placesNearYou/"+ currentPlaceId +"/"+id+"/places");
+        ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Map<String, Object> autoSuggest = (HashMap<String,Object>) dataSnapshot.getValue();
+                currentPlaceNearYou = new JSONObject(autoSuggest);
 
+                placesArray.add(currentPlaceNearYou);
+
+                try {
+                    System.out.printf( "JSON: %s", currentPlaceNearYou.toString(2) );
+                    StorageReference storageRef = storage.getReference();
+
+                    scrollTextHolder.get(index).setText(currentPlaceNearYou.getString("name"));
+
+                    storageRef.child("places/"+id+"/"+currentPlaceNearYou.getJSONArray("imageRefs").get(0)).getBytes(Long.MAX_VALUE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+
+                        @Override
+                        public void onSuccess(byte[] bytes) {
+                            // Use the bytes to display the image
+                            System.out.println(bytes);
+                            bm[0] = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                            scrollImagesHolder.get(index).setImageBitmap(bm[0]);
+                            placesImagesArray.set(index,bytes);
+
+                            Log.i("onSuccess: ",placesImagesArray.toString());
+
+                            if(index == 5){
+                                stopShimmerEffectOnScroll1();
                             }
-                        }).addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception exception) {
-                                // Handle any errors
-                            }
-                        });
+
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception exception) {
+                            // Handle any errors
+                        }
+                    });
 
 
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
 
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
+            }
 
-                }
-            });
-        }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
 
-
+            }
+        });
     }
 
 

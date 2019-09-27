@@ -26,6 +26,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.project.sdl.tripplanner.IntroPackage.WelcomeActivity;
 import com.project.sdl.tripplanner.R;
 import com.project.sdl.tripplanner.UserPackage.UserActivity;
 
@@ -117,7 +118,7 @@ public class AuthActivity extends AppCompatActivity implements View.OnClickListe
                                     FirebaseUser user = mAuth.getCurrentUser();
 
                                     if (user != null) {
-                                        Intent intent = new Intent(getApplicationContext(), UserActivity.class);
+                                        Intent intent = new Intent(getApplicationContext(), WelcomeActivity.class);
                                         startActivity(intent);
                                         mDatabase=FirebaseDatabase.getInstance().getReference();
                                         mDatabase.child("users").child(user.getUid()).child("isEmailVerified").setValue(user.isEmailVerified());
@@ -173,7 +174,7 @@ public class AuthActivity extends AppCompatActivity implements View.OnClickListe
                                                             mDatabase.child("users").child(user.getUid()).setValue(userDB);
 
                                                             if (user != null) {
-                                                                Intent intent = new Intent(getApplicationContext(), UserActivity.class);
+                                                                Intent intent = new Intent(getApplicationContext(), WelcomeActivity.class);
                                                                 startActivity(intent);
                                                                 finish();
                                                                 new Handler().postDelayed(new Runnable() {

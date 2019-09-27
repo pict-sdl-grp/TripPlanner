@@ -18,6 +18,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.project.sdl.tripplanner.AuthPackage.AuthActivity;
 import com.project.sdl.tripplanner.IntroPackage.PrefManager;
 import com.project.sdl.tripplanner.IntroPackage.WelcomeActivity;
+import com.project.sdl.tripplanner.UserPackage.UserActivity;
 
 public class SplashScreen extends Activity {
 
@@ -82,7 +83,7 @@ public class SplashScreen extends Activity {
                 if(isUserAuthenticated.getCurrentUser() != null){
 //                    Intent i = new Intent(SplashScreen.this, UserActivity.class);
 //                    startActivity(i);
-                    Intent intent = new Intent(getApplicationContext(), WelcomeActivity.class);
+                    Intent intent = new Intent(getApplicationContext(), UserActivity.class);
                     startActivity(intent);
                     FirebaseUser user=FirebaseAuth.getInstance().getCurrentUser();
                     mDatabase=FirebaseDatabase.getInstance().getReference();

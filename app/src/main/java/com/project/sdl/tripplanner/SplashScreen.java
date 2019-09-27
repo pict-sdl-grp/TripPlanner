@@ -23,11 +23,7 @@ import com.project.sdl.tripplanner.UserPackage.UserActivity;
 public class SplashScreen extends Activity {
 
     // Splash screen timer
-<<<<<<< HEAD
-    private static int SPLASH_TIME_OUT = 4000;
-=======
     private static int SPLASH_TIME_OUT = 3000;
->>>>>>> 3e8a46c77dfd2780ab600ccf75f171a314e5db56
     private VideoView videoView;
     FirebaseAuth isUserAuthenticated;
     private DatabaseReference mDatabase;

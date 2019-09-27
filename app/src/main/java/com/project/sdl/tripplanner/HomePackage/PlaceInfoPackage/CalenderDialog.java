@@ -35,9 +35,9 @@ public class CalenderDialog extends AppCompatActivity {
         calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
             public void onSelectedDayChange(@NonNull CalendarView calendarView1, int i, int i1, int i2) {
-                Toast.makeText(getApplicationContext(), i2+ "/"+i1+"/"+i, Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), i2+ "/"+(i1+1)+"/"+i, Toast.LENGTH_SHORT).show();
                 Intent resultIntent = new Intent();
-                resultIntent.putExtra("date", i2+ "/"+i1+"/"+i);
+                resultIntent.putExtra("date", i2+ "/"+(i1+1)+"/"+i);
                 setResult(Activity.RESULT_OK, resultIntent);
                 finish();
             }

@@ -40,7 +40,7 @@
             android:textSize="20dp" />
 
         <TextView
-            android:id="@+id/submitText"
+            android:id="@+id/createText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end"

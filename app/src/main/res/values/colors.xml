@@ -8,8 +8,8 @@
     <color name="colorNavText">#01294b</color>
     <color name="backgrounDisplay">#eff9f6</color>
     <color name="textBack">#f3faf8</color>
-    <color name="shimmer_background_color">#eeeeee</color>
-    <color name="shimmer_background_color1">#E0E0E0</color>
+    <color name="shimmer_background_color">#E0F2F1</color>
+    <color name="shimmer_background_color1">#B2DFDB</color>
     <color name="editProfileText">#4c4c4c</color>
     <color name="blanckbacground">#86cfb7</color>
 </resources>

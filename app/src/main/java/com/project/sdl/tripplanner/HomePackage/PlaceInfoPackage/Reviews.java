@@ -14,17 +14,19 @@ public class Reviews {
     public String visitType;
     public String title;
     public String review;
+    public String userName;
 
     public Reviews() {
         // Default constructor required for calls to DataSnapshot.getValue(User.class)
     }
 
-    public Reviews(Double rating,String date,String visitType,String title,String review) {
+    public Reviews(Double rating,String date,String visitType,String title,String review,String userName) {
         this.rating = rating;
         this.date = date;
         this.visitType = visitType;
         this.title = title;
         this.review = review;
+        this.userName = userName;
     }
 
 

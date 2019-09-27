@@ -1,6 +1,8 @@
 package com.project.sdl.tripplanner.HomePackage;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -31,11 +33,13 @@ import com.google.firebase.storage.StorageReference;
 import com.project.sdl.tripplanner.AuthPackage.User;
 import com.project.sdl.tripplanner.HomePackage.AutoSuggestPackage.MainSearchActivity;
 import com.project.sdl.tripplanner.HomePackage.PlaceInfoPackage.PlaceInfo;
+import com.project.sdl.tripplanner.ObjectSerializer;
 import com.project.sdl.tripplanner.R;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -66,6 +70,9 @@ public class HomeFragment extends Fragment {
     TextView scrollText4;
     TextView scrollText5;
     TextView scrollText6;
+    ImageView currentLocationIcon;
+
+    SharedPreferences sharedPreferences;
 
     ShimmerLayout shimmerLayout;
     ShimmerLayout shimmerScrollLayout;
@@ -82,6 +89,8 @@ public class HomeFragment extends Fragment {
     ArrayList<String> keysetArray;
     ArrayList<JSONObject> placesArray;
     ArrayList<byte[]> placesImagesArray;
+    ArrayList<byte[]> homeBgArray;
+    TextView currentCityName;
 
     FirebaseStorage storage;
 
@@ -97,6 +106,8 @@ public class HomeFragment extends Fragment {
         shimmerLayout = root.findViewById(R.id.shimmer_layout);
         shimmerScrollLayout = root.findViewById(R.id.shimmer_scroll_layout);
         linearLayout1 = root.findViewById(R.id.linearLayout1);
+        currentCityName = root.findViewById(R.id.currentCityName);
+        currentLocationIcon = root.findViewById(R.id.currentLocationIcon);
 
         shimmerHolderForScroll1 = root.findViewById(R.id.shimmerHolderForScroll1);
         scroll1 = root.findViewById(R.id.scroll1);
@@ -115,16 +126,38 @@ public class HomeFragment extends Fragment {
         scrollText5 = root.findViewById(R.id.scrollText5);
         scrollText6 = root.findViewById(R.id.scrollText6);
 
+        sharedPreferences = getContext().getSharedPreferences("com.project.sdl.tripplanner", Context.MODE_PRIVATE);
+
         placesArray = new ArrayList<>();
 
         placesImagesArray = new ArrayList<byte[]>();
+        homeBgArray = new ArrayList<byte[]>();
 
 
         storage = FirebaseStorage.getInstance();
 
+
+        currentCityName.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getContext(),SetCurrentLocation.class);
+                startActivity(intent);
+            }
+        });
+
+        currentLocationIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getContext(),SetCurrentLocation.class);
+                startActivity(intent);
+            }
+        });
+
         searchIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                sharedPreferences.edit().remove("placesImagesArray").commit();
+                sharedPreferences.edit().remove("homeBg").commit();
                 Intent intent = new Intent(getContext(), MainSearchActivity.class);
                 startActivity(intent);
             }
@@ -210,6 +243,7 @@ public class HomeFragment extends Fragment {
                 currentPlaceId = currentUserData.currentPlaceId;
                 try {
                     currentLocation = jsonUser.getJSONObject("currentLocation");
+                    currentCityName.setText(jsonUser.getString("currentLocationCityName"));
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -282,21 +316,34 @@ public class HomeFragment extends Fragment {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
-                Map<String, Object> autoSuggest = (HashMap<String,Object>) dataSnapshot.getValue();
+                Map<String, Object> autoSuggest = (HashMap<String, Object>) dataSnapshot.getValue();
                 currentPlace = new JSONObject(autoSuggest);
 
                 try {
-                    System.out.printf( "JSON: %s", currentPlace.toString(2) );
+                    homeBgArray = (ArrayList<byte[]>) ObjectSerializer.deserialize(sharedPreferences.getString("homeBg", ObjectSerializer.serialize(new ArrayList<byte[]>())));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                if(homeBgArray.size() == 0){
+
+                try {
+                    System.out.printf("JSON: %s", currentPlace.toString(2));
 
                     StorageReference storageRef = storage.getReference();
-                    storageRef.child("places/"+currentPlaceId+"/"+currentPlace.getJSONArray("imageRefs").get(0)).getBytes(Long.MAX_VALUE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+                    storageRef.child("places/" + currentPlaceId + "/" + currentPlace.getJSONArray("imageRefs").get(0)).getBytes(Long.MAX_VALUE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
                         @Override
                         public void onSuccess(byte[] bytes) {
                             // Use the bytes to display the image
                             System.out.println(bytes);
                             Bitmap bm = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
                             homebg.setImageBitmap(bm);
-
+                            homeBgArray.add(bytes);
+                            try {
+                                sharedPreferences.edit().putString("homeBg", ObjectSerializer.serialize(homeBgArray)).apply();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
                             ratingBar.setVisibility(View.VISIBLE);
                             countText.setVisibility(View.VISIBLE);
 
@@ -324,6 +371,27 @@ public class HomeFragment extends Fragment {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+                    Log.i("onDataChange: ","if");
+
+            }else{
+                    Log.i("onDataChange: ","else");
+                    Bitmap bm = BitmapFactory.decodeByteArray(homeBgArray.get(0), 0, homeBgArray.get(0).length);
+                    homebg.setImageBitmap(bm);
+
+                    ratingBar.setVisibility(View.VISIBLE);
+                    countText.setVisibility(View.VISIBLE);
+
+                    try {
+                        searchIcon.setText(currentPlace.getString("name"));
+                        ratingBar.setRating(Float.valueOf(currentPlace.getJSONObject("userRatings").getString("average")));
+                        countText.setText(currentPlace.getJSONObject("userRatings").getString("count"));
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+
+                    stopShimmerEffect();
+            }
 
 
 
@@ -428,18 +496,28 @@ public class HomeFragment extends Fragment {
         ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                Map<String, Object> autoSuggest = (HashMap<String,Object>) dataSnapshot.getValue();
+                Map<String, Object> autoSuggest = (HashMap<String, Object>) dataSnapshot.getValue();
                 currentPlaceNearYou = new JSONObject(autoSuggest);
 
                 placesArray.add(currentPlaceNearYou);
 
                 try {
-                    System.out.printf( "JSON: %s", currentPlaceNearYou.toString(2) );
+                    Log.i("placesImagesArray", String.valueOf((ArrayList<byte[]>) ObjectSerializer.deserialize(sharedPreferences.getString("placesImagesArray", ObjectSerializer.serialize(new ArrayList<byte[]>())))));
+
+
+                if(((ArrayList<byte[]>) ObjectSerializer
+                        .deserialize(sharedPreferences
+                                .getString("placesImagesArray",
+                                        ObjectSerializer
+                                                .serialize(new ArrayList<byte[]>())))).size() == 0){
+
+                try {
+                    System.out.printf("JSON: %s", currentPlaceNearYou.toString(2));
                     StorageReference storageRef = storage.getReference();
 
                     scrollTextHolder.get(index).setText(currentPlaceNearYou.getString("name"));
 
-                    storageRef.child("places/"+id+"/"+currentPlaceNearYou.getJSONArray("imageRefs").get(0)).getBytes(Long.MAX_VALUE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+                    storageRef.child("places/" + id + "/" + currentPlaceNearYou.getJSONArray("imageRefs").get(0)).getBytes(Long.MAX_VALUE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
 
                         @Override
                         public void onSuccess(byte[] bytes) {
@@ -447,12 +525,17 @@ public class HomeFragment extends Fragment {
                             System.out.println(bytes);
                             bm[0] = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
                             scrollImagesHolder.get(index).setImageBitmap(bm[0]);
-                            placesImagesArray.set(index,bytes);
+                            placesImagesArray.set(index, bytes);
 
-                            Log.i("onSuccess: ",placesImagesArray.toString());
+                            Log.i("onSuccess: ", placesImagesArray.toString());
 
-                            if(index == 5){
+                            if (index == 5) {
                                 stopShimmerEffectOnScroll1();
+                                try {
+                                    sharedPreferences.edit().putString("placesImagesArray", ObjectSerializer.serialize(placesImagesArray)).apply();
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
                             }
 
                         }
@@ -464,7 +547,29 @@ public class HomeFragment extends Fragment {
                     });
 
 
-                } catch (JSONException e) {
+                }
+                catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                    Log.i("onDataChange: ","if im");
+
+            }else{
+                    placesImagesArray = (ArrayList<byte[]>) ObjectSerializer.deserialize(sharedPreferences.getString("placesImagesArray", ObjectSerializer.serialize(new ArrayList<byte[]>())));
+                    Log.i("onDataChange: ","else im");
+                    Bitmap bm = BitmapFactory.decodeByteArray(placesImagesArray.get(index), 0, placesImagesArray.get(index).length);
+                    scrollImagesHolder.get(index).setImageBitmap(bm);
+                    try {
+                        scrollTextHolder.get(index).setText(currentPlaceNearYou.getString("name"));
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                    if (index == 5) {
+                        stopShimmerEffectOnScroll1();
+                    }
+            }
+                } catch (IOException e) {
                     e.printStackTrace();
                 }
 

@@ -48,7 +48,7 @@ public class WritePlaceReview extends AppCompatActivity {
         monthVisited = findViewById(R.id.monthVisitedText2);
         visitTypeContainer = findViewById(R.id.visitTypeContainer);
         visitTypeText = findViewById(R.id.visitTypeText);
-        submitReview = findViewById(R.id.submitText);
+        submitReview = findViewById(R.id.createText);
         reviewTitle = findViewById(R.id.reviewTitle);
         mainReview = findViewById(R.id.mainReview);
         ratingBar = findViewById(R.id.reviewRating);
@@ -106,10 +106,12 @@ public class WritePlaceReview extends AppCompatActivity {
                     DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
                     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
-                    Reviews review = new Reviews(rating, String.valueOf(monthVisited.getText()), String.valueOf(visitTypeText.getText()), String.valueOf(reviewTitle.getText()), String.valueOf(mainReview.getText()));
+                    Reviews review = new Reviews(rating, String.valueOf(monthVisited.getText()),
+                            String.valueOf(visitTypeText.getText()), String.valueOf(reviewTitle.getText()),
+                            String.valueOf(mainReview.getText()),user.getDisplayName());
 
                     mDatabase.child("reviews/" + getIntent()
-                            .getStringExtra("currentPlaceId") + "/" + user.getUid() + "/" + UUID.randomUUID().toString() + "/")
+                            .getStringExtra("currentPlaceId") + "/" + UUID.randomUUID().toString() + "/")
                             .setValue(review);
 
                     Toast.makeText(WritePlaceReview.this, "Review Saved Successfully", Toast.LENGTH_SHORT).show();

@@ -21,12 +21,15 @@ android {
         flatDir {
             dirs 'libs'
         }
+        maven { url 'https://jitpack.io' }
     }
 }
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'com.android.support:appcompat-v7:27.1.1'
+    implementation 'com.github.wisnukurniawan:date-time-range-picker-android:1.0.6'
+    implementation 'com.jmedeisis:draglinearlayout:1.1.0'
     implementation 'com.google.firebase:firebase-core:12.0.1'
     implementation 'com.google.android.gms:play-services:12.0.1'
     implementation "com.google.firebase:firebase-messaging:12.0.1"

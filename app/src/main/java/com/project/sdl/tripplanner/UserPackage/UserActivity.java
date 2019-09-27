@@ -8,7 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.view.WindowManager;
 
-import com.project.sdl.tripplanner.DashboardPackage.DashboardFragment;
+import com.project.sdl.tripplanner.TripsPackage.TripsFragment;
 import com.project.sdl.tripplanner.HomePackage.HomeFragment;
 import com.project.sdl.tripplanner.NotificationsPackage.NotificationsFragment;
 import com.project.sdl.tripplanner.ProfilePackage.ProfileFragment;
@@ -58,7 +58,7 @@ public class UserActivity extends AppCompatActivity implements BottomNavigationV
                 break;
 
             case R.id.navigation_dashboard:
-                fragment = new DashboardFragment();
+                fragment = new TripsFragment();
                 break;
 
             case R.id.navigation_notifications:

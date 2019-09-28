@@ -32,7 +32,7 @@ public class UserActivity extends AppCompatActivity implements BottomNavigationV
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user);
-        getSupportActionBar().hide();
+        getSupportActionBar().hide ();
 
         //loading the default fragment
         loadFragment(new HomeFragment());

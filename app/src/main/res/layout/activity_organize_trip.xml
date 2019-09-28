@@ -134,7 +134,6 @@
                     android:text="Day-4"
                     android:textStyle="bold" />
 
-
                 <TextView
                     android:id="@+id/drag_drop_textview1"
                     android:layout_width="match_parent"

@@ -46,6 +46,8 @@ import com.here.android.mpa.common.GeoCoordinate;
 import com.mikhaellopez.circularimageview.CircularImageView;
 import com.project.sdl.tripplanner.ObjectSerializer;
 import com.project.sdl.tripplanner.R;
+import com.project.sdl.tripplanner.TripsPackage.SelectTripActivity;
+import com.project.sdl.tripplanner.UserPackage.UserActivity;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -56,6 +58,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.Serializable;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
@@ -90,6 +93,9 @@ public class PlaceInfo extends AppCompatActivity {
     HashMap<String, String> wishlistHash;
     ShimmerLayout placeInfoShimmer;
     ScrollView placeInfoShimmerScroll;
+    ImageView addPlaceToTripIcon;
+    JSONObject tripJson;
+    Map<String,Object> tripHash;
 
 
     public class DownloadTask extends AsyncTask<String,Void,String> {
@@ -176,6 +182,7 @@ public class PlaceInfo extends AppCompatActivity {
         userReviewContainer = findViewById(R.id.userReviewsContainer);
         wishlistYes = findViewById(R.id.wishlistIconYes);
         wishlistNo = findViewById(R.id.wishlistIconNo);
+        addPlaceToTripIcon = findViewById(R.id.addPlaceToTripIcon);
 
 
         sharedPreferences = getApplicationContext().getSharedPreferences("com.project.sdl.tripplanner", Context.MODE_PRIVATE);
@@ -209,6 +216,67 @@ public class PlaceInfo extends AppCompatActivity {
 
         storage = FirebaseStorage.getInstance();
         mDatabase = FirebaseDatabase.getInstance().getReference();
+
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        final DatabaseReference ref = database.getReference("trips/"+user.getUid());
+        ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                tripHash = (HashMap<String,Object>) dataSnapshot.getValue();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+
+
+//        ==========================================
+//        Handle Add Place To Trip
+//        ==========================================
+
+        addPlaceToTripIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                        if(tripHash != null) {
+                            tripJson = new JSONObject(tripHash);
+                            ArrayList<String> tripNames = new ArrayList<>();
+                            for(String key : tripHash.keySet()){
+                                try{
+                                    tripNames.add(tripJson.getJSONObject(key).getString("tripName"));
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+
+                            JSONObject jsonObject = null;
+                            try {
+                                jsonObject = new JSONObject(getIntent().getStringExtra("selectedPlace"));
+
+                                Intent intent = new Intent(getApplicationContext(), SelectTripActivity.class);
+                                intent.putStringArrayListExtra("tripNames",tripNames);
+                                intent.putExtra("tripHash", (Serializable) tripHash);
+                                intent.putExtra("currentPlace",getIntent().getStringExtra("selectedPlace"));
+                                startActivity(intent);
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+
+
+                        }else{
+                            Intent intent = new Intent(getApplicationContext(), UserActivity.class);
+                            intent.putExtra("flag","trip");
+                            startActivity(intent);
+
+                        }
+                    }
+
+
+        });
 
 
 //        ==========================================

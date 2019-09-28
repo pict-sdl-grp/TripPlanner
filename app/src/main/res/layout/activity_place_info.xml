@@ -41,7 +41,7 @@
         app:srcCompat="@drawable/wishlist_red" />
 
     <ImageView
-        android:id="@+id/wishlistIcon2"
+        android:id="@+id/addPlaceToTripIcon"
         android:layout_width="20dp"
         android:layout_height="20dp"
         android:alpha="1"

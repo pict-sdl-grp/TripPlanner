@@ -18,7 +18,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".TripsPackage.OrganizeTripActivity"></activity>
+        <activity android:name=".TripsPackage.SelectTripActivity"></activity>
+        <activity android:name=".TripsPackage.OrganizeTripActivity" />
         <activity android:name=".TripsPackage.AddDatesActivity" />
         <activity android:name=".TripsPackage.TripInfoActivity" />
         <activity android:name=".TripsPackage.CreateTripFormActivity" />

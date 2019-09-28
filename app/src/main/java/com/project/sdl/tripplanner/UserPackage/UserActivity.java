@@ -8,14 +8,16 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.view.WindowManager;
 
-import com.project.sdl.tripplanner.TripsPackage.TripsFragment;
 import com.project.sdl.tripplanner.HomePackage.HomeFragment;
 import com.project.sdl.tripplanner.NotificationsPackage.NotificationsFragment;
 import com.project.sdl.tripplanner.ProfilePackage.ProfileFragment;
 import com.project.sdl.tripplanner.R;
+import com.project.sdl.tripplanner.TripsPackage.TripsFragment;
 
 
 public class UserActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
+
+    BottomNavigationView bottomNavigationView;
 
     private boolean loadFragment(Fragment fragment) {
         //switching fragment
@@ -35,13 +37,21 @@ public class UserActivity extends AppCompatActivity implements BottomNavigationV
         setContentView(R.layout.activity_user);
 //        getSupportActionBar().hide();
 
+        bottomNavigationView = findViewById(R.id.navigation);
+
         getWindow().setFlags(
                 WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
                 WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
         );
 
         //loading the default fragment
-        loadFragment(new HomeFragment());
+        if(String.valueOf(getIntent().getStringExtra("flag")) != null && String.valueOf(getIntent().getStringExtra("flag")).equals("trip")){
+            loadFragment(new TripsFragment());
+            bottomNavigationView.setSelectedItemId(R.id.navigation_dashboard);
+        }else {
+            loadFragment(new HomeFragment());
+            bottomNavigationView.setSelectedItemId(R.id.navigation_home);
+        }
 
         //getting bottom navigation view and attaching the listener
         BottomNavigationView navigation = findViewById(R.id.navigation);

@@ -8,6 +8,7 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -33,8 +34,10 @@ import com.google.firebase.storage.StorageReference;
 import com.project.sdl.tripplanner.AuthPackage.User;
 import com.project.sdl.tripplanner.HomePackage.AutoSuggestPackage.MainSearchActivity;
 import com.project.sdl.tripplanner.HomePackage.PlaceInfoPackage.PlaceInfo;
+import com.project.sdl.tripplanner.HomePackage.PlaceInfoPackage.WritePlaceReview;
 import com.project.sdl.tripplanner.ObjectSerializer;
 import com.project.sdl.tripplanner.R;
+import com.project.sdl.tripplanner.TripsPackage.CreateTripFormActivity;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -71,6 +74,7 @@ public class HomeFragment extends Fragment {
     TextView scrollText5;
     TextView scrollText6;
     ImageView currentLocationIcon;
+    ImageView blurBg;
 
     SharedPreferences sharedPreferences;
 
@@ -82,6 +86,10 @@ public class HomeFragment extends Fragment {
 
     LinearLayout linearLayout1;
 
+    FloatingActionButton fab;
+    FloatingActionButton fab1;
+    FloatingActionButton fab2;
+
     String currentPlaceId;
     JSONObject currentLocation;
     JSONObject currentPlace;
@@ -91,6 +99,7 @@ public class HomeFragment extends Fragment {
     ArrayList<byte[]> placesImagesArray;
     ArrayList<byte[]> homeBgArray;
     TextView currentCityName;
+    Boolean isFABOpen = false;
 
     FirebaseStorage storage;
 
@@ -108,6 +117,7 @@ public class HomeFragment extends Fragment {
         linearLayout1 = root.findViewById(R.id.linearLayout1);
         currentCityName = root.findViewById(R.id.currentCityName);
         currentLocationIcon = root.findViewById(R.id.currentLocationIcon);
+        blurBg = root.findViewById(R.id.blurBg);
 
         shimmerHolderForScroll1 = root.findViewById(R.id.shimmerHolderForScroll1);
         scroll1 = root.findViewById(R.id.scroll1);
@@ -125,6 +135,59 @@ public class HomeFragment extends Fragment {
         scrollText4 = root.findViewById(R.id.scrollText4);
         scrollText5 = root.findViewById(R.id.scrollText5);
         scrollText6 = root.findViewById(R.id.scrollText6);
+
+        fab = root.findViewById(R.id.fab);
+        fab1 = root.findViewById(R.id.fab1);
+        fab2 = root.findViewById(R.id.fab2);
+
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(!isFABOpen){
+                    isFABOpen=true;
+                    fab1.animate().translationY(-getResources().getDimension(R.dimen.standard_55));
+                    fab2.animate().translationY(-getResources().getDimension(R.dimen.standard_105));
+                    blurBg.setVisibility(View.VISIBLE);
+                    fab.setImageDrawable(getResources().getDrawable(R.drawable.multiply));
+                }else{
+                    isFABOpen=false;
+                    fab1.animate().translationY(0);
+                    fab2.animate().translationY(0);
+                    blurBg.setVisibility(View.INVISIBLE);
+                    fab.setImageDrawable(getResources().getDrawable(R.drawable.ic_add_black_24dp));
+                }
+            }
+        });
+
+        fab1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getContext(), CreateTripFormActivity.class);
+                startActivity(intent);
+                isFABOpen=false;
+                fab1.animate().translationY(0);
+                fab2.animate().translationY(0);
+                blurBg.setVisibility(View.INVISIBLE);
+                fab.setImageDrawable(getResources().getDrawable(R.drawable.ic_add_black_24dp));
+
+            }
+        });
+
+        fab2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getContext(), WritePlaceReview.class);
+                intent.putExtra("currentPlaceId",currentPlaceId);
+                startActivity(intent);
+                isFABOpen=false;
+                fab1.animate().translationY(0);
+                fab2.animate().translationY(0);
+                blurBg.setVisibility(View.INVISIBLE);
+                fab.setImageDrawable(getResources().getDrawable(R.drawable.ic_add_black_24dp));
+
+
+            }
+        });
 
         sharedPreferences = getContext().getSharedPreferences("com.project.sdl.tripplanner", Context.MODE_PRIVATE);
 

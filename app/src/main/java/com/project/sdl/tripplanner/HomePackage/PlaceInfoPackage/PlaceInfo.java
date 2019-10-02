@@ -58,7 +58,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.Serializable;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
@@ -185,6 +184,7 @@ public class PlaceInfo extends AppCompatActivity {
         addPlaceToTripIcon = findViewById(R.id.addPlaceToTripIcon);
 
 
+
         sharedPreferences = getApplicationContext().getSharedPreferences("com.project.sdl.tripplanner", Context.MODE_PRIVATE);
 
         TabLayout tabLayout = findViewById(R.id.tabLayout);
@@ -259,7 +259,6 @@ public class PlaceInfo extends AppCompatActivity {
 
                                 Intent intent = new Intent(getApplicationContext(), SelectTripActivity.class);
                                 intent.putStringArrayListExtra("tripNames",tripNames);
-                                intent.putExtra("tripHash", (Serializable) tripHash);
                                 intent.putExtra("currentPlace",getIntent().getStringExtra("selectedPlace"));
                                 startActivity(intent);
                             } catch (JSONException e) {

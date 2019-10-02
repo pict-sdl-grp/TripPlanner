@@ -9,7 +9,9 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -76,6 +78,8 @@ public class HomeFragment extends Fragment {
     ImageView currentLocationIcon;
     ImageView blurBg;
 
+    SwipeRefreshLayout mySwipeRefreshLayout;
+
     SharedPreferences sharedPreferences;
 
     ShimmerLayout shimmerLayout;
@@ -102,6 +106,18 @@ public class HomeFragment extends Fragment {
     Boolean isFABOpen = false;
 
     FirebaseStorage storage;
+
+    public Boolean showConnectionError(){
+        Snackbar.make(getActivity().findViewById(android.R.id.content), "Connection Error.Try Again!!!", 5000)
+                .setAction("close", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+
+                    }
+                }).setActionTextColor(getResources().getColor(android.R.color.holo_red_light ))
+                .show();
+        return true;
+    }
 
     @Nullable
     @Override
@@ -135,6 +151,23 @@ public class HomeFragment extends Fragment {
         scrollText4 = root.findViewById(R.id.scrollText4);
         scrollText5 = root.findViewById(R.id.scrollText5);
         scrollText6 = root.findViewById(R.id.scrollText6);
+
+        mySwipeRefreshLayout = root.findViewById(R.id.swiperefresh);
+
+        mySwipeRefreshLayout.setOnRefreshListener(
+                new SwipeRefreshLayout.OnRefreshListener() {
+                    @Override
+                    public void onRefresh() {
+                        Log.i("onRefresh: ","Hurrah");
+                        sharedPreferences.edit().remove("placesImagesArray").commit();
+                        sharedPreferences.edit().remove("homeBg").commit();
+                        startShimmerEffect();
+                        startShimmerEffectOnScroll1();
+                        keepTrackOfUserData();
+
+                    }
+                }
+        );
 
         fab = root.findViewById(R.id.fab);
         fab1 = root.findViewById(R.id.fab1);
@@ -247,8 +280,6 @@ public class HomeFragment extends Fragment {
             }
 
 
-
-
         startShimmerEffect();
         startShimmerEffectOnScroll1();
         keepTrackOfUserData();
@@ -302,7 +333,6 @@ public class HomeFragment extends Fragment {
                 Map<String, Object> userHash = (HashMap<String,Object>) dataSnapshot.getValue();
                 JSONObject jsonUser = new JSONObject(userHash);
 
-                System.out.println(currentUserData.currentPlaceId);
                 currentPlaceId = currentUserData.currentPlaceId;
                 try {
                     currentLocation = jsonUser.getJSONObject("currentLocation");
@@ -325,6 +355,7 @@ public class HomeFragment extends Fragment {
                 }else{
                     stopShimmerEffect();
                     stopShimmerEffectOnScroll1();
+                    mySwipeRefreshLayout.setRefreshing(false);
                 }
 
 
@@ -333,6 +364,7 @@ public class HomeFragment extends Fragment {
             @Override
             public void onCancelled(DatabaseError databaseError) {
                 System.out.println("The read failed: " + databaseError.getCode());
+                showConnectionError();
             }
         });
     }
@@ -357,6 +389,7 @@ public class HomeFragment extends Fragment {
                     countText.setText("");
                     stopShimmerEffect();
                     stopShimmerEffectOnScroll1();
+                    mySwipeRefreshLayout.setRefreshing(false);
                 }
 
 
@@ -366,6 +399,7 @@ public class HomeFragment extends Fragment {
             @Override
             public void onCancelled(DatabaseError databaseError) {
                 System.out.println("The read failed: " + databaseError.getCode());
+                showConnectionError();
             }
         });
 
@@ -386,6 +420,8 @@ public class HomeFragment extends Fragment {
                     homeBgArray = (ArrayList<byte[]>) ObjectSerializer.deserialize(sharedPreferences.getString("homeBg", ObjectSerializer.serialize(new ArrayList<byte[]>())));
                 } catch (IOException e) {
                     e.printStackTrace();
+                    showConnectionError();
+
                 }
 
                 if(homeBgArray.size() == 0){
@@ -406,6 +442,7 @@ public class HomeFragment extends Fragment {
                                 sharedPreferences.edit().putString("homeBg", ObjectSerializer.serialize(homeBgArray)).apply();
                             } catch (IOException e) {
                                 e.printStackTrace();
+                                showConnectionError();
                             }
                             ratingBar.setVisibility(View.VISIBLE);
                             countText.setVisibility(View.VISIBLE);
@@ -416,6 +453,7 @@ public class HomeFragment extends Fragment {
                                 countText.setText(currentPlace.getJSONObject("userRatings").getString("count"));
                             } catch (JSONException e) {
                                 e.printStackTrace();
+                                showConnectionError();
                             }
 
 
@@ -427,12 +465,15 @@ public class HomeFragment extends Fragment {
                         public void onFailure(@NonNull Exception exception) {
                             // Handle any errors
                             stopShimmerEffect();
+                            showConnectionError();
+                            mySwipeRefreshLayout.setRefreshing(false);
                         }
                     });
 
 
                 } catch (JSONException e) {
                     e.printStackTrace();
+                    showConnectionError();
                 }
                     Log.i("onDataChange: ","if");
 
@@ -450,10 +491,12 @@ public class HomeFragment extends Fragment {
                         countText.setText(currentPlace.getJSONObject("userRatings").getString("count"));
                     } catch (JSONException e) {
                         e.printStackTrace();
+                        showConnectionError();
                     }
 
 
                     stopShimmerEffect();
+                    mySwipeRefreshLayout.setRefreshing(false);
             }
 
 
@@ -463,6 +506,7 @@ public class HomeFragment extends Fragment {
             @Override
             public void onCancelled(DatabaseError databaseError) {
                 System.out.println("The read failed: " + databaseError.getCode());
+                showConnectionError();
             }
         });
     }
@@ -494,12 +538,13 @@ public class HomeFragment extends Fragment {
 
                         @Override
                         public void onCancelled(DatabaseError databaseError) {
-
+                            showConnectionError();
                         }
                     });
 
                 }else{
                     stopShimmerEffectOnScroll1();
+                    mySwipeRefreshLayout.setRefreshing(false);
                     scrollImage1.setImageResource(R.drawable.nat4);
                     scrollImage2.setImageResource(R.drawable.nat4);
                     scrollImage3.setImageResource(R.drawable.nat4);
@@ -515,6 +560,7 @@ public class HomeFragment extends Fragment {
             @Override
             public void onCancelled(DatabaseError databaseError) {
                 System.out.println("The read failed: " + databaseError.getCode());
+                showConnectionError();
             }
         });
     }
@@ -594,10 +640,12 @@ public class HomeFragment extends Fragment {
 
                             if (index == 5) {
                                 stopShimmerEffectOnScroll1();
+                                mySwipeRefreshLayout.setRefreshing(false);
                                 try {
                                     sharedPreferences.edit().putString("placesImagesArray", ObjectSerializer.serialize(placesImagesArray)).apply();
                                 } catch (IOException e) {
                                     e.printStackTrace();
+                                    showConnectionError();
                                 }
                             }
 
@@ -606,6 +654,10 @@ public class HomeFragment extends Fragment {
                         @Override
                         public void onFailure(@NonNull Exception exception) {
                             // Handle any errors
+                            stopShimmerEffect();
+                            stopShimmerEffectOnScroll1();
+                            showConnectionError();
+                            mySwipeRefreshLayout.setRefreshing(false);
                         }
                     });
 
@@ -613,6 +665,8 @@ public class HomeFragment extends Fragment {
                 }
                 catch (JSONException e) {
                     e.printStackTrace();
+                    showConnectionError();
+
                 }
 
                     Log.i("onDataChange: ","if im");
@@ -626,10 +680,12 @@ public class HomeFragment extends Fragment {
                         scrollTextHolder.get(index).setText(currentPlaceNearYou.getString("name"));
                     } catch (JSONException e) {
                         e.printStackTrace();
+                        showConnectionError();
                     }
 
                     if (index == 5) {
                         stopShimmerEffectOnScroll1();
+                        mySwipeRefreshLayout.setRefreshing(false);
                     }
             }
                 } catch (IOException e) {
@@ -640,7 +696,7 @@ public class HomeFragment extends Fragment {
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-
+                showConnectionError();
             }
         });
     }

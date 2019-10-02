@@ -3,6 +3,7 @@ package com.project.sdl.tripplanner.TripsPackage;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -59,7 +60,17 @@ public class AddDatesActivity extends AppCompatActivity {
                 Intent resultIntent = new Intent();
                 resultIntent.putStringArrayListExtra("dateRange",dateRange);
                 setResult(Activity.RESULT_OK, resultIntent);
-                finish();
+
+                Snackbar.make(findViewById(android.R.id.content), "Dates are selected.Now you can easily organize your trip", 5000)
+                        .setAction("Close", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                finish();
+                            }
+                        })
+                .setActionTextColor(getResources().getColor(android.R.color.holo_red_light ))
+                .show();
+
             }
         });
 

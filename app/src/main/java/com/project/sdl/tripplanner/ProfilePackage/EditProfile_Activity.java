@@ -1,6 +1,5 @@
 package com.project.sdl.tripplanner.ProfilePackage;
 
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -9,8 +8,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.SearchView;
-import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -105,7 +102,7 @@ public class EditProfile_Activity extends AppCompatActivity {
     protected void saveToDatabase(){
 
 
-        User userDb = new User(name.getText().toString(),mUser.getEmail(),phoneNo.getText().toString(),aboutYou.getText().toString(),"India, Maharashtra",mUser.isEmailVerified());
+//        User userDb = new User(name.getText().toString(),mUser.getEmail(),phoneNo.getText().toString(),aboutYou.getText().toString(),"India, Maharashtra",mUser.isEmailVerified());
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
@@ -123,9 +120,14 @@ public class EditProfile_Activity extends AppCompatActivity {
                     }
                 });
 
-        mRef.child("users").child(mUser.getUid()).setValue(userDb);
+        mRef.child("users").child(mUser.getUid()).child("username").setValue(name.getText().toString());
+        mRef.child("users").child(mUser.getUid()).child("email").setValue(mUser.getEmail());
+        mRef.child("users").child(mUser.getUid()).child("phoneNo").setValue(phoneNo.getText().toString());
+        mRef.child("users").child(mUser.getUid()).child("aboutYou").setValue(aboutYou.getText().toString());
+        mRef.child("users").child(mUser.getUid()).child("currentPlace").setValue("India, Maharashtra");
+        mRef.child("users").child(mUser.getUid()).child("isEmailVerified").setValue(mUser.isEmailVerified());
 
-        Log.e("Data updated","Current user " + userDb.username +" ID: "+ mUser.getUid() + "\n URL");
+        Log.e("Data updated","Current user " + name.getText().toString() +" ID: "+ mUser.getUid() + "\n URL");
 
         backToProfile();
     }

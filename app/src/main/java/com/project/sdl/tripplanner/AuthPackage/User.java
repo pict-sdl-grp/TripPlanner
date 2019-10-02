@@ -22,12 +22,6 @@ public class User {
         // Default constructor required for calls to DataSnapshot.getValue(User.class)
     }
 
-    public User(String username, String email,String photoUrl) {
-        this.username = username;
-        this.email = email;
-        this.photoUrl = photoUrl;
-    }
-
 
     public User(String username,String email,String phoneNo,String aboutYou,String currentPlace,boolean isEmailVerified) {
         this.username = username;

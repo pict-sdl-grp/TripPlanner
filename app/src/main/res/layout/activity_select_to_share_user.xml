@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".TripsPackage.SelectToShareUserActivity">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar_top"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorSecondary"
+        android:minHeight="?attr/actionBarSize"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0">
+
+        <ImageView
+            android:id="@+id/backButton"
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:alpha="1"
+            android:elevation="1000dp"
+            app:srcCompat="@drawable/left_arrow" />
+
+
+        <TextView
+            android:id="@+id/toolbar_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left"
+            android:layout_marginLeft="60dp"
+            android:text="Share With People"
+            android:textColor="#fff"
+            android:textSize="20dp" />
+
+
+
+    </android.support.v7.widget.Toolbar>
+
+
+    <ScrollView
+        android:id="@+id/drag_drop_layout_scroll"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar_top"
+        app:layout_constraintVertical_bias="0.0">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:id="@+id/selectUserContainer"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginBottom="50dp"
+            android:orientation="vertical">
+
+
+<!--        <LinearLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:orientation="horizontal"-->
+<!--            android:padding="20dp"-->
+<!--            android:gravity="center_vertical"-->
+<!--            android:layout_marginBottom="20dp"-->
+<!--            android:elevation="3dp"-->
+<!--            android:background="#fff"-->
+<!--            android:layout_height="wrap_content">-->
+
+<!--            <ImageView-->
+<!--                android:layout_width="60dp"-->
+<!--                android:src="@drawable/profile1"-->
+<!--                android:scaleType="fitXY"-->
+<!--                android:layout_height="60dp"/>-->
+
+<!--            <TextView-->
+<!--                android:id="@+id/drag_drop_textview1"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_marginLeft="20dp"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:tag="place1"-->
+<!--                android:text="User Name"-->
+<!--                android:textStyle="bold" />-->
+
+<!--            <TextView-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_marginLeft="-198dp"-->
+<!--                android:layout_height="20dp"-->
+<!--                android:text="(9145052272)"-->
+<!--                android:textStyle="bold" />-->
+<!--        </LinearLayout>-->
+
+
+        </LinearLayout>
+    </ScrollView>
+
+
+
+</android.support.constraint.ConstraintLayout>

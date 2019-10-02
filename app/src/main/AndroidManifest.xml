@@ -18,7 +18,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".TripsPackage.SelectTripActivity"></activity>
+        <activity android:name=".TripsPackage.SelectToShareUserActivity"></activity>
+        <activity android:name=".TripsPackage.SharedTripsActivity" />
+        <activity android:name=".TripsPackage.SelectTripActivity" />
         <activity android:name=".TripsPackage.OrganizeTripActivity" />
         <activity android:name=".TripsPackage.AddDatesActivity" />
         <activity android:name=".TripsPackage.TripInfoActivity" />

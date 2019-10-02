@@ -32,6 +32,20 @@
             android:textColor="#fff"
             android:textSize="20dp" />
 
+        <TextView
+            android:id="@+id/shareText"
+            android:layout_width="wrap_content"
+            android:layout_height="51dp"
+            android:layout_gravity="end"
+            android:elevation="1000dp"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="Shared With Me"
+            android:textColor="#fff"
+            android:textSize="14dp"
+            tools:layout_editor_absoluteX="206dp"
+            tools:layout_editor_absoluteY="16dp" />
+
 
     </android.support.v7.widget.Toolbar>
 

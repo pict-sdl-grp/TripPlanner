@@ -46,6 +46,7 @@ public class TripsFragment extends Fragment {
     Button getStarted;
     FloatingActionButton fab;
     LinearLayout getStartedContainer;
+    TextView shareText;
 
     @Nullable
     @Override
@@ -58,6 +59,16 @@ public class TripsFragment extends Fragment {
         firstMessage = root.findViewById(R.id.firstMessage);
         getStarted = root.findViewById(R.id.getStartedButton);
         getStartedContainer = root.findViewById(R.id.getStartedContainer);
+        shareText = root.findViewById(R.id.shareText);
+
+
+        shareText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getContext(),SharedTripsActivity.class);
+                startActivity(intent);
+            }
+        });
 
         getStarted.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -109,30 +120,28 @@ public class TripsFragment extends Fragment {
                     tripCardHolder.removeAllViews();
                     getStartedContainer.setVisibility(View.INVISIBLE);
 
-                    int p =0;
-                    for(String key : tripHash.keySet()){
-                        try {
-                            createTripCardLayout(tripJson.getJSONObject(key),key,p,tripHash.keySet().size()-1);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                        p++;
-                    }
-
-                    for (int i = 0;i<tripCardHolder.getChildCount();i++) {
-                        final int finalI = i;
-                        tripCardHolder.getChildAt(i).setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                Intent intent = new Intent(getContext(),TripInfoActivity.class);
-                                try {
-                                    intent.putExtra("selectedTrip", String.valueOf(tripJson.getJSONObject(String.valueOf(tripCardHolder.getChildAt(finalI).getTag()))));
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                }
-                                startActivity(intent);
+                    if(getContext() != null) {
+                        int p = 0;
+                        for (String key : tripHash.keySet()) {
+                            try {
+                                createTripCardLayout(tripJson.getJSONObject(key), key, p, tripHash.keySet().size() - 1);
+                            } catch (JSONException e) {
+                                e.printStackTrace();
                             }
-                        });
+                            p++;
+                        }
+
+                        for (int i = 0; i < tripCardHolder.getChildCount(); i++) {
+                            final int finalI = i;
+                            tripCardHolder.getChildAt(i).setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    Intent intent = new Intent(getContext(), TripInfoActivity.class);
+                                    intent.putExtra("selectedTripId", String.valueOf(tripCardHolder.getChildAt(finalI).getTag()));
+                                    startActivity(intent);
+                                }
+                            });
+                        }
                     }
 
                 }else{
@@ -210,11 +219,8 @@ public class TripsFragment extends Fragment {
         params6.setMargins(20, 400,0, 0);
         RelativeLayout.LayoutParams layoutParams2 = new RelativeLayout.LayoutParams(params6);
         creatorName.setLayoutParams(layoutParams2);
-        try {
-            creatorName.setText("By "+tripJson.getString("createdBy"));
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+        creatorName.setText("By "+FirebaseAuth.getInstance().getCurrentUser().getDisplayName());
+
         creatorName.setTextSize(14);
 
         TextView itemsCount = new TextView(getContext());

@@ -1,13 +1,18 @@
-package com.project.sdl.tripplanner.NotificationsPackage;
+package com.project.sdl.tripplanner.HomePackage;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
+import android.view.View;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -28,9 +33,10 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 
-public class BasicMapsActivity extends FragmentActivity {
-    private static final String LOG_TAG = BasicMapsActivity.class.getSimpleName();
+public class SetCurrentLocation extends FragmentActivity {
+    private static final String LOG_TAG = SetCurrentLocation.class.getSimpleName();
 
     // permissions request code
     private final static int REQUEST_CODE_ASK_PERMISSIONS = 1;
@@ -53,10 +59,15 @@ public class BasicMapsActivity extends FragmentActivity {
     private PositioningManager.OnPositionChangedListener positionListener;
     private GeoCoordinate currentPosition = new GeoCoordinate(37.7397, -121.4252);
 
+    ProgressBar gpsLoader;
+    TextView currentLocationText;
+
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         checkPermissions();
     }
 
@@ -67,8 +78,14 @@ public class BasicMapsActivity extends FragmentActivity {
     private void initialize() {
         setContentView(R.layout.activity_basic_maps);
 
+        gpsLoader = findViewById(R.id.gpsLoader);
+        currentLocationText = findViewById(R.id.currentLocationText);
+
+        gpsLoader.setVisibility(View.VISIBLE);
+
         // Search for the map fragment to finish setup by calling init().
         mapFragment = getSupportMapFragment();
+
         mapFragment.init(new OnEngineInitListener() {
             @Override
             public void onEngineInitializationCompleted(OnEngineInitListener.Error error) {
@@ -88,10 +105,34 @@ public class BasicMapsActivity extends FragmentActivity {
                         public void onPositionUpdated(PositioningManager.LocationMethod method, GeoPosition position, boolean isMapMatched) {
                             currentPosition = position.getCoordinate();
                             map.setCenter(position.getCoordinate(), Map.Animation.NONE);
+                            Log.i("onPositionUpdated: ",position.getPositionSource());
+
+                            String cityName = null;
+                            Geocoder gcd = new Geocoder(getBaseContext(), Locale.getDefault());
+                            List<Address> addresses;
+                            try {
+                                addresses = gcd.getFromLocation(position.getCoordinate().getLatitude(),
+                                        position.getCoordinate().getLongitude(), 1);
+                                if (addresses.size() > 0) {
+
+                                    System.out.println(addresses.get(0).getLocality());
+                                    cityName = addresses.get(0).getLocality();
+                                    Log.i("city name",cityName);
+                                }
+                            }
+                            catch (IOException e) {
+                                e.printStackTrace();
+                            }
+
+                            gpsLoader.setVisibility(View.INVISIBLE);
+                            currentLocationText.setText("Your current location is : "+cityName);
+
 
                             DatabaseReference mDatabase= FirebaseDatabase.getInstance().getReference();
                             FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                             mDatabase.child("users").child(user.getUid()).child("currentLocation").setValue(position.getCoordinate());
+                            mDatabase.child("users").child(user.getUid()).child("currentLocationCityName").setValue(cityName);
+
                         }
                         @Override
                         public void onPositionFixChanged(PositioningManager.LocationMethod method, PositioningManager.LocationStatus status) { }

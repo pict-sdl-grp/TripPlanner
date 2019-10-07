@@ -1,6 +1,8 @@
 package com.project.sdl.tripplanner.HomePackage.PlaceInfoPackage;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -19,6 +21,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
@@ -29,6 +32,8 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -39,7 +44,10 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.here.android.mpa.common.GeoCoordinate;
 import com.mikhaellopez.circularimageview.CircularImageView;
+import com.project.sdl.tripplanner.ObjectSerializer;
 import com.project.sdl.tripplanner.R;
+import com.project.sdl.tripplanner.TripsPackage.SelectTripActivity;
+import com.project.sdl.tripplanner.UserPackage.UserActivity;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -47,12 +55,16 @@ import org.json.JSONObject;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.concurrent.ExecutionException;
+import java.util.HashMap;
+import java.util.Map;
+
+import io.supercharge.shimmerlayout.ShimmerLayout;
 
 public class PlaceInfo extends AppCompatActivity {
 
@@ -61,6 +73,7 @@ public class PlaceInfo extends AppCompatActivity {
     RatingBar overviewRating;
     RatingBar reviewRateBar;
     TextView reviewText;
+    TextView reviewRateText;
     TextView vicinityText;
     TextView suggestedDuration;
     TextView suggestedDistance;
@@ -73,6 +86,15 @@ public class PlaceInfo extends AppCompatActivity {
     LinearLayout writeReviewContainer;
     ImageView backButton;
     LinearLayout userReviewContainer;
+    ImageButton wishlistNo;
+    ImageButton wishlistYes;
+    SharedPreferences sharedPreferences;
+    HashMap<String, String> wishlistHash;
+    ShimmerLayout placeInfoShimmer;
+    ScrollView placeInfoShimmerScroll;
+    ImageView addPlaceToTripIcon;
+    JSONObject tripJson;
+    Map<String,Object> tripHash;
 
 
     public class DownloadTask extends AsyncTask<String,Void,String> {
@@ -119,6 +141,12 @@ public class PlaceInfo extends AppCompatActivity {
                 String distance = String.valueOf(Integer.valueOf(jsonObject.getJSONObject("response").getJSONArray("route").getJSONObject(0).getJSONObject("summary").getString("distance"))/1000);
                 suggestedDuration.setText("Suggested duration : More than "+duration+" hours");
                 suggestedDistance.setText("distance : "+distance+" km");
+
+                placeInfoShimmer.stopShimmerAnimation();
+                placeInfoShimmerScroll.setVisibility(View.INVISIBLE);
+                placeInfoShimmerScroll.setSmoothScrollingEnabled(false);
+                scrollView.setVisibility(View.VISIBLE);
+
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -143,6 +171,7 @@ public class PlaceInfo extends AppCompatActivity {
         overviewTitle = findViewById(R.id.overviewTitle);
         overviewRating = findViewById(R.id.overviewRating);
         reviewText = findViewById(R.id.reviewText);
+        reviewRateText = findViewById(R.id.reviewRateText);
         vicinityText = findViewById(R.id.vicinityText);
         suggestedDistance = findViewById(R.id.aboutDistance);
         suggestedDuration = findViewById(R.id.aboutSuggestedDuration);
@@ -150,19 +179,158 @@ public class PlaceInfo extends AppCompatActivity {
         writeReviewContainer = findViewById(R.id.writeReviewContainer);
         backButton = findViewById(R.id.wishlistIcon3);
         userReviewContainer = findViewById(R.id.userReviewsContainer);
+        wishlistYes = findViewById(R.id.wishlistIconYes);
+        wishlistNo = findViewById(R.id.wishlistIconNo);
+        addPlaceToTripIcon = findViewById(R.id.addPlaceToTripIcon);
+
+
+
+        sharedPreferences = getApplicationContext().getSharedPreferences("com.project.sdl.tripplanner", Context.MODE_PRIVATE);
 
         TabLayout tabLayout = findViewById(R.id.tabLayout);
         scrollView = findViewById(R.id.placeInfoScrollBar);
+        placeInfoShimmer = findViewById(R.id.placeInfoShimmer);
+        placeInfoShimmerScroll = findViewById(R.id.placeInfoShimmerScroll);
+
+        placeInfoShimmer.startShimmerAnimation();
+
+        sharedPreferences.edit().remove("wishlist").commit();
+
+        wishlistHash = new HashMap<>();
+        try {
+            JSONObject jsonObject = new JSONObject(getIntent().getStringExtra("selectedPlace"));
+            wishlistHash = (HashMap<String,String>) ObjectSerializer.deserialize(sharedPreferences.getString("wishlistHash", ObjectSerializer.serialize(new HashMap<String,String>())));
+            if(wishlistHash.keySet().contains(jsonObject.getString("id"))){
+                wishlistYes.setVisibility(View.VISIBLE);
+                wishlistNo.setVisibility(View.INVISIBLE);
+            }else{
+                wishlistNo.setVisibility(View.VISIBLE);
+                wishlistYes.setVisibility(View.INVISIBLE);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
 
         storage = FirebaseStorage.getInstance();
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
-        createReviewLayout();
-        createReviewLayout();
-        createReviewLayout();
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        final DatabaseReference ref = database.getReference("trips/"+user.getUid());
+        ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                tripHash = (HashMap<String,Object>) dataSnapshot.getValue();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
 
 
+
+//        ==========================================
+//        Handle Add Place To Trip
+//        ==========================================
+
+        addPlaceToTripIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                        if(tripHash != null) {
+                            tripJson = new JSONObject(tripHash);
+                            ArrayList<String> tripNames = new ArrayList<>();
+                            for(String key : tripHash.keySet()){
+                                try{
+                                    tripNames.add(tripJson.getJSONObject(key).getString("tripName"));
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+
+                            JSONObject jsonObject = null;
+                            try {
+                                jsonObject = new JSONObject(getIntent().getStringExtra("selectedPlace"));
+
+                                Intent intent = new Intent(getApplicationContext(), SelectTripActivity.class);
+                                intent.putStringArrayListExtra("tripNames",tripNames);
+                                intent.putExtra("currentPlace",getIntent().getStringExtra("selectedPlace"));
+                                startActivity(intent);
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+
+
+                        }else{
+                            Intent intent = new Intent(getApplicationContext(), UserActivity.class);
+                            intent.putExtra("flag","trip");
+                            startActivity(intent);
+
+                        }
+                    }
+
+
+        });
+
+
+//        ==========================================
+//        Handle Wish-list
+//        ==========================================
+
+        wishlistNo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                try {
+
+
+                    if(wishlistHash.keySet().contains(currentPlaceId)){
+                        wishlistHash.remove(currentPlaceId);
+                        wishlistYes.setVisibility(View.INVISIBLE);
+                        wishlistNo.setVisibility(View.VISIBLE);
+
+                    }else{
+                        wishlistHash.put(currentPlaceId,getIntent().getStringExtra("selectedPlace"));
+                        wishlistYes.setVisibility(View.VISIBLE);
+                        wishlistNo.setVisibility(View.INVISIBLE);
+                    }
+
+                    Log.i("onClick: ",wishlistHash.toString());
+                    sharedPreferences.edit().putString("wishlistHash", ObjectSerializer.serialize(wishlistHash)).apply();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        wishlistYes.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                try {
+
+
+                    if(wishlistHash.keySet().contains(currentPlaceId)){
+                        wishlistHash.remove(currentPlaceId);
+                        wishlistYes.setVisibility(View.INVISIBLE);
+                        wishlistNo.setVisibility(View.VISIBLE);
+
+                    }else{
+                        wishlistHash.put(currentPlaceId,getIntent().getStringExtra("selectedPlace"));
+                        wishlistYes.setVisibility(View.VISIBLE);
+                        wishlistNo.setVisibility(View.INVISIBLE);
+                    }
+
+                    Log.i("onClick: ",wishlistHash.toString());
+                    sharedPreferences.edit().putString("wishlistHash", ObjectSerializer.serialize(wishlistHash)).apply();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
 
 //        ==========================================
 //        Go Back
@@ -277,6 +445,25 @@ public class PlaceInfo extends AppCompatActivity {
             }
         });
 
+//        ==========================================
+//        Show Reviews
+//        ==========================================
+
+        fetchReviews();
+
+//        ==========================================
+//        Show All Reviews
+//        ==========================================
+
+        userReviewContainer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(),ShowAllReviews.class);
+                intent.putExtra("selectedPlace", getIntent().getStringExtra("selectedPlace"));
+                startActivity(intent);
+            }
+        });
+
 
 //        ==========================================
 //        Open Write Review Activity
@@ -293,6 +480,8 @@ public class PlaceInfo extends AppCompatActivity {
 
 
 
+
+
         Intent intent = getIntent();
 
 
@@ -303,6 +492,7 @@ public class PlaceInfo extends AppCompatActivity {
             final String cord2 = jsonObject.getJSONObject("position").getString("latitude")+"%2C"+jsonObject.getJSONObject("position").getString("longitude");
 
             currentPlaceId = jsonObject.getString("id");
+
 
             new Handler().postDelayed(new Runnable() {
                 @Override
@@ -315,13 +505,8 @@ public class PlaceInfo extends AppCompatActivity {
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    try {
-                        String s = task.execute("https://route.api.here.com/routing/7.2/calculateroute.json?waypoint0="+cord1+"&waypoint1="+cord2+"&mode=fastest%3Bcar%3Btraffic%3Aenabled&app_id=4SxTSk1WVmA9G62J6qqD&app_code=dHz3QjYEWM_cecRN_aAHqQ&departure=now").get();
-                    } catch (ExecutionException e) {
-                        e.printStackTrace();
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
+                    task.execute("https://route.api.here.com/routing/7.2/calculateroute.json?waypoint0="+cord1+"&waypoint1="+cord2+"&mode=fastest%3Bcar%3Btraffic%3Aenabled&app_id=4SxTSk1WVmA9G62J6qqD&app_code=dHz3QjYEWM_cecRN_aAHqQ&departure=now");
+
                 }
             },2000);
 
@@ -334,6 +519,65 @@ public class PlaceInfo extends AppCompatActivity {
 
 
     }
+
+    public void fetchReviews() {
+
+        try {
+            JSONObject jsonObject = new JSONObject(getIntent().getStringExtra("selectedPlace"));
+
+            final FirebaseDatabase database = FirebaseDatabase.getInstance();
+            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+            DatabaseReference ref = database.getReference("reviews/"+jsonObject.getString("id"));
+            ref.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    Map<String, Object> reviewHash = (HashMap<String,Object>) dataSnapshot.getValue();
+                    userReviewContainer.removeAllViews();
+                    if(reviewHash != null) {
+                        JSONObject jsonReview = new JSONObject(reviewHash);
+                        reviewText.setText(reviewHash.keySet().size() + "  Reviews");
+                        reviewRateText.setText(reviewHash.keySet().size() + "  Reviews");
+
+                        int i = 0;
+                        for(String key:reviewHash.keySet()){
+
+                            if(i < 3) {
+                                try {
+                                    Log.i("reviews", jsonReview.getString(key));
+                                    createReviewLayout(jsonReview.getJSONObject(key));
+
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }else{
+                                break;
+                            }
+                            i++;
+
+
+                        }
+
+                    }else{
+                        reviewText.setText(0+ "  Reviews");
+                        reviewRateText.setText(0+ "  Reviews");
+                    }
+
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+
+    }
+
 
 
     @Override
@@ -396,7 +640,9 @@ public class PlaceInfo extends AppCompatActivity {
         }
     }
 
-    public void createReviewLayout(){
+    public void createReviewLayout(JSONObject reviewJson){
+
+        try{
 
         //Make review block
         LinearLayout reviewBlock = new LinearLayout(this);
@@ -443,7 +689,7 @@ public class PlaceInfo extends AppCompatActivity {
                 LayerDrawable stars = (LayerDrawable) ratingBar.getProgressDrawable();
                 stars.getDrawable(2).setColorFilter(getResources().getColor(R.color.colorPrimary), PorterDuff.Mode.SRC_ATOP);
                 stars.getDrawable(1).setColorFilter(getResources().getColor(R.color.colorPrimary), PorterDuff.Mode.SRC_ATOP);
-                ratingBar.setRating(0);
+                ratingBar.setRating(Float.parseFloat(reviewJson.getString("rating")));
                 ratingBar.setScaleX((float) 0.5);
                 ratingBar.setScaleY((float) 0.5);
                 ratingBar.setScrollBarSize(4);
@@ -456,7 +702,7 @@ public class PlaceInfo extends AppCompatActivity {
                 paramsd.setMargins(0, -32,0, 0);
                 RelativeLayout.LayoutParams layoutParamsd = new RelativeLayout.LayoutParams(paramsd);
                 date.setLayoutParams(layoutParamsd);
-                date.setText("Manish Chougule on  "+" -- / -- / --");
+                date.setText(reviewJson.getString("userName")+" on "+reviewJson.getString("date"));
                 date.setTextSize(15);
 
             ratingAndDateHolder.addView(ratingBar);
@@ -473,7 +719,7 @@ public class PlaceInfo extends AppCompatActivity {
         params8.setMargins(140, 5,0, 0);
         RelativeLayout.LayoutParams layoutParams1 = new RelativeLayout.LayoutParams(params8);
         reviewTitle.setLayoutParams(layoutParams1);
-        reviewTitle.setText("Excellent monsoon destination for a day trip from pune");
+        reviewTitle.setText(reviewJson.getString("title"));
         reviewTitle.setTextSize(15);
         reviewTitle.setTextColor(Color.BLACK);
         reviewTitle.setTypeface(reviewTitle.getTypeface(), Typeface.BOLD);
@@ -487,7 +733,13 @@ public class PlaceInfo extends AppCompatActivity {
         params10.setMargins(140, 10,0, 16);
         RelativeLayout.LayoutParams layoutParams2 = new RelativeLayout.LayoutParams(params10);
         reviewMain.setLayoutParams(layoutParams2);
-        reviewMain.setText("The below review is for travel with family mainly and may not be applicable for trekking and adventures trips.It's good place to visit in monsoon and better to plan early morning...");
+        String trimmedReview = "";
+        if(reviewJson.getString("review").length() > 120){
+            trimmedReview = reviewJson.getString("review").substring(0,120) + "....";
+        }else{
+            trimmedReview = reviewJson.getString("review");
+        }
+        reviewMain.setText(trimmedReview);
         reviewMain.setTextSize(15);
 
         // Make the separator
@@ -508,6 +760,10 @@ public class PlaceInfo extends AppCompatActivity {
         reviewBlock.addView(separator);
 
     userReviewContainer.addView(reviewBlock);
+
+    } catch (JSONException e) {
+        e.printStackTrace();
+    }
 
 
     }
@@ -579,7 +835,6 @@ public class PlaceInfo extends AppCompatActivity {
             Log.i("rate",jsonObject.getJSONObject("userRatings").getString("average"));
             overviewRating.setRating(Float.parseFloat(jsonObject.getJSONObject("userRatings").getString("average")));
             reviewRateBar.setRating(Float.parseFloat(jsonObject.getJSONObject("userRatings").getString("average")));
-            reviewText.setText("0  Reviews");
 
             GeoCoordinate currentPlaceCoords = new GeoCoordinate(
                     jsonObject.getJSONObject("position").getDouble("latitude"),jsonObject.getJSONObject("position").getDouble("longitude"));

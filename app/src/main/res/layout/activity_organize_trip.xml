@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".TripsPackage.OrganizeTripActivity">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar_top"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorSecondary"
+        android:minHeight="?attr/actionBarSize"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0">
+
+        <ImageView
+            android:id="@+id/backButton"
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:alpha="1"
+            android:elevation="1000dp"
+            app:srcCompat="@drawable/left_arrow" />
+
+
+        <TextView
+            android:id="@+id/toolbar_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left"
+            android:layout_marginLeft="60dp"
+            android:text="Organize Your Trip"
+            android:textColor="#fff"
+            android:textSize="20dp" />
+
+        <TextView
+            android:id="@+id/saveText"
+            android:layout_width="wrap_content"
+            android:layout_height="51dp"
+            android:layout_gravity="end"
+            android:elevation="1000dp"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="SAVE"
+            android:textColor="#fff"
+            android:textSize="14dp"
+            tools:layout_editor_absoluteX="206dp"
+            tools:layout_editor_absoluteY="16dp" />
+
+
+    </android.support.v7.widget.Toolbar>
+
+    <ScrollView
+        android:id="@+id/drag_drop_layout_scroll"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar_top"
+        app:layout_constraintVertical_bias="0.0">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="40dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginBottom="50dp"
+            android:orientation="vertical">
+
+
+            <com.jmedeisis.draglinearlayout.DragLinearLayout
+                android:id="@+id/drag_drop_layout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+
+                <!--                                <TextView-->
+                <!--                                    android:id="@+id/header0"-->
+                <!--                                    android:layout_width="match_parent"-->
+                <!--                                    android:layout_height="wrap_content"-->
+                <!--                                    android:layout_marginTop="5dp"-->
+                <!--                                    android:background="#eee"-->
+                <!--                                    android:elevation="3dp"-->
+                <!--                                    android:gravity="center"-->
+                <!--                                    android:padding="30dp"-->
+                <!--                                    android:tag="header-0"-->
+                <!--                                    android:text="Day-1"-->
+                <!--                                    android:textStyle="bold" />-->
+
+                <!--                                <TextView-->
+                <!--                                    android:id="@+id/header1"-->
+                <!--                                    android:layout_width="match_parent"-->
+                <!--                                    android:layout_height="wrap_content"-->
+                <!--                                    android:layout_marginTop="5dp"-->
+                <!--                                    android:background="#eee"-->
+                <!--                                    android:elevation="3dp"-->
+                <!--                                    android:gravity="center"-->
+                <!--                                    android:padding="30dp"-->
+                <!--                                    android:tag="header-1"-->
+                <!--                                    android:text="Day-2"-->
+                <!--                                    android:textStyle="bold" />-->
+
+                <!--                                <TextView-->
+                <!--                                    android:id="@+id/header2"-->
+                <!--                                    android:layout_width="match_parent"-->
+                <!--                                    android:layout_height="wrap_content"-->
+                <!--                                    android:layout_marginTop="5dp"-->
+                <!--                                    android:background="#eee"-->
+                <!--                                    android:elevation="3dp"-->
+                <!--                                    android:gravity="center"-->
+                <!--                                    android:padding="30dp"-->
+                <!--                                    android:tag="header-2"-->
+                <!--                                    android:text="Day-3"-->
+                <!--                                    android:textStyle="bold" />-->
+
+                <!--                                <TextView-->
+                <!--                                    android:id="@+id/header3"-->
+                <!--                                    android:layout_width="match_parent"-->
+                <!--                                    android:layout_height="wrap_content"-->
+                <!--                                    android:layout_marginTop="5dp"-->
+                <!--                                    android:background="#eee"-->
+                <!--                                    android:elevation="3dp"-->
+                <!--                                    android:gravity="center"-->
+                <!--                                    android:padding="30dp"-->
+                <!--                                    android:tag="header-3"-->
+                <!--                                    android:text="Day-4"-->
+                <!--                                    android:textStyle="bold" />-->
+
+<!--                                                <RelativeLayout-->
+<!--                                                    android:layout_width="match_parent"-->
+<!--                                                    android:layout_height="wrap_content">-->
+
+<!--                                                    <ImageView-->
+<!--                                                        android:layout_width="22dp"-->
+<!--                                                        android:layout_height="22dp"-->
+<!--                                                        android:layout_alignParentTop="true"-->
+<!--                                                        android:layout_alignParentLeft="true"-->
+<!--                                                        android:layout_marginLeft="24dp"-->
+<!--                                                        android:layout_marginTop="34dp"-->
+<!--                                                        android:layout_gravity="center_vertical"-->
+<!--                                                        android:elevation="4dp"-->
+<!--                                                        android:src="@drawable/menu" />-->
+<!--                                                <TextView-->
+<!--                                                    android:id="@+id/drag_drop_textview1"-->
+<!--                                                    android:layout_width="match_parent"-->
+<!--                                                    android:layout_height="wrap_content"-->
+<!--                                                    android:layout_marginTop="5dp"-->
+<!--                                                    android:background="#E8EAF6"-->
+<!--                                                    android:elevation="3dp"-->
+<!--                                                    android:gravity="center"-->
+<!--                                                    android:padding="30dp"-->
+<!--                                                    android:tag="place1"-->
+<!--                                                    android:text="Place 1"-->
+<!--                                                    android:textStyle="bold" />-->
+
+<!--                                                </RelativeLayout>-->
+
+                <!--                                <TextView-->
+                <!--                                    android:id="@+id/drag_drop_textview"-->
+                <!--                                    android:layout_width="match_parent"-->
+                <!--                                    android:layout_height="wrap_content"-->
+                <!--                                    android:layout_marginTop="5dp"-->
+                <!--                                    android:background="#E8EAF6"-->
+                <!--                                    android:elevation="3dp"-->
+                <!--                                    android:gravity="center"-->
+                <!--                                    android:padding="30dp"-->
+                <!--                                    android:tag="place2"-->
+                <!--                                    android:text="Place 2"-->
+                <!--                                    android:textStyle="bold" />-->
+
+                <!--                                <TextView-->
+                <!--                                    android:id="@+id/drag_drop_textview2"-->
+                <!--                                    android:layout_width="match_parent"-->
+                <!--                                    android:layout_height="wrap_content"-->
+                <!--                                    android:layout_marginTop="5dp"-->
+                <!--                                    android:background="#E8EAF6"-->
+                <!--                                    android:elevation="3dp"-->
+                <!--                                    android:gravity="center"-->
+                <!--                                    android:padding="30dp"-->
+                <!--                                    android:tag="place3"-->
+                <!--                                    android:text="Place 3"-->
+                <!--                                    android:textStyle="bold" />-->
+
+                <!--                                <TextView-->
+                <!--                                    android:id="@+id/drag_drop_textview3"-->
+                <!--                                    android:layout_width="match_parent"-->
+                <!--                                    android:layout_height="wrap_content"-->
+                <!--                                    android:layout_marginTop="5dp"-->
+                <!--                                    android:background="#E8EAF6"-->
+                <!--                                    android:elevation="3dp"-->
+                <!--                                    android:gravity="center"-->
+                <!--                                    android:padding="30dp"-->
+                <!--                                    android:tag="place4"-->
+                <!--                                    android:text="Place 4"-->
+                <!--                                    android:textStyle="bold" />-->
+
+
+            </com.jmedeisis.draglinearlayout.DragLinearLayout>
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="100dp" />
+
+        </LinearLayout>
+    </ScrollView>
+
+</android.support.constraint.ConstraintLayout>

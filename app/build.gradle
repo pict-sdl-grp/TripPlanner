@@ -21,17 +21,21 @@ android {
         flatDir {
             dirs 'libs'
         }
+        maven { url 'https://jitpack.io' }
     }
 }
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'com.android.support:appcompat-v7:27.1.1'
+    implementation 'com.github.wisnukurniawan:date-time-range-picker-android:1.0.6'
+    implementation 'com.jmedeisis:draglinearlayout:1.1.0'
     implementation 'com.google.firebase:firebase-core:12.0.1'
     implementation 'com.google.android.gms:play-services:12.0.1'
     implementation "com.google.firebase:firebase-messaging:12.0.1"
     implementation 'io.supercharge:shimmerlayout:2.1.0'
     implementation "com.android.support:design:27.1.1"
+    implementation 'com.android.support:support-v4:25.3.1'
     implementation(name: 'HERE-sdk', ext: 'aar')
     implementation 'org.locationtech.jts:jts-core:1.15.0'
     implementation 'com.google.code.gson:gson:2.8.0'

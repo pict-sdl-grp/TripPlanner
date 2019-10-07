@@ -1,4 +1,4 @@
-package com.project.sdl.tripplanner.HomePackage.PlaceInfoPackage;
+package com.project.sdl.tripplanner.TripsPackage;
 
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
@@ -8,33 +8,31 @@ import android.widget.Toast;
 import com.here.android.mpa.common.GeoCoordinate;
 import com.here.android.mpa.common.Image;
 import com.here.android.mpa.common.OnEngineInitListener;
-import com.here.android.mpa.common.PositioningManager;
 import com.here.android.mpa.mapping.Map;
 import com.here.android.mpa.mapping.MapMarker;
 import com.here.android.mpa.mapping.SupportMapFragment;
 import com.project.sdl.tripplanner.R;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
-public class PlaceMapInfo extends FragmentActivity {
+public class PlacesToTripMap extends FragmentActivity {
 
-    private GeoCoordinate currentPosition;
+    private ArrayList<GeoCoordinate> positionArray;
     private SupportMapFragment m_mapFragment;
     private AppCompatActivity m_activity;
     private View m_mapFragmentContainer;
     private Map map = null;
-    private PositioningManager positioningManager = null;
-    private PositioningManager.OnPositionChangedListener positionListener;
 
-    public PlaceMapInfo(PlaceInfo activity,GeoCoordinate currentPlaceCoords)  {
+    public PlacesToTripMap(TripInfoActivity activity, ArrayList positionArrayparam)  {
         m_activity = activity;
-        currentPosition = currentPlaceCoords;
+        positionArray = new ArrayList<>(positionArrayparam);
 
         initMapFragment();
     }
 
     private SupportMapFragment getMapFragment() {
-        return (SupportMapFragment) m_activity.getSupportFragmentManager().findFragmentById(R.id.placeMapLocation);
+        return (SupportMapFragment) m_activity.getSupportFragmentManager().findFragmentById(R.id.multiplePlaceMapLocation);
     }
 
     private void initMapFragment() {
@@ -47,29 +45,31 @@ public class PlaceMapInfo extends FragmentActivity {
             /* Initialize the SupportMapFragment, results will be given via the called back. */
             m_mapFragment.init(new OnEngineInitListener() {
                 @Override
-                public void onEngineInitializationCompleted(OnEngineInitListener.Error error) {
-                    if (error == OnEngineInitListener.Error.NONE) {
+                public void onEngineInitializationCompleted(Error error) {
+                    if (error == Error.NONE) {
                         map = m_mapFragment.getMap();
                         map.setMapScheme(map.getMapSchemes().get(4));
                         // Set the map center to the current place region (no animation)
-                        map.setCenter(currentPosition,
+                        map.setCenter(positionArray.get(0),
                                 Map.Animation.NONE);
                         // Set the zoom level to the average between min and max
-                        map.setZoomLevel(14.2);
+                        map.setZoomLevel(8.2);
 
-                        Image image = new Image();
-                        try {
-                            image.setImageResource(R.drawable.location_pin);
+                        for(GeoCoordinate position:positionArray) {
+                            Image image = new Image();
+                            try {
+                                image.setImageResource(R.drawable.location_pin);
 
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
 //                        map.getPositionIndicator().setMarker(image).setVisible(true);
 
-                        MapMarker mapMarker = new MapMarker();
-                        mapMarker.setIcon(image);
-                        mapMarker.setCoordinate(new GeoCoordinate(currentPosition));
-                        map.addMapObject(mapMarker);
+                            MapMarker mapMarker = new MapMarker();
+                            mapMarker.setIcon(image);
+                            mapMarker.setCoordinate(new GeoCoordinate(position));
+                            map.addMapObject(mapMarker);
+                        }
 
 
                     } else {

@@ -168,10 +168,9 @@ public class AuthActivity extends AppCompatActivity implements View.OnClickListe
                                                     @Override
                                                     public void onComplete(@NonNull Task<Void> task) {
                                                         if (task.isSuccessful()) {
-                                                            User userDB = new User(username.getText().toString(),
-                                                                    email.getText().toString(),
-                                                                    "https://ui-avatars.com/api/?name=" + username.getText().toString());
-                                                            mDatabase.child("users").child(user.getUid()).setValue(userDB);
+                                                            mDatabase.child("users").child(user.getUid()).child("username").setValue(username.getText().toString());
+                                                            mDatabase.child("users").child(user.getUid()).child("email").setValue(email.getText().toString());
+                                                            mDatabase.child("users").child(user.getUid()).child("photoUrl").setValue("https://ui-avatars.com/api/?name=" + username.getText().toString());
 
                                                             if (user != null) {
                                                                 Intent intent = new Intent(getApplicationContext(), WelcomeActivity.class);

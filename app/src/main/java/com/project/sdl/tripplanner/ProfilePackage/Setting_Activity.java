@@ -1,6 +1,8 @@
 package com.project.sdl.tripplanner.ProfilePackage;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -23,12 +25,15 @@ import java.util.ArrayList;
 public class Setting_Activity extends AppCompatActivity {
 
     ListView settingops;
+    SharedPreferences sharedPreferences;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting);
 
         settingops=findViewById(R.id.settingOptions);
+        sharedPreferences = getApplicationContext().getSharedPreferences("com.project.sdl.tripplanner", Context.MODE_PRIVATE);
+
 
         final ArrayList<String> options=new ArrayList<>();
         options.add("Logout");
@@ -43,6 +48,10 @@ public class Setting_Activity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 String selectedOption=options.get(i);
                 if(selectedOption.equals("Logout")) {
+
+                    sharedPreferences.edit().remove("placesImagesArray").commit();
+                    sharedPreferences.edit().remove("homeBg").commit();
+
                     FirebaseAuth.getInstance().signOut();
                     Intent AuthActivity_intent=new Intent(Setting_Activity.this, AuthActivity.class);
                     finishAffinity();

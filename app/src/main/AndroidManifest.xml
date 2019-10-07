@@ -19,6 +19,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+<<<<<<< HEAD
 
         <activity android:name=".IntroPackage.WelcomeActivity"></activity>
         <activity android:name=".IntroPackage.PrefManager" />
@@ -28,12 +29,29 @@
         <activity android:name=".HomePackage.PlaceInfoPackage.CalenderDialog"/>
         <activity android:name=".HomePackage.PlaceInfoPackage.PlaceInfo" />
 
+=======
+        <activity android:name=".TripsPackage.SelectToShareUserActivity"></activity>
+        <activity android:name=".TripsPackage.SharedTripsActivity" />
+        <activity android:name=".TripsPackage.SelectTripActivity" />
+        <activity android:name=".TripsPackage.OrganizeTripActivity" />
+        <activity android:name=".TripsPackage.AddDatesActivity" />
+        <activity android:name=".TripsPackage.TripInfoActivity" />
+        <activity android:name=".TripsPackage.CreateTripFormActivity" />
+        <activity android:name=".HomePackage.PlaceInfoPackage.ShowAllReviews" />
+        <activity android:name=".HomePackage.PlaceInfoPackage.WritePlaceReview" />
+        <activity android:name=".HomePackage.PlaceInfoPackage.CalenderDialog" />
+        <activity android:name=".HomePackage.PlaceInfoPackage.PlaceInfo" />
+        <activity android:name=".HomePackage.SetCurrentLocation" /> <!-- SDK CREDENTIALS -->
+>>>>>>> a77e305a6502758cf570e8376c997460ff25adbd
         <meta-data
             android:name="com.here.android.maps.appid"
             android:value="4SxTSk1WVmA9G62J6qqD" />
         <meta-data
             android:name="com.here.android.maps.apptoken"
             android:value="dHz3QjYEWM_cecRN_aAHqQ" />
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
 
 
         <activity android:name=".ProfilePackage.Setting_Activity" />

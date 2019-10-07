@@ -1,13 +1,13 @@
 package com.project.sdl.tripplanner.NotificationsPackage;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 
 import com.project.sdl.tripplanner.R;
 
@@ -17,22 +17,26 @@ import com.project.sdl.tripplanner.R;
 
 public class NotificationsFragment extends Fragment {
 
-    Button mapButton;
+    SwipeRefreshLayout mySwipeRefreshLayout;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         View root = inflater.inflate(R.layout.fragment_notifications, null);
-        mapButton = root.findViewById(R.id.button);
+        mySwipeRefreshLayout = root.findViewById(R.id.swiperefresh);
 
-        mapButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getContext(),BasicMapsActivity.class);
-                startActivity(intent);
-            }
-        });
+        mySwipeRefreshLayout.setOnRefreshListener(
+                new SwipeRefreshLayout.OnRefreshListener() {
+                    @Override
+                    public void onRefresh() {
+                        Log.i("onRefresh: ","Hurrah");
+
+
+                    }
+                }
+        );
+
 
         return root;
     }

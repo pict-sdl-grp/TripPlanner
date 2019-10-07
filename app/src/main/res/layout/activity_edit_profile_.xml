@@ -56,7 +56,6 @@
            android:paddingBottom="5dp"
            android:singleLine="true"
 
-           android:textColor="@color/editProfileText"
            android:textSize="14sp"
            app:layout_constraintBottom_toTopOf="@+id/EditText14"
            app:layout_constraintEnd_toEndOf="parent"
@@ -126,7 +125,6 @@
            android:paddingTop="5dp"
            android:paddingBottom="5dp"
            android:singleLine="true"
-           android:textColor="@color/editProfileText"
            android:textSize="14sp"
            app:layout_constraintEnd_toEndOf="parent"
            app:layout_constraintHorizontal_bias="0.475"
@@ -163,7 +161,6 @@
            android:paddingLeft="7dp"
            android:paddingTop="5dp"
            android:paddingBottom="5dp"
-           android:textColor="@color/editProfileText"
            android:textSize="14sp"
            android:visibility="visible"
            app:layout_constraintEnd_toEndOf="parent"

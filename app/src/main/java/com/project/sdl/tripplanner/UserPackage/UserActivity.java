@@ -1,4 +1,5 @@
 package com.project.sdl.tripplanner.UserPackage;
+//Main User Activity
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;

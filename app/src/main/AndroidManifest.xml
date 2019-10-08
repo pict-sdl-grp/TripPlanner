@@ -23,7 +23,7 @@
         <activity android:name=".TripsPackage.SelectTripActivity" />
         <activity android:name=".TripsPackage.OrganizeTripActivity" />
         <activity android:name=".TripsPackage.AddDatesActivity" />
-        <activity android:name=".TripsPackage.TripInfoActivity" />
+        <activity android:name=".TripsPackage.TripInfoActivity" android:theme="@style/AppTheme.NoActionBar"/>
         <activity android:name=".TripsPackage.CreateTripFormActivity" />
         <activity android:name=".HomePackage.PlaceInfoPackage.ShowAllReviews" />
         <activity android:name=".HomePackage.PlaceInfoPackage.WritePlaceReview" />

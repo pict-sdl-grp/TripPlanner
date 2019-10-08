@@ -5,23 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <android.support.v4.widget.SwipeRefreshLayout
-        android:id="@+id/swiperefresh"
-        android:layout_width="match_parent"
-        android:layout_height="260dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/my_recycler_view"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scrollbars="vertical" />
-
-    </android.support.v4.widget.SwipeRefreshLayout>
-
     <ImageView
         android:id="@+id/blurBg"
         android:layout_width="match_parent"
@@ -32,12 +15,12 @@
         android:scaleType="fitXY"
         android:visibility="invisible" />
 
+
     <io.supercharge.shimmerlayout.ShimmerLayout
-        android:id="@+id/shimmer_layout"
+        android:id="@+id/shimmer_layout1"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="200dp"
         android:layout_gravity="center_horizontal"
-        app:layout_constraintBottom_toTopOf="@+id/linearLayout8"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
@@ -50,23 +33,34 @@
 
         <View
             android:layout_width="1000dp"
-            android:layout_height="260dp"
+            android:layout_height="200dp"
             android:background="@color/shimmer_background_color" />
 
 
     </io.supercharge.shimmerlayout.ShimmerLayout>
 
-
     <RelativeLayout
         android:id="@+id/TopLayout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toTopOf="@+id/linearLayout8"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:visibility="visible">
+
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/swiperefresh"
+            android:layout_width="match_parent"
+            android:layout_height="200dp">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/my_recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scrollbars="vertical" />
+
+        </android.support.v4.widget.SwipeRefreshLayout>
 
 
         <ImageView
@@ -79,8 +73,8 @@
             android:layout_marginLeft="6dp"
             android:layout_marginTop="40dp"
             android:layout_marginEnd="14dp"
-            android:src="@drawable/gps"
-            android:translationZ="10dp" />
+            android:elevation="10dp"
+            android:src="@drawable/gps" />
 
         <TextView
             android:id="@+id/currentCityName"
@@ -101,7 +95,7 @@
         <ImageView
             android:id="@+id/homebg"
             android:layout_width="1000dp"
-            android:layout_height="260dp"
+            android:layout_height="200dp"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
             android:layout_alignParentEnd="true"
@@ -109,6 +103,7 @@
             android:layout_marginTop="0dp"
             android:layout_marginEnd="0dp"
             android:backgroundTint="@color/colorSecondary"
+            android:elevation="-10dp"
             android:scaleType="fitXY"
             android:visibility="invisible"
             app:srcCompat="@drawable/nat4" />
@@ -117,15 +112,15 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="42dp"
-            android:elevation="40dp"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
             android:layout_alignParentEnd="true"
             android:layout_marginStart="121dp"
-            android:layout_marginTop="140dp"
+            android:layout_marginTop="80dp"
             android:layout_marginEnd="118dp"
             android:alpha="0.9"
             android:background="@drawable/round_corner_display"
+            android:elevation="40dp"
             android:gravity="center"
             android:orientation="horizontal"
             android:translationZ="10dp">
@@ -157,7 +152,7 @@
             android:layout_alignParentTop="true"
             android:layout_alignParentEnd="true"
             android:layout_marginStart="63dp"
-            android:layout_marginTop="187dp"
+            android:layout_marginTop="127dp"
             android:layout_marginEnd="65dp"
             android:clickable="false"
             android:isIndicator="true"
@@ -177,7 +172,7 @@
             android:layout_height="wrap_content"
             android:layout_alignTop="@+id/homebg"
             android:layout_alignBottom="@+id/homebg"
-            android:layout_marginTop="228dp"
+            android:layout_marginTop="168dp"
             android:layout_marginBottom="5dp"
             android:fontFamily="sans-serif-light"
             android:textAlignment="center"
@@ -188,372 +183,333 @@
 
     </RelativeLayout>
 
-
-    <LinearLayout
-        android:id="@+id/linearLayout8"
+    <ScrollView
+        android:id="@+id/mainScroll"
+        android:visibility="invisible"
+        android:layout_marginTop="200dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:scrollbarStyle="insideOverlay"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/TopLayout">
+        app:layout_constraintTop_toBottomOf="@+id/TopLayout"
+        app:layout_constraintVertical_bias="0.0">
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="15dp"
-            android:layout_marginTop="15dp"
-            android:layout_marginBottom="10dp"
-            android:fontFamily="sans-serif"
-            android:text="Places To Visit"
-            android:textColor="#000"
-            android:textFontWeight="7000"
-            android:textSize="20dp"
-            android:textStyle="bold" />
-
-        <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-
-
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-
-            <HorizontalScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-                android:id="@+id/shimmerHolderForScroll1"
+            <LinearLayout
+                android:id="@+id/placeLayout1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:fillViewport="true"
-                android:scrollbars="none">
+                android:orientation="vertical"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.842"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/TopLayout"
+                app:layout_constraintVertical_bias="0.062">
 
-                <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                <TextView
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="horizontal"
-                    android:padding="10dp">
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginBottom="10dp"
+                    android:fontFamily="sans-serif"
+                    android:text="Most Visited Places"
+                    android:textColor="#000"
+                    android:textFontWeight="7000"
+                    android:textSize="20dp"
+                    android:textStyle="bold" />
 
-                    <io.supercharge.shimmerlayout.ShimmerLayout
-                        android:id="@+id/shimmer_scroll_layout"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        app:shimmer_angle="30"
-                        app:shimmer_animation_duration="1500"
-                        app:shimmer_auto_start="true"
-                        app:shimmer_color="@color/shimmer_background_color1"
-                        app:shimmer_mask_width="1">
+                <HorizontalScrollView
+                    android:id="@+id/scroll1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:fillViewport="true"
+                    android:padding="2dp"
+                    android:scrollbars="none"
+                    android:visibility="visible">
 
-                        <android.support.v7.widget.CardView
-                            android:layout_width="200dp"
-                            android:layout_height="200dp"
-                            app:cardBackgroundColor="@color/shimmer_background_color"
-                            app:cardCornerRadius="20dp" />
-
-                        <android.support.v7.widget.CardView
-                            android:layout_width="200dp"
-                            android:layout_height="200dp"
-                            android:layout_marginLeft="210dp"
-                            app:cardBackgroundColor="@color/shimmer_background_color"
-                            app:cardCornerRadius="20dp" />
-
-                        <android.support.v7.widget.CardView
-                            android:layout_width="200dp"
-                            android:layout_height="200dp"
-                            android:layout_marginLeft="420dp"
-                            app:cardBackgroundColor="@color/shimmer_background_color"
-                            app:cardCornerRadius="20dp" />
-
-                        <android.support.v7.widget.CardView
-                            android:layout_width="200dp"
-                            android:layout_height="200dp"
-                            android:layout_marginLeft="630dp"
-                            app:cardBackgroundColor="@color/shimmer_background_color"
-                            app:cardCornerRadius="20dp" />
-
-                        <android.support.v7.widget.CardView
-                            android:layout_width="200dp"
-                            android:layout_height="200dp"
-                            android:layout_marginLeft="840dp"
-                            app:cardBackgroundColor="@color/shimmer_background_color"
-                            app:cardCornerRadius="20dp" />
-
-                        <android.support.v7.widget.CardView
-                            android:layout_width="200dp"
-                            android:layout_height="200dp"
-                            android:layout_marginLeft="1050dp"
-                            app:cardBackgroundColor="@color/shimmer_background_color"
-                            app:cardCornerRadius="20dp" />
+                    <LinearLayout
+                        android:id="@+id/placesHolder1"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal">
 
 
-                    </io.supercharge.shimmerlayout.ShimmerLayout>
-                </LinearLayout>
-            </HorizontalScrollView>
+                    </LinearLayout>
 
-            <HorizontalScrollView
-                android:id="@+id/scroll1"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fillViewport="true"
-                android:scrollbars="none"
-                android:visibility="visible">
+                </HorizontalScrollView>
 
                 <LinearLayout
-                    android:id="@+id/linearLayout1"
+                    android:id="@+id/userReviewsContainer"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="horizontal"
-                    android:padding="10dp">
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                />
+
+            </LinearLayout>
+    </ScrollView>
+
+    <ScrollView
+        android:id="@+id/shimmer_scroll2"
+        android:layout_marginTop="200dp"
+        android:visibility="visible"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:id="@+id/shimmer_linear_layout2"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <io.supercharge.shimmerlayout.ShimmerLayout
+                android:id="@+id/shimmer_layout2"
+                android:layout_width="match_parent"
+                app:shimmer_color="@color/shimmer_background_color1"
+                android:layout_height="wrap_content"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:paddingTop="10dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:orientation="vertical"
+                    android:layout_height="wrap_content">
 
                     <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:tag="0">
+                        android:layout_width="match_parent"
+                        android:layout_marginTop="5dp"
+                        android:orientation="horizontal"
+                        android:layout_height="wrap_content">
 
-                        <android.support.v7.widget.CardView
-                            android:layout_width="200dp"
-                            android:layout_height="200dp"
-                            app:cardBackgroundColor="#1da"
-                            app:cardCornerRadius="20dp">
+                        <View
+                            android:layout_width="250dp"
+                            android:layout_height="14dp"
+                            android:background="@color/shimmer_background_color"/>
 
 
-                            <ImageView
-                                android:id="@+id/scrollImage1"
-                                android:layout_width="fill_parent"
-                                android:layout_height="fill_parent"
-                                android:scaleType="fitXY"
-                                android:src="@drawable/nat4" />
-
-                        </android.support.v7.widget.CardView>
-
-                        <TextView
-                            android:id="@+id/scrollText1"
-                            android:layout_width="200dp"
-                            android:layout_height="wrap_content"
-                            android:padding="4dp"
-                            android:text=""
-                            android:textSize="14dp" />
                     </LinearLayout>
 
                     <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:tag="1">
+                        android:layout_width="match_parent"
+                        android:layout_marginTop="10dp"
+                        android:orientation="horizontal"
+                        android:layout_height="wrap_content">
 
-                        <android.support.v7.widget.CardView
+                        <View
                             android:layout_width="200dp"
                             android:layout_height="200dp"
+                            android:background="@color/shimmer_background_color"/>
+
+                        <View
+                            android:layout_width="200dp"
                             android:layout_marginLeft="10dp"
-                            app:cardBackgroundColor="#1da"
-                            app:cardCornerRadius="20dp">
+                            android:layout_height="200dp"
+                            android:background="@color/shimmer_background_color"/>
 
 
-                            <ImageView
-                                android:id="@+id/scrollImage2"
-                                android:layout_width="fill_parent"
-                                android:layout_height="fill_parent"
-                                android:scaleType="fitXY"
-                                android:src="@drawable/nat4" />
-
-                        </android.support.v7.widget.CardView>
-
-                        <TextView
-                            android:id="@+id/scrollText2"
-                            android:layout_width="200dp"
-                            android:layout_height="wrap_content"
-                            android:padding="4dp"
-                            android:text=""
-                            android:textSize="14dp" />
                     </LinearLayout>
 
                     <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:tag="2">
+                        android:layout_width="match_parent"
+                        android:layout_marginTop="5dp"
+                        android:orientation="horizontal"
+                        android:layout_height="wrap_content">
 
-                        <android.support.v7.widget.CardView
+                        <View
                             android:layout_width="200dp"
-                            android:layout_height="200dp"
+                            android:layout_height="14dp"
+                            android:background="@color/shimmer_background_color"/>
+
+                        <View
+                            android:layout_width="200dp"
                             android:layout_marginLeft="10dp"
-                            app:cardBackgroundColor="#1da"
-                            app:cardCornerRadius="20dp">
+                            android:layout_height="14dp"
+                            android:background="@color/shimmer_background_color"/>
 
 
-                            <ImageView
-                                android:id="@+id/scrollImage3"
-                                android:layout_width="fill_parent"
-                                android:layout_height="fill_parent"
-                                android:scaleType="fitXY"
-                                android:src="@drawable/nat4" />
-
-                        </android.support.v7.widget.CardView>
-
-                        <TextView
-                            android:id="@+id/scrollText3"
-                            android:layout_width="200dp"
-                            android:layout_height="wrap_content"
-                            android:padding="4dp"
-                            android:text=""
-                            android:textSize="14dp" />
                     </LinearLayout>
 
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_marginTop="40dp"
                         android:orientation="vertical"
-                        android:tag="3">
+                        android:layout_height="wrap_content">
+                        <View
+                            android:id="@+id/shimmer_avatar_1"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:layout_marginRight="11dp"
+                            android:background="@drawable/avatar_background"/>
 
-                        <android.support.v7.widget.CardView
-                            android:layout_width="200dp"
-                            android:layout_height="200dp"
-                            android:layout_marginLeft="10dp"
-                            app:cardBackgroundColor="#1da"
-                            app:cardCornerRadius="20dp">
+                        <View
+                            android:layout_width="130dp"
+                            android:layout_height="19dp"
+                            android:layout_alignTop="@+id/shimmer_avatar_1"
+                            android:layout_toRightOf="@+id/shimmer_avatar_1"
+                            android:background="@color/shimmer_background_color"/>
+
+                        <View
+                            android:id="@+id/shimmer_description_1"
+                            android:layout_width="39dp"
+                            android:layout_height="13dp"
+                            android:layout_alignBottom="@+id/shimmer_avatar_1"
+                            android:layout_toRightOf="@+id/shimmer_avatar_1"
+                            android:background="@color/shimmer_background_color"/>
+
+                        <View
+                            android:layout_width="101dp"
+                            android:layout_height="17dp"
+                            android:layout_alignBottom="@+id/shimmer_description_1"
+                            android:layout_alignParentRight="true"
+                            android:background="@color/shimmer_background_color"/>
+
+                        <View
+                            android:id="@+id/shimmer_divider_1"
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_below="@+id/shimmer_avatar_1"
+                            android:layout_marginBottom="11dp"
+                            android:layout_marginTop="11dp"
+                            android:background="@color/shimmer_background_color"/>
+
+                        <View
+                            android:id="@+id/shimmer_avatar_2"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:layout_below="@+id/shimmer_divider_1"
+                            android:layout_marginRight="11dp"
+                            android:background="@drawable/avatar_background"/>
+
+                        <View
+                            android:layout_width="130dp"
+                            android:layout_height="19dp"
+                            android:layout_alignTop="@+id/shimmer_avatar_2"
+                            android:layout_toRightOf="@+id/shimmer_avatar_2"
+                            android:background="@color/shimmer_background_color"/>
+
+                        <View
+                            android:id="@+id/shimmer_description_2"
+                            android:layout_width="39dp"
+                            android:layout_height="13dp"
+                            android:layout_alignBottom="@+id/shimmer_avatar_2"
+                            android:layout_toRightOf="@+id/shimmer_avatar_2"
+                            android:background="@color/shimmer_background_color"/>
+
+                        <View
+                            android:layout_width="101dp"
+                            android:layout_height="17dp"
+                            android:layout_alignBottom="@+id/shimmer_description_2"
+                            android:layout_alignParentRight="true"
+                            android:background="@color/shimmer_background_color"/>
+
+                        <View
+                            android:id="@+id/shimmer_divider_2"
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_below="@+id/shimmer_avatar_2"
+                            android:layout_marginBottom="11dp"
+                            android:layout_marginTop="11dp"
+                            android:background="@color/shimmer_background_color"/>
+
+                        <View
+                            android:id="@+id/shimmer_avatar_3"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:layout_below="@+id/shimmer_divider_2"
+                            android:layout_marginRight="11dp"
+                            android:background="@drawable/avatar_background"/>
+
+                        <View
+                            android:layout_width="130dp"
+                            android:layout_height="19dp"
+                            android:layout_alignTop="@+id/shimmer_avatar_3"
+                            android:layout_toRightOf="@+id/shimmer_avatar_3"
+                            android:background="@color/shimmer_background_color"/>
+
+                        <View
+                            android:id="@+id/shimmer_description_3"
+                            android:layout_width="39dp"
+                            android:layout_height="13dp"
+                            android:layout_alignBottom="@+id/shimmer_avatar_3"
+                            android:layout_toRightOf="@+id/shimmer_avatar_3"
+                            android:background="@color/shimmer_background_color"/>
+
+                        <View
+                            android:layout_width="101dp"
+                            android:layout_height="17dp"
+                            android:layout_alignBottom="@+id/shimmer_description_3"
+                            android:layout_alignParentRight="true"
+                            android:background="@color/shimmer_background_color"/>
+
+                        <View
+                            android:id="@+id/shimmer_divider_3"
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_below="@+id/shimmer_avatar_3"
+                            android:layout_marginBottom="11dp"
+                            android:layout_marginTop="11dp"
+                            android:background="@color/shimmer_background_color"/>
+                    </RelativeLayout>
 
 
-                            <ImageView
-                                android:id="@+id/scrollImage4"
-                                android:layout_width="fill_parent"
-                                android:layout_height="fill_parent"
-                                android:scaleType="fitXY"
-                                android:src="@drawable/nat4" />
 
-                        </android.support.v7.widget.CardView>
-
-                        <TextView
-                            android:id="@+id/scrollText4"
-                            android:layout_width="200dp"
-                            android:layout_height="wrap_content"
-                            android:padding="4dp"
-                            android:text=""
-                            android:textSize="14dp" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:tag="4">
-
-                        <android.support.v7.widget.CardView
-                            android:layout_width="200dp"
-                            android:layout_height="200dp"
-                            android:layout_marginLeft="10dp"
-                            app:cardBackgroundColor="#1da"
-                            app:cardCornerRadius="20dp">
-
-
-                            <ImageView
-                                android:id="@+id/scrollImage5"
-                                android:layout_width="fill_parent"
-                                android:layout_height="fill_parent"
-                                android:scaleType="fitXY"
-                                android:src="@drawable/nat4" />
-
-                        </android.support.v7.widget.CardView>
-
-                        <TextView
-                            android:id="@+id/scrollText5"
-                            android:layout_width="200dp"
-                            android:layout_height="wrap_content"
-                            android:padding="4dp"
-                            android:text=""
-                            android:textSize="14dp" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:tag="5">
-
-                        <android.support.v7.widget.CardView
-                            android:layout_width="200dp"
-                            android:layout_height="200dp"
-                            android:layout_marginLeft="10dp"
-                            app:cardBackgroundColor="#1da"
-                            app:cardCornerRadius="20dp">
-
-
-                            <ImageView
-                                android:id="@+id/scrollImage6"
-                                android:layout_width="fill_parent"
-                                android:layout_height="fill_parent"
-                                android:scaleType="fitXY"
-                                android:src="@drawable/nat4" />
-
-                        </android.support.v7.widget.CardView>
-
-                        <TextView
-                            android:id="@+id/scrollText6"
-                            android:layout_width="200dp"
-                            android:layout_height="wrap_content"
-                            android:padding="4dp"
-                            android:text=""
-                            android:textSize="14dp" />
-                    </LinearLayout>
 
                 </LinearLayout>
 
-            </HorizontalScrollView>
-        </RelativeLayout>
+            </io.supercharge.shimmerlayout.ShimmerLayout>
+
+        </LinearLayout>
+    </ScrollView>
 
 
-    </LinearLayout>
 
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab1"
         android:layout_width="@dimen/standard_45"
         android:layout_height="@dimen/standard_45"
-        android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/standard_21"
         android:elevation="40dp"
         android:src="@drawable/ic_edit_black_24dp"
         app:fabCustomSize="45dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.991"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.976" />
+        app:layout_constraintVertical_bias="0.998" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab2"
         android:layout_width="@dimen/standard_45"
         android:layout_height="@dimen/standard_45"
-        android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/standard_21"
         android:elevation="40dp"
         android:src="@drawable/ic_rate_review_black_24dp"
         app:fabCustomSize="45dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.991"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.976" />
+        app:layout_constraintVertical_bias="0.998" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
         android:elevation="40dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.991"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.976"
+        app:layout_constraintVertical_bias="0.998"
         app:srcCompat="@drawable/ic_add_black_24dp" />
 
 

@@ -194,7 +194,6 @@ public class PlaceInfo extends AppCompatActivity {
 
         placeInfoShimmer.startShimmerAnimation();
 
-        sharedPreferences.edit().remove("wishlist").commit();
 
         wishlistHash = new HashMap<>();
         try {
@@ -626,7 +625,7 @@ public class PlaceInfo extends AppCompatActivity {
                                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                                     Toast.makeText(getApplicationContext(), "photo saved!!", Toast.LENGTH_SHORT).show();
                                     imageRefs.add(myFile.getName());
-                                    mDatabase.child("placesNearYou").child(getIntent().getStringExtra("currentParentId")).child(currentPlaceId).child("places").child("imageRefs").setValue(imageRefs);
+                                    mDatabase.child("sub-places").child(getIntent().getStringExtra("currentParentId")).child(currentPlaceId).child("places").child("imageRefs").setValue(imageRefs);
 
                                 }
                             });
@@ -782,7 +781,7 @@ public class PlaceInfo extends AppCompatActivity {
             }
 
             final FirebaseDatabase database = FirebaseDatabase.getInstance();
-            DatabaseReference ref = database.getReference("placesNearYou/"+ getIntent().getStringExtra("currentParentId") +"/"+currentPlaceId+"/places/imageRefs");
+            DatabaseReference ref = database.getReference("sub-places/"+ getIntent().getStringExtra("currentParentId") +"/"+currentPlaceId+"/places/imageRefs");
             ref.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {

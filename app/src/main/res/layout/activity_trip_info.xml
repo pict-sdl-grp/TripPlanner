@@ -1,0 +1,250 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".TripsPackage.TripInfoActivity">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/trip_info_toolbar"
+        android:layout_width="match_parent"
+        android:elevation="20dp"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        android:minHeight="?attr/actionBarSize"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.005">
+
+        <ImageView
+            android:id="@+id/backButton"
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:alpha="1"
+            android:elevation="1000dp"
+            app:srcCompat="@drawable/left_arrow" />
+
+
+    </android.support.v7.widget.Toolbar>
+
+
+        <ImageView
+            android:id="@+id/tripBg"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:scaleType="fitXY"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0"
+            app:srcCompat="@drawable/nat4" />
+
+
+                <RelativeLayout
+                android:id="@+id/metaDataContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tripBg"
+                app:layout_constraintVertical_bias="0.0">
+
+                <Button
+                    android:id="@+id/addDates"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="19dp"
+                    android:background="@drawable/bordertext"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp"
+                    android:text="Add dates"
+                    android:textColor="@color/colorPrimary"
+                    android:translationZ="10dp" />
+
+                <Button
+                    android:id="@+id/organizeTrip"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="19dp"
+                    android:layout_toEndOf="@+id/addDates"
+                    android:background="@drawable/bordertext"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp"
+                    android:text="Organize Trip"
+                    android:textColor="@color/colorPrimary" />
+
+                <TextView
+                    android:id="@+id/tripName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="82dp"
+                    android:text="Trip Name"
+                    android:textColor="#424242"
+                    android:textSize="19dp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/createdBy"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="110dp"
+                    android:text="By Manish Chougule"
+                    android:textSize="14dp" />
+
+                <TextView
+                    android:id="@+id/noOfItems"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="130dp"
+                    android:text="0 items, updated Sep 2019"
+                    android:textSize="14dp" />
+
+            </RelativeLayout>
+
+
+                <LinearLayout
+                    android:id="@+id/browseContainer"
+                    android:layout_width="match_parent"
+                    android:layout_height="160dp"
+                    android:background="#eee"
+                    android:elevation="10dp"
+                    android:orientation="vertical"
+                    android:visibility="invisible"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/metaDataContainer">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginTop="20dp"
+                        android:text="Let's get started!"
+                        android:textColor="#424242"
+                        android:textSize="21dp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginTop="10dp"
+                        android:text="Find and save your great travel ideas."
+                        android:textSize="17dp" />
+
+                    <Button
+                        android:id="@+id/browseButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginRight="30dp"
+                        android:elevation="10dp"
+                        android:background="@color/colorPrimary"
+                        android:text="Browse TripPlanner"
+                        android:textColor="#fff"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
+
+            <ScrollView
+                android:layout_width="match_parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginTop="350dp"
+                android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:id="@+id/placesHolder"
+                android:orientation="vertical"
+                android:layout_marginTop="10dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/metaDataContainer"
+                app:layout_constraintVertical_bias="0.155"
+                android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:id="@+id/mapHolder"
+                android:visibility="invisible"
+                android:layout_height="wrap_content">
+                    <fragment
+                        android:id="@+id/multiplePlaceMapLocation"
+                        class="com.here.android.mpa.mapping.SupportMapFragment"
+                        android:layout_width="match_parent"
+                        android:layout_height="210dp"
+                     />
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/placesListContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/mapHolder"
+                app:layout_constraintVertical_bias="0.0">
+
+
+        <!--                <LinearLayout-->
+        <!--                    android:layout_width="match_parent"-->
+        <!--                    android:layout_height="wrap_content"-->
+        <!--                    android:layout_marginBottom="20dp"-->
+        <!--                    android:background="#E8EAF6"-->
+        <!--                    android:elevation="3dp"-->
+        <!--                    android:gravity="center_vertical"-->
+        <!--                    android:orientation="horizontal"-->
+        <!--                    android:padding="20dp">-->
+
+        <!--                    <ImageView-->
+        <!--                        android:layout_width="60dp"-->
+        <!--                        android:layout_height="60dp"-->
+        <!--                        android:scaleType="fitXY"-->
+        <!--                        android:src="@drawable/nat4" />-->
+
+        <!--                    <TextView-->
+        <!--                        android:id="@+id/drag_drop_textview1"-->
+        <!--                        android:layout_width="match_parent"-->
+        <!--                        android:layout_height="wrap_content"-->
+        <!--                        android:layout_marginLeft="20dp"-->
+        <!--                        android:tag="place1"-->
+        <!--                        android:text="Trip Name"-->
+        <!--                        android:textStyle="bold" />-->
+        <!--                </LinearLayout>-->
+
+
+            </LinearLayout>
+            </LinearLayout>
+            </ScrollView>
+
+</android.support.constraint.ConstraintLayout>

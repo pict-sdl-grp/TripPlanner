@@ -4,21 +4,20 @@ import android.content.Intent;
 import android.graphics.Paint;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
+import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.view.View;
 import android.widget.Toast;
 
-import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -120,6 +119,9 @@ public class AuthActivity extends AppCompatActivity implements View.OnClickListe
                                     if (user != null) {
                                         Intent intent = new Intent(getApplicationContext(), UserActivity.class);
                                         startActivity(intent);
+                                        mDatabase=FirebaseDatabase.getInstance().getReference();
+                                        mDatabase.child("users").child(user.getUid()).child("isEmailVerified").setValue(user.isEmailVerified());
+                                        Log.i("run: ",String.valueOf(user.isEmailVerified()));
                                         finish();//destroy this activity
                                         new Handler().postDelayed(new Runnable() {
                                             @Override
@@ -165,10 +167,9 @@ public class AuthActivity extends AppCompatActivity implements View.OnClickListe
                                                     @Override
                                                     public void onComplete(@NonNull Task<Void> task) {
                                                         if (task.isSuccessful()) {
-                                                            User userDB = new User(username.getText().toString(),
-                                                                    email.getText().toString(),
-                                                                    "https://ui-avatars.com/api/?name=" + username.getText().toString());
-                                                            mDatabase.child("users").child(user.getUid()).setValue(userDB);
+                                                            mDatabase.child("users").child(user.getUid()).child("username").setValue(username.getText().toString());
+                                                            mDatabase.child("users").child(user.getUid()).child("email").setValue(email.getText().toString());
+                                                            mDatabase.child("users").child(user.getUid()).child("photoUrl").setValue("https://ui-avatars.com/api/?name=" + username.getText().toString());
 
                                                             if (user != null) {
                                                                 Intent intent = new Intent(getApplicationContext(), UserActivity.class);

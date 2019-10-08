@@ -1,0 +1,516 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/blurBg"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:alpha="0.3"
+        android:background="#68C4A5"
+        android:elevation="5dp"
+        android:scaleType="fitXY"
+        android:visibility="invisible" />
+
+
+    <io.supercharge.shimmerlayout.ShimmerLayout
+        android:id="@+id/shimmer_layout1"
+        android:layout_width="wrap_content"
+        android:layout_height="200dp"
+        android:layout_gravity="center_horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:shimmer_angle="30"
+        app:shimmer_animation_duration="1500"
+        app:shimmer_auto_start="true"
+        app:shimmer_color="@color/shimmer_background_color1"
+        app:shimmer_mask_width="1">
+
+        <View
+            android:layout_width="1000dp"
+            android:layout_height="200dp"
+            android:background="@color/shimmer_background_color" />
+
+
+    </io.supercharge.shimmerlayout.ShimmerLayout>
+
+    <RelativeLayout
+        android:id="@+id/TopLayout"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:visibility="visible">
+
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/swiperefresh"
+            android:layout_width="match_parent"
+            android:layout_height="200dp">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/my_recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scrollbars="vertical" />
+
+        </android.support.v4.widget.SwipeRefreshLayout>
+
+
+        <ImageView
+            android:id="@+id/currentLocationIcon"
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="6dp"
+            android:layout_marginTop="40dp"
+            android:layout_marginEnd="14dp"
+            android:elevation="10dp"
+            android:src="@drawable/gps" />
+
+        <TextView
+            android:id="@+id/currentCityName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="6dp"
+            android:layout_marginTop="40dp"
+            android:layout_marginEnd="40dp"
+            android:text=""
+            android:textColor="#fff"
+            android:textSize="15dp"
+            android:textStyle="bold"
+            android:translationZ="10dp" />
+
+        <ImageView
+            android:id="@+id/homebg"
+            android:layout_width="1000dp"
+            android:layout_height="200dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="0dp"
+            android:layout_marginEnd="0dp"
+            android:backgroundTint="@color/colorSecondary"
+            android:elevation="-10dp"
+            android:scaleType="fitXY"
+            android:visibility="invisible"
+            app:srcCompat="@drawable/nat4" />
+
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="42dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="121dp"
+            android:layout_marginTop="80dp"
+            android:layout_marginEnd="118dp"
+            android:alpha="0.9"
+            android:background="@drawable/round_corner_display"
+            android:elevation="40dp"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:translationZ="10dp">
+
+            <TextView
+                android:id="@+id/searchIcon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:alpha="0.9"
+                android:elevation="40dp"
+                android:fontFamily="sans-serif-black"
+                android:text="Where to ?"
+                android:textSize="14dp" />
+
+            <ImageView
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="6dp"
+                android:src="@drawable/navigation" />
+        </LinearLayout>
+
+        <RatingBar
+            android:id="@+id/ratingBar"
+            android:layout_width="282dp"
+            android:layout_height="47dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="63dp"
+            android:layout_marginTop="127dp"
+            android:layout_marginEnd="65dp"
+            android:clickable="false"
+            android:isIndicator="true"
+            android:numStars="5"
+            android:progressBackgroundTint="#fff"
+            android:progressTint="#FFDF00"
+            android:rating="0"
+            android:scaleX=".5"
+            android:scaleY=".5"
+            android:secondaryProgressTint="#fff"
+            android:translationZ="20dp"
+            android:visibility="invisible" />
+
+        <TextView
+            android:id="@+id/countText"
+            android:layout_width="1000dp"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/homebg"
+            android:layout_alignBottom="@+id/homebg"
+            android:layout_marginTop="168dp"
+            android:layout_marginBottom="5dp"
+            android:fontFamily="sans-serif-light"
+            android:textAlignment="center"
+            android:textColor="#fff"
+            android:textSize="15dp"
+            android:textStyle="bold"
+            android:visibility="invisible" />
+
+    </RelativeLayout>
+
+    <ScrollView
+        android:id="@+id/mainScroll"
+        android:visibility="invisible"
+        android:layout_marginTop="200dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/TopLayout"
+        app:layout_constraintVertical_bias="0.0">
+
+            <LinearLayout
+                android:id="@+id/placeLayout1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.842"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/TopLayout"
+                app:layout_constraintVertical_bias="0.062">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginBottom="10dp"
+                    android:fontFamily="sans-serif"
+                    android:text="Most Visited Places"
+                    android:textColor="#000"
+                    android:textFontWeight="7000"
+                    android:textSize="20dp"
+                    android:textStyle="bold" />
+
+                <HorizontalScrollView
+                    android:id="@+id/scroll1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:fillViewport="true"
+                    android:padding="2dp"
+                    android:scrollbars="none"
+                    android:visibility="visible">
+
+                    <LinearLayout
+                        android:id="@+id/placesHolder1"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal">
+
+
+                    </LinearLayout>
+
+                </HorizontalScrollView>
+
+                <LinearLayout
+                    android:id="@+id/userReviewsContainer"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                />
+
+            </LinearLayout>
+    </ScrollView>
+
+    <ScrollView
+        android:id="@+id/shimmer_scroll2"
+        android:layout_marginTop="200dp"
+        android:visibility="visible"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:id="@+id/shimmer_linear_layout2"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <io.supercharge.shimmerlayout.ShimmerLayout
+                android:id="@+id/shimmer_layout2"
+                android:layout_width="match_parent"
+                app:shimmer_color="@color/shimmer_background_color1"
+                android:layout_height="wrap_content"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:paddingTop="10dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:orientation="vertical"
+                    android:layout_height="wrap_content">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_marginTop="5dp"
+                        android:orientation="horizontal"
+                        android:layout_height="wrap_content">
+
+                        <View
+                            android:layout_width="250dp"
+                            android:layout_height="14dp"
+                            android:background="@color/shimmer_background_color"/>
+
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_marginTop="10dp"
+                        android:orientation="horizontal"
+                        android:layout_height="wrap_content">
+
+                        <View
+                            android:layout_width="200dp"
+                            android:layout_height="200dp"
+                            android:background="@color/shimmer_background_color"/>
+
+                        <View
+                            android:layout_width="200dp"
+                            android:layout_marginLeft="10dp"
+                            android:layout_height="200dp"
+                            android:background="@color/shimmer_background_color"/>
+
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_marginTop="5dp"
+                        android:orientation="horizontal"
+                        android:layout_height="wrap_content">
+
+                        <View
+                            android:layout_width="200dp"
+                            android:layout_height="14dp"
+                            android:background="@color/shimmer_background_color"/>
+
+                        <View
+                            android:layout_width="200dp"
+                            android:layout_marginLeft="10dp"
+                            android:layout_height="14dp"
+                            android:background="@color/shimmer_background_color"/>
+
+
+                    </LinearLayout>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_marginTop="40dp"
+                        android:orientation="vertical"
+                        android:layout_height="wrap_content">
+                        <View
+                            android:id="@+id/shimmer_avatar_1"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:layout_marginRight="11dp"
+                            android:background="@drawable/avatar_background"/>
+
+                        <View
+                            android:layout_width="130dp"
+                            android:layout_height="19dp"
+                            android:layout_alignTop="@+id/shimmer_avatar_1"
+                            android:layout_toRightOf="@+id/shimmer_avatar_1"
+                            android:background="@color/shimmer_background_color"/>
+
+                        <View
+                            android:id="@+id/shimmer_description_1"
+                            android:layout_width="39dp"
+                            android:layout_height="13dp"
+                            android:layout_alignBottom="@+id/shimmer_avatar_1"
+                            android:layout_toRightOf="@+id/shimmer_avatar_1"
+                            android:background="@color/shimmer_background_color"/>
+
+                        <View
+                            android:layout_width="101dp"
+                            android:layout_height="17dp"
+                            android:layout_alignBottom="@+id/shimmer_description_1"
+                            android:layout_alignParentRight="true"
+                            android:background="@color/shimmer_background_color"/>
+
+                        <View
+                            android:id="@+id/shimmer_divider_1"
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_below="@+id/shimmer_avatar_1"
+                            android:layout_marginBottom="11dp"
+                            android:layout_marginTop="11dp"
+                            android:background="@color/shimmer_background_color"/>
+
+                        <View
+                            android:id="@+id/shimmer_avatar_2"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:layout_below="@+id/shimmer_divider_1"
+                            android:layout_marginRight="11dp"
+                            android:background="@drawable/avatar_background"/>
+
+                        <View
+                            android:layout_width="130dp"
+                            android:layout_height="19dp"
+                            android:layout_alignTop="@+id/shimmer_avatar_2"
+                            android:layout_toRightOf="@+id/shimmer_avatar_2"
+                            android:background="@color/shimmer_background_color"/>
+
+                        <View
+                            android:id="@+id/shimmer_description_2"
+                            android:layout_width="39dp"
+                            android:layout_height="13dp"
+                            android:layout_alignBottom="@+id/shimmer_avatar_2"
+                            android:layout_toRightOf="@+id/shimmer_avatar_2"
+                            android:background="@color/shimmer_background_color"/>
+
+                        <View
+                            android:layout_width="101dp"
+                            android:layout_height="17dp"
+                            android:layout_alignBottom="@+id/shimmer_description_2"
+                            android:layout_alignParentRight="true"
+                            android:background="@color/shimmer_background_color"/>
+
+                        <View
+                            android:id="@+id/shimmer_divider_2"
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_below="@+id/shimmer_avatar_2"
+                            android:layout_marginBottom="11dp"
+                            android:layout_marginTop="11dp"
+                            android:background="@color/shimmer_background_color"/>
+
+                        <View
+                            android:id="@+id/shimmer_avatar_3"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:layout_below="@+id/shimmer_divider_2"
+                            android:layout_marginRight="11dp"
+                            android:background="@drawable/avatar_background"/>
+
+                        <View
+                            android:layout_width="130dp"
+                            android:layout_height="19dp"
+                            android:layout_alignTop="@+id/shimmer_avatar_3"
+                            android:layout_toRightOf="@+id/shimmer_avatar_3"
+                            android:background="@color/shimmer_background_color"/>
+
+                        <View
+                            android:id="@+id/shimmer_description_3"
+                            android:layout_width="39dp"
+                            android:layout_height="13dp"
+                            android:layout_alignBottom="@+id/shimmer_avatar_3"
+                            android:layout_toRightOf="@+id/shimmer_avatar_3"
+                            android:background="@color/shimmer_background_color"/>
+
+                        <View
+                            android:layout_width="101dp"
+                            android:layout_height="17dp"
+                            android:layout_alignBottom="@+id/shimmer_description_3"
+                            android:layout_alignParentRight="true"
+                            android:background="@color/shimmer_background_color"/>
+
+                        <View
+                            android:id="@+id/shimmer_divider_3"
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_below="@+id/shimmer_avatar_3"
+                            android:layout_marginBottom="11dp"
+                            android:layout_marginTop="11dp"
+                            android:background="@color/shimmer_background_color"/>
+                    </RelativeLayout>
+
+
+
+
+                </LinearLayout>
+
+            </io.supercharge.shimmerlayout.ShimmerLayout>
+
+        </LinearLayout>
+    </ScrollView>
+
+
+
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab1"
+        android:layout_width="@dimen/standard_45"
+        android:layout_height="@dimen/standard_45"
+        android:layout_margin="@dimen/standard_21"
+        android:elevation="40dp"
+        android:src="@drawable/ic_edit_black_24dp"
+        app:fabCustomSize="45dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.998" />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab2"
+        android:layout_width="@dimen/standard_45"
+        android:layout_height="@dimen/standard_45"
+        android:layout_margin="@dimen/standard_21"
+        android:elevation="40dp"
+        android:src="@drawable/ic_rate_review_black_24dp"
+        app:fabCustomSize="45dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.998" />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/fab_margin"
+        android:elevation="40dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.998"
+        app:srcCompat="@drawable/ic_add_black_24dp" />
+
+
+</android.support.constraint.ConstraintLayout>

@@ -1,51 +1,85 @@
 package com.project.sdl.tripplanner.UserPackage;
 
-import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView;
+import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
+import android.view.MenuItem;
+import android.view.WindowManager;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.project.sdl.tripplanner.AuthPackage.AuthActivity;
-import com.project.sdl.tripplanner.ProfilePackage.ProfileActivity;
+import com.project.sdl.tripplanner.HomePackage.HomeFragment1;
+import com.project.sdl.tripplanner.ProfilePackage.ProfileFragment;
 import com.project.sdl.tripplanner.R;
-import android.view.View;
-import android.widget.Button;
+import com.project.sdl.tripplanner.TripsPackage.TripsFragment;
+import com.project.sdl.tripplanner.WishListPackage.WishListFragment;
 
-public class UserActivity extends AppCompatActivity {
 
-    FirebaseAuth mAuth;
-    private Button profile;
+public class UserActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
 
-    public void onClickLogout(View view){
-        mAuth.signOut();
-        Intent intent = new Intent(getApplicationContext(), AuthActivity.class);
-        startActivity(intent);
-        finish();
-    }
+    BottomNavigationView bottomNavigationView;
 
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-
+    private boolean loadFragment(Fragment fragment) {
+        //switching fragment
+        if (fragment != null) {
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.fragment_container, fragment)
+                    .commit();
+            return true;
+        }
+        return false;
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user);
-        mAuth = FirebaseAuth.getInstance();
-        profile = findViewById(R.id.profile_button);
+//        getSupportActionBar().hide();
 
-        profile.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                openProfileActivity();
-            }
-        });
+        bottomNavigationView = findViewById(R.id.navigation);
+
+        getWindow().setFlags(
+                WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
+                WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
+        );
+
+        //loading the default fragment
+        if(String.valueOf(getIntent().getStringExtra("flag")) != null && String.valueOf(getIntent().getStringExtra("flag")).equals("trip")){
+            loadFragment(new TripsFragment());
+            bottomNavigationView.setSelectedItemId(R.id.navigation_dashboard);
+        }else {
+            loadFragment(new HomeFragment1());
+            bottomNavigationView.setSelectedItemId(R.id.navigation_home);
+        }
+
+        //getting bottom navigation view and attaching the listener
+        BottomNavigationView navigation = findViewById(R.id.navigation);
+        navigation.setOnNavigationItemSelectedListener(this);
     }
 
-    public  void openProfileActivity(){
-        Intent profile_Intent = new Intent(UserActivity.this, ProfileActivity.class);
-        startActivity(profile_Intent);
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        Fragment fragment = null;
+
+        switch (item.getItemId()) {
+            case R.id.navigation_home:
+                fragment = new HomeFragment1();
+                break;
+
+            case R.id.navigation_dashboard:
+                fragment = new TripsFragment();
+                break;
+
+            case R.id.navigation_notifications:
+                fragment = new WishListFragment();
+                break;
+
+            case R.id.navigation_profile:
+                fragment = new ProfileFragment();
+                break;
+        }
+
+        return loadFragment(fragment);
     }
 }

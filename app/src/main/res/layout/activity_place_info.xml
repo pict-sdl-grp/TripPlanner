@@ -1,0 +1,859 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".HomePackage.PlaceInfoPackage.PlaceInfo">
+
+    <ImageButton
+        android:id="@+id/wishlistIconNo"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:alpha="1"
+        android:visibility="visible"
+        android:background="@android:color/transparent"
+        android:scaleType="fitXY"
+        android:elevation="1000dp"
+        app:layout_constraintBottom_toTopOf="@+id/tabLayout"
+        app:layout_constraintEnd_toEndOf="@+id/placeInfoBg"
+        app:layout_constraintHorizontal_bias="0.965"
+        app:layout_constraintStart_toStartOf="@+id/placeInfoBg"
+        app:layout_constraintTop_toTopOf="@+id/placeInfoBg"
+        app:layout_constraintVertical_bias="0.209"
+        app:srcCompat="@drawable/wishlist_white" />
+
+    <ImageButton
+        android:id="@+id/wishlistIconYes"
+        android:layout_width="20dp"
+        android:visibility="invisible"
+        android:layout_height="20dp"
+        android:alpha="1"
+        android:elevation="1000dp"
+        android:background="@android:color/transparent"
+        android:scaleType="fitXY"
+        app:layout_constraintBottom_toTopOf="@+id/tabLayout"
+        app:layout_constraintEnd_toEndOf="@+id/placeInfoBg"
+        app:layout_constraintHorizontal_bias="0.965"
+        app:layout_constraintStart_toStartOf="@+id/placeInfoBg"
+        app:layout_constraintTop_toTopOf="@+id/placeInfoBg"
+        app:layout_constraintVertical_bias="0.209"
+        app:srcCompat="@drawable/wishlist_red" />
+
+    <ImageView
+        android:id="@+id/addPlaceToTripIcon"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:alpha="1"
+        android:elevation="1000dp"
+        app:layout_constraintBottom_toTopOf="@+id/tabLayout"
+        app:layout_constraintEnd_toEndOf="@+id/placeInfoBg"
+        app:layout_constraintHorizontal_bias="0.859"
+        app:layout_constraintStart_toStartOf="@+id/placeInfoBg"
+        app:layout_constraintTop_toTopOf="@+id/placeInfoBg"
+        app:layout_constraintVertical_bias="0.209"
+        app:srcCompat="@drawable/add" />
+
+    <ImageView
+        android:id="@+id/wishlistIcon3"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:alpha="1"
+        android:elevation="1000dp"
+        app:layout_constraintBottom_toTopOf="@+id/tabLayout"
+        app:layout_constraintEnd_toEndOf="@+id/placeInfoBg"
+        app:layout_constraintHorizontal_bias="0.036"
+        app:layout_constraintStart_toStartOf="@+id/placeInfoBg"
+        app:layout_constraintTop_toTopOf="@+id/placeInfoBg"
+        app:layout_constraintVertical_bias="0.21"
+        app:srcCompat="@drawable/left_arrow" />
+
+    <ImageView
+        android:id="@+id/placeInfoBg"
+        android:layout_width="match_parent"
+        android:layout_height="240dp"
+        android:elevation="0dp"
+        android:scaleType="fitXY"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/nat4" />
+
+    <android.support.design.widget.TabLayout
+        android:id="@+id/tabLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/placeInfoBg"
+        app:tabIndicatorColor="@color/colorPrimary">
+
+        <android.support.design.widget.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Overview" />
+
+        <android.support.design.widget.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="About" />
+
+        <android.support.design.widget.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Photos" />
+
+        <android.support.design.widget.TabItem
+            android:id="@+id/tabItem"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Reviews" />
+    </android.support.design.widget.TabLayout>
+
+    <ScrollView
+        android:id="@+id/placeInfoScrollBar"
+        android:layout_marginTop="290dp"
+        android:visibility="invisible"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tabLayout">
+
+            <LinearLayout
+                android:id="@+id/overviewContainer"
+                android:layout_width="match_parent"
+                android:layout_height="160dp"
+                android:gravity="center|start"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/overviewTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginTop="16dp"
+                    android:text="Place Name"
+                    android:textAlignment="textStart"
+                    android:textColor="#333133"
+                    android:textSize="22dp"
+                    android:textStyle="bold" />
+
+                <RatingBar
+                    android:id="@+id/overviewRating"
+                    style="@android:style/Widget.DeviceDefault.RatingBar.Indicator"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="-16dp"
+                    android:numStars="5"
+                    android:progressTint="@color/colorPrimary"
+                    android:rating="0"
+                    android:scaleX="0.7"
+                    android:scaleY="0.7"
+                    android:scrollbarSize="4dp"
+                    android:secondaryProgressTint="@color/colorPrimary" />
+
+                <TextView
+                    android:id="@+id/reviewText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:text="0  Reviews"
+                    android:textSize="14dp" />
+
+                <TextView
+                    android:id="@+id/vicinityText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginTop="5dp"
+                    android:text="Lonavala,Pune,Maharshtra"
+                    android:textSize="14dp" />
+
+                <ImageView
+                    android:layout_width="390dp"
+                    android:layout_height="1dp"
+                    android:id="@+id/overviewSeparator"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="16dp"
+                    android:scaleType="center"
+                    app:srcCompat="@android:drawable/bottom_bar" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/aboutContainer"
+                android:layout_width="match_parent"
+                android:layout_height="400dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/aboutTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginTop="16dp"
+                    android:text="About"
+                    android:textAlignment="textStart"
+                    android:textColor="#333133"
+                    android:textSize="22dp"
+                    android:textStyle="bold" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:orientation="horizontal"
+                    android:layout_margin="16dp"
+                    android:layout_height="wrap_content">
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:src="@drawable/timer"
+                        android:layout_marginRight="5dp"
+                        android:layout_gravity="center_vertical"
+                        android:layout_height="20dp"/>
+                    <TextView
+                        android:id="@+id/aboutSuggestedDuration"
+                        android:layout_width="match_parent"
+                        android:layout_gravity="center_vertical"
+                        android:layout_height="wrap_content"
+                        android:text="Suggested duration: "
+                        android:textSize="15dp" />
+                </LinearLayout>
+
+
+
+                <fragment
+                    class="com.here.android.mpa.mapping.SupportMapFragment"
+                    android:id="@+id/placeMapLocation"
+                    android:layout_margin="10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:orientation="horizontal"
+                    android:layout_margin="16dp"
+                    android:layout_height="wrap_content">
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:src="@drawable/road"
+                        android:layout_marginRight="5dp"
+                        android:layout_gravity="center_vertical"
+                        android:layout_height="20dp"/>
+                    <TextView
+                        android:id="@+id/aboutDistance"
+                        android:layout_width="match_parent"
+                        android:layout_gravity="center_vertical"
+                        android:layout_height="wrap_content"
+                        android:text="distance : "
+                        android:textSize="15dp" />
+                </LinearLayout>
+
+
+                <ImageView
+                    android:layout_width="390dp"
+                    android:layout_height="1dp"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
+                    android:id="@+id/aboutSeparator"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="16dp"
+                    android:scaleType="center"
+                    app:srcCompat="@android:drawable/bottom_bar" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:id="@+id/photoContainer"
+                android:layout_height="250dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/photoTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginTop="16dp"
+                    android:text="Photos"
+                    android:textAlignment="textStart"
+                    android:textColor="#333133"
+                    android:textSize="22dp"
+                    android:textStyle="bold" />
+
+                <HorizontalScrollView
+                    android:id="@+id/scroll1"
+                    android:layout_width="match_parent"
+                    android:scrollbars="none"
+                    android:layout_margin="10dp"
+                    android:padding="2dp"
+                    android:layout_height="wrap_content"
+                    android:visibility="visible"
+                    android:fillViewport="true">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:id="@+id/photosHolder"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal">
+
+<!--                        <ImageView-->
+<!--                            android:layout_width="110dp"-->
+<!--                            android:id="@+id/im1"-->
+<!--                            android:layout_height="110dp"-->
+<!--                            android:scaleType="fitXY"-->
+<!--                            android:src="@drawable/nat4" />-->
+
+<!--                        <ImageView-->
+<!--                            android:layout_width="110dp"-->
+<!--                            android:id="@+id/im2"-->
+<!--                            android:layout_marginLeft="8dp"-->
+<!--                            android:layout_height="110dp"-->
+<!--                            android:scaleType="fitXY"-->
+<!--                            android:src="@drawable/nat4" />-->
+
+                    </LinearLayout>
+
+                </HorizontalScrollView>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:orientation="horizontal"
+                    android:layout_margin="16dp"
+                    android:layout_height="wrap_content">
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:src="@drawable/camera"
+                        android:layout_marginRight="5dp"
+                        android:layout_gravity="center_vertical"
+                        android:layout_height="20dp"/>
+
+                    <TextView
+                        android:id="@+id/addPhoto"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:text="@string/addPhoto"
+                        android:textAllCaps="true"
+                        android:textColor="#68C4A5"
+                        android:textSize="15dp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <ImageView
+                    android:layout_width="390dp"
+                    android:layout_height="1dp"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
+                    android:id="@+id/photoSeparator"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="16dp"
+                    android:scaleType="center"
+                    app:srcCompat="@android:drawable/bottom_bar" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:id="@+id/reviewContainer"
+                android:layout_height="1000dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/reviewTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginTop="16dp"
+                    android:text="Review"
+                    android:textAlignment="textStart"
+                    android:textColor="#333133"
+                    android:textSize="22dp"
+                    android:textStyle="bold" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:orientation="horizontal"
+                    android:layout_margin="16dp"
+                    android:layout_height="wrap_content">
+
+                    <RatingBar
+                        android:id="@+id/reviewRateBar"
+                        style="@android:style/Widget.DeviceDefault.RatingBar.Indicator"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="-28dp"
+                        android:numStars="5"
+                        android:progressTint="@color/colorPrimary"
+                        android:rating="0"
+                        android:scaleX="0.7"
+                        android:scaleY="0.7"
+                        android:scrollbarSize="4dp"
+                        android:secondaryProgressTint="@color/colorPrimary" />
+
+                    <TextView
+                        android:id="@+id/reviewRateText"
+                        android:layout_width="match_parent"
+                        android:layout_marginLeft="-14dp"
+                        android:layout_gravity="center_vertical"
+                        android:layout_height="wrap_content"
+                        android:text="0 Reviews"
+                        android:textSize="15dp" />
+                </LinearLayout>
+
+                <ImageView
+                    android:layout_width="390dp"
+                    android:layout_height="1dp"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="10dp"
+                    android:scaleType="center"
+                    app:srcCompat="@android:drawable/bottom_bar" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:orientation="vertical"
+                    android:id="@+id/userReviewsContainer"
+                    android:layout_height="wrap_content">
+
+
+<!--                <LinearLayout-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:orientation="vertical"-->
+<!--                    android:layout_height="wrap_content">-->
+
+<!--                    <LinearLayout-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:id="@+id/userInfoBlock"-->
+<!--                        android:orientation="horizontal"-->
+<!--                        android:layout_height="wrap_content">-->
+
+<!--                        <com.mikhaellopez.circularimageview.CircularImageView-->
+<!--                            android:id="@+id/reviewProfilePart"-->
+<!--                            android:layout_width="70dp"-->
+<!--                            android:layout_height="70dp"-->
+<!--                            android:src="@drawable/profile1"-->
+<!--                            app:civ_border_color="#EEEEEE"-->
+<!--                            app:civ_shadow_radius="10" />-->
+
+<!--                        <LinearLayout-->
+<!--                            android:layout_width="wrap_content"-->
+<!--                            android:orientation="vertical"-->
+<!--                            android:layout_height="wrap_content">-->
+
+<!--                            <RatingBar-->
+<!--                                android:id="@+id/reviewRatingPart"-->
+<!--                                style="@android:style/Widget.DeviceDefault.RatingBar.Indicator"-->
+<!--                                android:layout_width="wrap_content"-->
+<!--                                android:layout_height="wrap_content"-->
+<!--                                android:layout_marginLeft="-28dp"-->
+<!--                                android:numStars="5"-->
+<!--                                android:progressTint="@color/colorPrimary"-->
+<!--                                android:rating="0"-->
+<!--                                android:scaleX="0.7"-->
+<!--                                android:scaleY="0.7"-->
+<!--                                android:scrollbarSize="4dp"-->
+<!--                                android:secondaryProgressTint="@color/colorPrimary" />-->
+
+<!--                            <TextView-->
+<!--                                android:layout_width="100dp"-->
+<!--                                android:id="@+id/reviewDatePart"-->
+<!--                                android:textSize="15dp"-->
+<!--                                android:text=" &#45;&#45; / &#45;&#45; / &#45;&#45;"-->
+<!--                                android:layout_height="wrap_content"/>-->
+
+<!--                        </LinearLayout>-->
+
+<!--                    </LinearLayout>-->
+
+<!--                    <TextView-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:id="@+id/reviewTitlePart"-->
+<!--                        android:layout_marginLeft="70dp"-->
+<!--                        android:layout_marginTop="5dp"-->
+<!--                        android:text="Excellent monsoon destination for a day trip from pune"-->
+<!--                        android:textColor="#000"-->
+<!--                        android:textSize="15dp"-->
+<!--                        android:textStyle="bold" />-->
+
+<!--                    <TextView-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:id="@+id/mainReviewPart"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:layout_marginLeft="70dp"-->
+<!--                        android:layout_marginTop="10dp"-->
+<!--                        android:text="The below review is for travel with family mainly and may not be applicable for trekking and adventures trips.It's good place to visit in monsoon and better to plan early morning..."-->
+<!--                        android:textSize="15dp" />-->
+
+<!--                    <ImageView-->
+<!--                        android:layout_width="390dp"-->
+<!--                        android:layout_height="1dp"-->
+<!--                        android:layout_gravity="center"-->
+<!--                        android:layout_marginTop="16dp"-->
+<!--                        android:focusable="true"-->
+<!--                        android:focusableInTouchMode="true"-->
+<!--                        android:scaleType="center"-->
+<!--                        app:srcCompat="@android:drawable/bottom_bar" />-->
+
+<!--                </LinearLayout>-->
+
+                </LinearLayout>
+
+
+
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:id="@+id/writeReviewContainer"
+                    android:orientation="horizontal"
+                    android:layout_margin="16dp"
+                    android:layout_height="wrap_content">
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:src="@drawable/review"
+                        android:layout_marginRight="5dp"
+                        android:layout_gravity="center_vertical"
+                        android:layout_height="20dp"/>
+
+                    <TextView
+                        android:id="@+id/writeReview"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:text="@string/writeReview"
+                        android:textAllCaps="true"
+                        android:textColor="#68C4A5"
+                        android:textSize="14dp"
+                        android:textStyle="bold" />
+
+                    <ImageView
+                        android:layout_width="14dp"
+                        android:layout_height="14dp"
+                        android:layout_marginLeft="-20dp"
+                        android:layout_gravity="center_vertical"
+                        android:src="@drawable/right_arrow" />
+
+                </LinearLayout>
+
+                <ImageView
+                    android:layout_width="390dp"
+                    android:layout_height="1dp"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
+                    android:layout_gravity="center"
+                    android:scaleType="center"
+                    app:srcCompat="@android:drawable/bottom_bar" />
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+    </ScrollView>
+
+    <ScrollView
+        android:id="@+id/placeInfoShimmerScroll"
+        android:layout_marginTop="290dp"
+        android:visibility="visible"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <io.supercharge.shimmerlayout.ShimmerLayout
+            android:id="@+id/placeInfoShimmer"
+            android:layout_width="match_parent"
+            app:shimmer_color="@color/shimmer_background_color1"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:paddingTop="30dp">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:orientation="vertical"
+                    android:layout_height="wrap_content">
+
+                    <View
+                        android:layout_width="190dp"
+                        android:layout_height="19dp"
+                        android:background="@color/shimmer_background_color"/>
+
+                    <View
+                        android:layout_width="130dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_height="19dp"
+                        android:background="@color/shimmer_background_color"/>
+
+                    <View
+                        android:layout_width="130dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_height="19dp"
+                        android:background="@color/shimmer_background_color"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_marginTop="100dp"
+                    android:orientation="vertical"
+                    android:layout_height="wrap_content">
+
+                    <View
+                        android:layout_width="190dp"
+                        android:layout_height="19dp"
+                        android:background="@color/shimmer_background_color"/>
+
+                    <View
+                        android:layout_width="130dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_height="19dp"
+                        android:background="@color/shimmer_background_color"/>
+
+                    <View
+                        android:layout_width="130dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_height="19dp"
+                        android:background="@color/shimmer_background_color"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_marginTop="200dp"
+                    android:orientation="vertical"
+                    android:layout_height="wrap_content">
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="200dp"
+                        android:background="@color/shimmer_background_color"/>
+
+
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_marginTop="430dp"
+                    android:orientation="vertical"
+                    android:layout_height="wrap_content">
+
+                    <View
+                        android:layout_width="190dp"
+                        android:layout_height="19dp"
+                        android:background="@color/shimmer_background_color"/>
+
+                    <View
+                        android:layout_width="130dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_height="19dp"
+                        android:background="@color/shimmer_background_color"/>
+
+                    <View
+                        android:layout_width="130dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_height="19dp"
+                        android:background="@color/shimmer_background_color"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_marginTop="530dp"
+                    android:orientation="vertical"
+                    android:layout_height="wrap_content">
+
+                    <View
+                        android:layout_width="190dp"
+                        android:layout_height="19dp"
+                        android:background="@color/shimmer_background_color"/>
+
+                    <View
+                        android:layout_width="130dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_height="19dp"
+                        android:background="@color/shimmer_background_color"/>
+
+                    <View
+                        android:layout_width="130dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_height="19dp"
+                        android:background="@color/shimmer_background_color"/>
+
+                </LinearLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_marginTop="630dp"
+                    android:orientation="vertical"
+                    android:layout_height="wrap_content">
+                    <View
+                        android:id="@+id/shimmer_avatar_1"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_marginRight="11dp"
+                        android:background="@drawable/avatar_background"/>
+
+                    <View
+                        android:layout_width="130dp"
+                        android:layout_height="19dp"
+                        android:layout_alignTop="@+id/shimmer_avatar_1"
+                        android:layout_toRightOf="@+id/shimmer_avatar_1"
+                        android:background="@color/shimmer_background_color"/>
+
+                    <View
+                        android:id="@+id/shimmer_description_1"
+                        android:layout_width="39dp"
+                        android:layout_height="13dp"
+                        android:layout_alignBottom="@+id/shimmer_avatar_1"
+                        android:layout_toRightOf="@+id/shimmer_avatar_1"
+                        android:background="@color/shimmer_background_color"/>
+
+                    <View
+                        android:layout_width="101dp"
+                        android:layout_height="17dp"
+                        android:layout_alignBottom="@+id/shimmer_description_1"
+                        android:layout_alignParentRight="true"
+                        android:background="@color/shimmer_background_color"/>
+
+                    <View
+                        android:id="@+id/shimmer_divider_1"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_below="@+id/shimmer_avatar_1"
+                        android:layout_marginBottom="11dp"
+                        android:layout_marginTop="11dp"
+                        android:background="@color/shimmer_background_color"/>
+
+                    <View
+                        android:id="@+id/shimmer_avatar_2"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_below="@+id/shimmer_divider_1"
+                        android:layout_marginRight="11dp"
+                        android:background="@drawable/avatar_background"/>
+
+                    <View
+                        android:layout_width="130dp"
+                        android:layout_height="19dp"
+                        android:layout_alignTop="@+id/shimmer_avatar_2"
+                        android:layout_toRightOf="@+id/shimmer_avatar_2"
+                        android:background="@color/shimmer_background_color"/>
+
+                    <View
+                        android:id="@+id/shimmer_description_2"
+                        android:layout_width="39dp"
+                        android:layout_height="13dp"
+                        android:layout_alignBottom="@+id/shimmer_avatar_2"
+                        android:layout_toRightOf="@+id/shimmer_avatar_2"
+                        android:background="@color/shimmer_background_color"/>
+
+                    <View
+                        android:layout_width="101dp"
+                        android:layout_height="17dp"
+                        android:layout_alignBottom="@+id/shimmer_description_2"
+                        android:layout_alignParentRight="true"
+                        android:background="@color/shimmer_background_color"/>
+
+                    <View
+                        android:id="@+id/shimmer_divider_2"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_below="@+id/shimmer_avatar_2"
+                        android:layout_marginBottom="11dp"
+                        android:layout_marginTop="11dp"
+                        android:background="@color/shimmer_background_color"/>
+
+                    <View
+                        android:id="@+id/shimmer_avatar_3"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_below="@+id/shimmer_divider_2"
+                        android:layout_marginRight="11dp"
+                        android:background="@drawable/avatar_background"/>
+
+                    <View
+                        android:layout_width="130dp"
+                        android:layout_height="19dp"
+                        android:layout_alignTop="@+id/shimmer_avatar_3"
+                        android:layout_toRightOf="@+id/shimmer_avatar_3"
+                        android:background="@color/shimmer_background_color"/>
+
+                    <View
+                        android:id="@+id/shimmer_description_3"
+                        android:layout_width="39dp"
+                        android:layout_height="13dp"
+                        android:layout_alignBottom="@+id/shimmer_avatar_3"
+                        android:layout_toRightOf="@+id/shimmer_avatar_3"
+                        android:background="@color/shimmer_background_color"/>
+
+                    <View
+                        android:layout_width="101dp"
+                        android:layout_height="17dp"
+                        android:layout_alignBottom="@+id/shimmer_description_3"
+                        android:layout_alignParentRight="true"
+                        android:background="@color/shimmer_background_color"/>
+
+                    <View
+                        android:id="@+id/shimmer_divider_3"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_below="@+id/shimmer_avatar_3"
+                        android:layout_marginBottom="11dp"
+                        android:layout_marginTop="11dp"
+                        android:background="@color/shimmer_background_color"/>
+                </RelativeLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_marginTop="830dp"
+                    android:orientation="vertical"
+                    android:layout_height="wrap_content">
+
+                    <View
+                        android:layout_width="190dp"
+                        android:layout_height="19dp"
+                        android:background="@color/shimmer_background_color"/>
+
+                    <View
+                        android:layout_width="130dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_height="19dp"
+                        android:background="@color/shimmer_background_color"/>
+
+                    <View
+                        android:layout_width="130dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_height="19dp"
+                        android:background="@color/shimmer_background_color"/>
+
+                </LinearLayout>
+
+
+
+
+            </RelativeLayout>
+
+        </io.supercharge.shimmerlayout.ShimmerLayout>
+
+    </LinearLayout>
+    </ScrollView>
+
+</android.support.constraint.ConstraintLayout>

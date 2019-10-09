@@ -1,4 +1,5 @@
 package com.project.sdl.tripplanner.UserPackage;
+//Main User Activity
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -8,11 +9,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.view.WindowManager;
 
-import com.project.sdl.tripplanner.HomePackage.HomeFragment;
-import com.project.sdl.tripplanner.NotificationsPackage.NotificationsFragment;
+import com.project.sdl.tripplanner.HomePackage.HomeFragment1;
 import com.project.sdl.tripplanner.ProfilePackage.ProfileFragment;
 import com.project.sdl.tripplanner.R;
 import com.project.sdl.tripplanner.TripsPackage.TripsFragment;
+import com.project.sdl.tripplanner.WishListPackage.WishListFragment;
 
 
 public class UserActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
@@ -49,7 +50,7 @@ public class UserActivity extends AppCompatActivity implements BottomNavigationV
             loadFragment(new TripsFragment());
             bottomNavigationView.setSelectedItemId(R.id.navigation_dashboard);
         }else {
-            loadFragment(new HomeFragment());
+            loadFragment(new HomeFragment1());
             bottomNavigationView.setSelectedItemId(R.id.navigation_home);
         }
 
@@ -64,7 +65,7 @@ public class UserActivity extends AppCompatActivity implements BottomNavigationV
 
         switch (item.getItemId()) {
             case R.id.navigation_home:
-                fragment = new HomeFragment();
+                fragment = new HomeFragment1();
                 break;
 
             case R.id.navigation_dashboard:
@@ -72,7 +73,7 @@ public class UserActivity extends AppCompatActivity implements BottomNavigationV
                 break;
 
             case R.id.navigation_notifications:
-                fragment = new NotificationsFragment();
+                fragment = new WishListFragment();
                 break;
 
             case R.id.navigation_profile:

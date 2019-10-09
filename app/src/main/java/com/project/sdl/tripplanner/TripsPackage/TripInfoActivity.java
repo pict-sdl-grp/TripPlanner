@@ -7,16 +7,20 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -50,8 +54,6 @@ import java.util.Map;
 public class TripInfoActivity extends AppCompatActivity {
 
     Button browseButton;
-    ImageButton deleteTripIcon;
-    ImageButton shareTripIcon;
     Button addDates;
     Button organizeTrip;
     TextView tripName;
@@ -68,14 +70,75 @@ public class TripInfoActivity extends AppCompatActivity {
     SharedPreferences sharedPreferences;
     Map<String,View> listItems;
 
+    Toolbar toolbar;
+
     int dayCount;
     int placeCount;
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.trip_info_menu,menu);
+
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+
+        MenuItem share = menu.findItem(R.id.share);
+        MenuItem delete = menu.findItem(R.id.delete);
+
+        if(String.valueOf(getIntent().getStringExtra("selectedTripUserId")) != "null"){
+
+            share.setVisible(false);
+            delete.setVisible(false);
+
+        }
+
+        return super.onPrepareOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        super.onOptionsItemSelected(item);
+
+        switch (item.getItemId()){
+            case R.id.share:
+                Intent intent = new Intent(getApplicationContext(),SelectToShareUserActivity.class);
+                intent.putExtra("selectedTripId",getIntent().getStringExtra("selectedTripId"));
+                startActivity(intent);
+                return true;
+            case R.id.delete:
+                DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
+                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                mDatabase.child("trips/"+user.getUid()+"/" + getIntent().getStringExtra("selectedTripId"))
+                        .setValue(null);
+                deleteFromSharedUsers("delete");
+                Toast.makeText(TripInfoActivity.this, "trip deleted!!!", Toast.LENGTH_SHORT).show();
+                finish();
+                return true;
+            default:
+                return false;
+
+        }
+    }
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_trip_info);
-        getSupportActionBar().hide();
+        // Find the toolbar view inside the activity layout
+        Toolbar toolbar = findViewById(R.id.trip_info_toolbar);
+        toolbar.getOverflowIcon().setColorFilter(Color.WHITE , PorterDuff.Mode.SRC_ATOP);
+        toolbar.setTitle("");
+        // Sets the Toolbar to act as the ActionBar for this Activity window.
+        // Make sure the toolbar exists in the activity and is not null
+        setSupportActionBar(toolbar);
         browseButton = findViewById(R.id.browseButton);
         addDates = findViewById(R.id.addDates);
         organizeTrip = findViewById(R.id.organizeTrip);
@@ -90,8 +153,6 @@ public class TripInfoActivity extends AppCompatActivity {
         tripPlacesImagesArray = new ArrayList<>();
         sharedPreferences = getApplicationContext().getSharedPreferences("com.project.sdl.tripplanner", Context.MODE_PRIVATE);
         listItems = new HashMap<>();
-        deleteTripIcon = findViewById(R.id.deleteTripIcon);
-        shareTripIcon = findViewById(R.id.shareTripIcon);
 
 
 
@@ -142,36 +203,7 @@ public class TripInfoActivity extends AppCompatActivity {
             });
         }
 
-        if(String.valueOf(getIntent().getStringExtra("selectedTripUserId")) != "null"){
 
-                shareTripIcon.setVisibility(View.INVISIBLE);
-                deleteTripIcon.setVisibility(View.INVISIBLE);
-
-        }
-
-        shareTripIcon.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                    Intent intent = new Intent(getApplicationContext(),SelectToShareUserActivity.class);
-                    intent.putExtra("selectedTripId",getIntent().getStringExtra("selectedTripId"));
-                    startActivity(intent);
-
-            }
-        });
-
-        deleteTripIcon.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
-                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                mDatabase.child("trips/"+user.getUid()+"/" + getIntent().getStringExtra("selectedTripId"))
-                        .setValue(null);
-                deleteFromSharedUsers("delete");
-                Toast.makeText(TripInfoActivity.this, "trip deleted!!!", Toast.LENGTH_SHORT).show();
-                finish();
-            }
-        });
 
         browseButton.setOnClickListener(new View.OnClickListener() {
             @Override

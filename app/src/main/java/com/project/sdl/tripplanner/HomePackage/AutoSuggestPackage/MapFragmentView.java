@@ -341,9 +341,18 @@ public class MapFragmentView extends AppCompatActivity {
                     mDatabase.child("placesNearYou")
                             .child(String.valueOf(inputId.getText())).child(place.getId()).setValue(placesNearYou);
                 }
-            } else if (String.valueOf(mode.getText()).equalsIgnoreCase("2")) {
+            }else if (String.valueOf(mode.getText()).equalsIgnoreCase("2")) {
+                if (inputId.getText().length() > 0) {
+                    //To add awesomePlacesToVisit
+                    imageForm.setVisibility(View.VISIBLE);
+                    PlacesNearYou placesNearYou = new PlacesNearYou(place.getId(), placeData);
+                    mDatabase.child("sub-places")
+                            .child(String.valueOf(inputId.getText())).child(place.getId()).setValue(placesNearYou);
+                }
+            }else if (String.valueOf(mode.getText()).contains("3")) {
                 MainSearchActivity.currentPlaceId = place.getId();
                 MainSearchActivity.inputIdParam = inputId.getText().toString();
+                MainSearchActivity.modeParam = String.valueOf(mode.getText());
 
                 ImageButton pickImage = m_activity.findViewById(R.id.imageButton);
                 pickImage.setOnClickListener(new View.OnClickListener() {

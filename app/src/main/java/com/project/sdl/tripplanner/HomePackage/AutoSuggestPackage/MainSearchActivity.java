@@ -197,7 +197,12 @@ public class MainSearchActivity extends AppCompatActivity {
                                     ArrayList<String> imageRefs = new ArrayList<>();
                                     imageRefs.add(myFile.getName());
                                     if(inputIdParam.length() > 0){
-                                        mDatabase.child("placesNearYou").child(inputIdParam).child(currentPlaceId).child("places").child("imageRefs").setValue(imageRefs);
+                                        if(modeParam.equals("3.1")) {
+                                            mDatabase.child("placesNearYou").child(inputIdParam).child(currentPlaceId).child("places").child("imageRefs").setValue(imageRefs);
+                                        }else if(modeParam.equals("3.2")){
+                                            mDatabase.child("sub-places").child(inputIdParam).child(currentPlaceId).child("places").child("imageRefs").setValue(imageRefs);
+
+                                        }
                                     }else{
                                         mDatabase.child("places").child(currentPlaceId).child("imageRefs").setValue(imageRefs);
                                     }

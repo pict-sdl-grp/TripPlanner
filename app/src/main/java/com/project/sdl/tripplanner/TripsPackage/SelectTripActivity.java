@@ -50,7 +50,7 @@ public class SelectTripActivity extends AppCompatActivity {
 
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        DatabaseReference ref = database.getReference("trips/"+user.getUid());
+        final DatabaseReference ref = database.getReference("trips/"+user.getUid());
         ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -230,7 +230,7 @@ public class SelectTripActivity extends AppCompatActivity {
                 }
 
 
-
+                ref.removeEventListener(this);
 
             }
 
@@ -448,6 +448,8 @@ public class SelectTripActivity extends AppCompatActivity {
 //                                        }
 
                                         }
+
+                                        ref.removeEventListener(this);
                                     }
 
                                     @Override

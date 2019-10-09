@@ -1,6 +1,5 @@
 package com.project.sdl.tripplanner.ProfilePackage;
 
-<<<<<<< HEAD
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -8,8 +7,6 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
-=======
->>>>>>> a77e305a6502758cf570e8376c997460ff25adbd
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
@@ -20,6 +17,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -117,34 +115,35 @@ public class EditProfile_Activity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == RESULT_LOAD_IMAGE && resultCode == RESULT_OK && null != data) {
+        if (requestCode == RESULT_LOAD_IMAGE && resultCode == RESULT_OK ) {
+            if (null != data){
+                Uri selectedImage = data.getData();
+                String[] filePathColumn = { MediaStore.Images.Media.DATA };
+                Cursor cursor = getContentResolver().query(selectedImage,filePathColumn, null, null, null);
+                cursor.moveToFirst();
+                int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+                String picturePath = cursor.getString(columnIndex);
+                cursor.close();
 
-            Uri selectedImage = data.getData();
-            String[] filePathColumn = { MediaStore.Images.Media.DATA };
-            Cursor cursor = getContentResolver().query(selectedImage,filePathColumn, null, null, null);
-            cursor.moveToFirst();
-            int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-            String picturePath = cursor.getString(columnIndex);
-            cursor.close();
+                profileImage.setImageBitmap(BitmapFactory.decodeFile(picturePath));
 
-            profileImage.setImageBitmap(BitmapFactory.decodeFile(picturePath));
+                Bitmap realImage = BitmapFactory.decodeFile(picturePath);
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                realImage.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+                byte[] b = baos.toByteArray();
 
-            Bitmap realImage = BitmapFactory.decodeFile(picturePath);
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            realImage.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-            byte[] b = baos.toByteArray();
+                String encodedImage = Base64.encodeToString(b, Base64.DEFAULT);
+                Log.d("Profile Image","Base64 ImageCode = "+encodedImage);
 
-            String encodedImage = Base64.encodeToString(b, Base64.DEFAULT);
-            Log.d("Profile Image","Base64 ImageCode = "+encodedImage);
-
-<<<<<<< HEAD
-            editor.putString(PROFILE,encodedImage);
-            editor.commit();
-=======
+                editor.putString(PROFILE,encodedImage);
+                editor.commit();
 //        User userDb = new User(name.getText().toString(),mUser.getEmail(),phoneNo.getText().toString(),aboutYou.getText().toString(),"India, Maharashtra",mUser.isEmailVerified());
->>>>>>> a77e305a6502758cf570e8376c997460ff25adbd
 
-            Log.d("OnResult OF Gallery","PRofile image selected from gallery");
+                Log.d("OnResult OF Gallery","PRofile image selected from gallery");
+            }else {
+                Toast.makeText(getApplicationContext(),"Profile image not set please give permission from mobile settings",Toast.LENGTH_SHORT);
+            }
+
         }
     }
 
@@ -169,7 +168,6 @@ public class EditProfile_Activity extends AppCompatActivity {
 
     protected void saveToDatabase(){
 
-<<<<<<< HEAD
         String userName = name.getText().toString();
         String userPhone = phoneNo.getText().toString();
         String userAbout = aboutYou.getText().toString();
@@ -180,16 +178,6 @@ public class EditProfile_Activity extends AppCompatActivity {
         editor.putString(PLACE,"Pune, Maharashtra");
         editor.commit();
         Log.e("Data updated"," ID: "+ mUser.getUid());
-=======
-        mRef.child("users").child(mUser.getUid()).child("username").setValue(name.getText().toString());
-        mRef.child("users").child(mUser.getUid()).child("email").setValue(mUser.getEmail());
-        mRef.child("users").child(mUser.getUid()).child("phoneNo").setValue(phoneNo.getText().toString());
-        mRef.child("users").child(mUser.getUid()).child("aboutYou").setValue(aboutYou.getText().toString());
-        mRef.child("users").child(mUser.getUid()).child("currentPlace").setValue("India, Maharashtra");
-        mRef.child("users").child(mUser.getUid()).child("isEmailVerified").setValue(mUser.isEmailVerified());
-
-        Log.e("Data updated","Current user " + name.getText().toString() +" ID: "+ mUser.getUid() + "\n URL");
->>>>>>> a77e305a6502758cf570e8376c997460ff25adbd
 
         backToProfile();
     }

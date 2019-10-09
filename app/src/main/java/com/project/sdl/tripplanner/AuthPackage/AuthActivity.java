@@ -118,7 +118,7 @@ public class AuthActivity extends AppCompatActivity implements View.OnClickListe
                                     FirebaseUser user = mAuth.getCurrentUser();
 
                                     if (user != null) {
-                                        Intent intent = new Intent(getApplicationContext(), WelcomeActivity.class);
+                                        Intent intent = new Intent(getApplicationContext(), UserActivity.class);
                                         startActivity(intent);
                                         mDatabase=FirebaseDatabase.getInstance().getReference();
                                         mDatabase.child("users").child(user.getUid()).child("isEmailVerified").setValue(user.isEmailVerified());

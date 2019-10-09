@@ -1,6 +1,7 @@
 package com.project.sdl.tripplanner.UserPackage;
 //Main User Activity
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -10,6 +11,7 @@ import android.view.MenuItem;
 import android.view.WindowManager;
 
 import com.project.sdl.tripplanner.HomePackage.HomeFragment1;
+import com.project.sdl.tripplanner.HomePackage.SetCurrentLocation;
 import com.project.sdl.tripplanner.ProfilePackage.ProfileFragment;
 import com.project.sdl.tripplanner.R;
 import com.project.sdl.tripplanner.TripsPackage.TripsFragment;
@@ -52,6 +54,10 @@ public class UserActivity extends AppCompatActivity implements BottomNavigationV
         }else {
             loadFragment(new HomeFragment1());
             bottomNavigationView.setSelectedItemId(R.id.navigation_home);
+            if(String.valueOf(getIntent().getStringExtra("signup")) != "null" && getIntent().getStringExtra("signup").equals("true")){
+                Intent intent = new Intent(getApplicationContext(), SetCurrentLocation.class);
+                startActivity(intent);
+            }
         }
 
         //getting bottom navigation view and attaching the listener

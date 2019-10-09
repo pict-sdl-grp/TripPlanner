@@ -1,11 +1,14 @@
 package com.project.sdl.tripplanner.HomePackage;
 
 import android.Manifest;
+import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
@@ -28,6 +31,7 @@ import com.here.android.mpa.mapping.Map;
 import com.here.android.mpa.mapping.SupportMapFragment;
 import com.project.sdl.tripplanner.R;
 
+import java.io.File;
 import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -61,6 +65,7 @@ public class SetCurrentLocation extends FragmentActivity {
 
     ProgressBar gpsLoader;
     TextView currentLocationText;
+    TextView loadingText;
 
 
 
@@ -80,11 +85,28 @@ public class SetCurrentLocation extends FragmentActivity {
 
         gpsLoader = findViewById(R.id.gpsLoader);
         currentLocationText = findViewById(R.id.currentLocationText);
+        loadingText = findViewById(R.id.loadingText);
 
         gpsLoader.setVisibility(View.VISIBLE);
 
         // Search for the map fragment to finish setup by calling init().
         mapFragment = getSupportMapFragment();
+
+        // Set path of isolated disk cache
+        String diskCacheRoot = Environment.getExternalStorageDirectory().getPath()
+                + File.separator + ".isolated-here-maps";
+        // Retrieve intent name from manifest
+        String intentName = "";
+        try {
+            ApplicationInfo ai = getPackageManager().getApplicationInfo(this
+                    .getPackageName(), PackageManager.GET_META_DATA);
+            Bundle bundle = ai.metaData;
+            intentName = bundle.getString("INTENT_NAME");
+        } catch (PackageManager.NameNotFoundException e) {
+            Log.e(this.getClass().toString(), "Failed to find intent name, NameNotFound: "
+                    + e.getMessage());
+        }
+
 
         mapFragment.init(new OnEngineInitListener() {
             @Override
@@ -102,7 +124,7 @@ public class SetCurrentLocation extends FragmentActivity {
                     positioningManager = PositioningManager.getInstance();
                     positionListener = new PositioningManager.OnPositionChangedListener() {
                         @Override
-                        public void onPositionUpdated(PositioningManager.LocationMethod method, GeoPosition position, boolean isMapMatched) {
+                        public void onPositionUpdated(PositioningManager.LocationMethod method, final GeoPosition position, boolean isMapMatched) {
                             currentPosition = position.getCoordinate();
                             map.setCenter(position.getCoordinate(), Map.Animation.NONE);
                             Log.i("onPositionUpdated: ",position.getPositionSource());
@@ -126,12 +148,25 @@ public class SetCurrentLocation extends FragmentActivity {
 
                             gpsLoader.setVisibility(View.INVISIBLE);
                             currentLocationText.setText("Your current location is : "+cityName);
+                            loadingText.setVisibility(View.INVISIBLE);
 
 
                             DatabaseReference mDatabase= FirebaseDatabase.getInstance().getReference();
                             FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                             mDatabase.child("users").child(user.getUid()).child("currentLocation").setValue(position.getCoordinate());
                             mDatabase.child("users").child(user.getUid()).child("currentLocationCityName").setValue(cityName);
+
+                            Snackbar.make(findViewById(android.R.id.content), "Your current location is : "+cityName, 5000)
+                                    .setAction("Close", new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View view) {
+                                            finish();
+                                        }
+                                    })
+                                    .setActionTextColor(getResources().getColor(android.R.color.holo_red_light ))
+                                    .show();
+
+
 
                         }
                         @Override

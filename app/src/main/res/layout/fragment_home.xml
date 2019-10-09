@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:background="#fff"
     android:layout_height="match_parent">
 
     <ImageView
@@ -111,6 +112,7 @@
 
         <LinearLayout
             android:layout_width="wrap_content"
+            android:id="@+id/searchIcon"
             android:layout_height="42dp"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
@@ -126,7 +128,6 @@
             android:translationZ="10dp">
 
             <TextView
-                android:id="@+id/searchIcon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
@@ -183,6 +184,40 @@
 
     </RelativeLayout>
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:id="@+id/introLayout"
+        android:elevation="20dp"
+        android:visibility="invisible"
+        android:gravity="center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/TopLayout"
+        app:layout_constraintVertical_bias="0.0"
+        android:layout_height="400dp">
+
+        <ImageView
+            android:layout_width="300dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/createtripdrawable"
+            android:layout_height="270dp"/>
+
+        <Button
+            android:id="@+id/getStartedButton"
+            android:layout_width="300dp"
+            android:layout_marginTop="290dp"
+            android:layout_height="wrap_content"
+            android:background="@color/colorPrimary"
+            android:text="Welcome To Trip Planner"
+            android:textColor="#fff"
+            android:textStyle="bold"
+         />
+
+
+    </RelativeLayout>
+
     <ScrollView
         android:id="@+id/mainScroll"
         android:visibility="invisible"
@@ -198,6 +233,7 @@
 
             <LinearLayout
                 android:id="@+id/placeLayout1"
+                android:visibility="invisible"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
@@ -251,6 +287,7 @@
                 />
 
             </LinearLayout>
+
     </ScrollView>
 
     <ScrollView

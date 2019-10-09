@@ -66,13 +66,15 @@ import io.supercharge.shimmerlayout.ShimmerLayout;
 
 public class HomeFragment1 extends Fragment {
 
-    TextView searchIcon;
+    LinearLayout searchIcon;
     RatingBar ratingBar;
     TextView countText;
     ImageView homebg;
     ImageView currentLocationIcon;
     ImageView blurBg;
     LinearLayout placesHolder;
+    LinearLayout placeLayout1;
+    RelativeLayout introLayout;
 
     LinearLayout userReviewContainer;
 
@@ -104,6 +106,8 @@ public class HomeFragment1 extends Fragment {
 
     FirebaseStorage storage;
 
+    Boolean placeSelected = false;
+
 
     @Nullable
     @Override
@@ -130,6 +134,8 @@ public class HomeFragment1 extends Fragment {
         fab2 = root.findViewById(R.id.fab2);
         main_scroll = root.findViewById(R.id.mainScroll);
         mySwipeRefreshLayout = root.findViewById(R.id.swiperefresh);
+        placeLayout1 = root.findViewById(R.id.placeLayout1);
+        introLayout = root.findViewById(R.id.introLayout);
 
 
         sharedPreferences = getContext().getSharedPreferences("com.project.sdl.tripplanner", Context.MODE_PRIVATE);
@@ -183,7 +189,9 @@ public class HomeFragment1 extends Fragment {
                 if(!isFABOpen){
                     isFABOpen=true;
                     fab1.animate().translationY(-getResources().getDimension(R.dimen.standard_55));
-                    fab2.animate().translationY(-getResources().getDimension(R.dimen.standard_105));
+                    if(placeSelected) {
+                        fab2.animate().translationY(-getResources().getDimension(R.dimen.standard_105));
+                    }
                     blurBg.setVisibility(View.VISIBLE);
                     fab.setImageDrawable(getResources().getDrawable(R.drawable.multiply));
                 }else{
@@ -253,9 +261,11 @@ public class HomeFragment1 extends Fragment {
     public void startShimmerEffect(){
         shimmerLayout1.startShimmerAnimation();
         homebg.setVisibility(View.INVISIBLE);
-        searchIcon.setText("Where to ?");
+        TextView textView = (TextView) searchIcon.getChildAt(0);
+        textView.setText("Where to ?");
         ratingBar.setVisibility(View.INVISIBLE);
         countText.setVisibility(View.INVISIBLE);
+
     }
 
     public void stopShimmerEffect(){
@@ -267,14 +277,13 @@ public class HomeFragment1 extends Fragment {
         shimmerLayout2.startShimmerAnimation();
         main_scroll.setVisibility(View.INVISIBLE);
         shimmer_scroll2.setVisibility(View.VISIBLE);
-
+        placeLayout1.setVisibility(View.INVISIBLE);
     }
 
     public void stopShimmerEffect2(){
         shimmerLayout2.stopShimmerAnimation();
         main_scroll.setVisibility(View.VISIBLE);
         shimmer_scroll2.setVisibility(View.INVISIBLE);
-
     }
 
 
@@ -309,6 +318,7 @@ public class HomeFragment1 extends Fragment {
 
                 if(currentUserData.currentPlaceId != null) {
 
+                    introLayout.setVisibility(View.INVISIBLE);
                     checkIfPlaceExistInDatabase(currentUserData.currentPlaceId);
                     checkIfSubPlacesExistInDatabase(currentUserData.currentPlaceId);
 
@@ -316,6 +326,7 @@ public class HomeFragment1 extends Fragment {
                     stopShimmerEffect();
                     stopShimmerEffect2();
                     mySwipeRefreshLayout.setRefreshing(false);
+                    introLayout.setVisibility(View.VISIBLE);
                 }
 
 
@@ -343,6 +354,8 @@ public class HomeFragment1 extends Fragment {
 
                 if(autoSuggest.containsKey(currentPlaceId)){
                     keepTrackOfPlaceData(currentPlaceId);
+                    placeSelected = true;
+                    introLayout.setVisibility(View.INVISIBLE);
                 }else{
                     stopShimmerEffect();
                     stopShimmerEffect2();
@@ -351,8 +364,11 @@ public class HomeFragment1 extends Fragment {
                     homebg.setImageResource(R.drawable.nat4);
                     ratingBar.setVisibility(View.INVISIBLE);
                     countText.setVisibility(View.INVISIBLE);
-                    searchIcon.setText("Where to ?");
+                    TextView textView = (TextView) searchIcon.getChildAt(0);
+                    textView.setText("Where to ?");
                     countText.setText("");
+                    placeSelected = false;
+                    introLayout.setVisibility(View.VISIBLE);
                 }
 
 
@@ -421,7 +437,8 @@ public class HomeFragment1 extends Fragment {
                                 countText.setVisibility(View.VISIBLE);
 
                                 try {
-                                    searchIcon.setText(currentPlace.getString("name"));
+                                    TextView textView = (TextView) searchIcon.getChildAt(0);
+                                    textView.setText(currentPlace.getString("name"));
                                     ratingBar.setRating(Float.valueOf(currentPlace.getJSONObject("userRatings").getString("average")));
                                     countText.setText(currentPlace.getJSONObject("userRatings").getString("count"));
                                 } catch (JSONException e) {
@@ -457,7 +474,8 @@ public class HomeFragment1 extends Fragment {
                     countText.setVisibility(View.VISIBLE);
 
                     try {
-                        searchIcon.setText(currentPlace.getString("name"));
+                        TextView textView = (TextView) searchIcon.getChildAt(0);
+                        textView.setText(currentPlace.getString("name"));
                         ratingBar.setRating(Float.valueOf(currentPlace.getJSONObject("userRatings").getString("average")));
                         countText.setText(currentPlace.getJSONObject("userRatings").getString("count"));
                     } catch (JSONException e) {
@@ -500,7 +518,7 @@ public class HomeFragment1 extends Fragment {
                             Map<String, Object> autoSuggest = (HashMap<String,Object>) dataSnapshot.getValue();
 
                             keepTrackOfSubPlacesData(currentPlaceId,autoSuggest.keySet());
-
+                            placeLayout1.setVisibility(View.VISIBLE);
                         }
 
                         @Override

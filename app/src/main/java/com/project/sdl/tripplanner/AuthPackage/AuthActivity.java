@@ -173,6 +173,7 @@ public class AuthActivity extends AppCompatActivity implements View.OnClickListe
 
                                                             if (user != null) {
                                                                 Intent intent = new Intent(getApplicationContext(), UserActivity.class);
+                                                                intent.putExtra("signup","true");
                                                                 startActivity(intent);
                                                                 finish();
                                                                 new Handler().postDelayed(new Runnable() {

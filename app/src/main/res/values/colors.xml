@@ -12,4 +12,39 @@
     <color name="shimmer_background_color1">#B2DFDB</color>
     <color name="editProfileText">#4c4c4c</color>
     <color name="blanckbacground">#86cfb7</color>
+
+    <color name="colorPrimary1">#3F51B5</color>
+    <color name="colorPrimaryDark1">#303F9F</color>
+    <color name="colorAccent1">#FF4081</color>
+
+    <!-- Screens background color-->
+    <color name="bg_screen2">#68C4A5</color>
+
+    <!-- dots inactive colors -->
+    <color name="dot_dark_screen2">#14a895</color>
+
+    <!-- dots active colors -->
+    <color name="dot_light_screen2">#8cf9eb</color>
+
+    <array name="array_dot_active">
+        <item>@color/dot_light_screen2</item>
+        <item>@color/dot_light_screen2</item>
+        <item>@color/dot_light_screen2</item>
+        <item>@color/dot_light_screen2</item>
+    </array>
+
+    <array name="array_dot_inactive">
+        <item>@color/dot_dark_screen2</item>
+        <item>@color/dot_dark_screen2</item>
+        <item>@color/dot_dark_screen2</item>
+        <item>@color/dot_dark_screen2</item>
+    </array>
+
+<!--    FOr profile Image-->
+    <color name="gradient_start">#5770f3</color>
+    <color name="gradient_end">#8e5aeb</color>
+    <color name="profile_desc">#D1D1FF</color>
+    <color name="bg_meta_container">#000000</color>
+    <color name="profile_default_tint">#e0e0e0</color>
+
 </resources>

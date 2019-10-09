@@ -21,21 +21,10 @@ import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.mikhaellopez.circularimageview.CircularImageView;
-import com.project.sdl.tripplanner.AuthPackage.User;
-import com.project.sdl.tripplanner.HomePackage.HomeFragment;
 import com.project.sdl.tripplanner.R;
-import com.project.sdl.tripplanner.UserPackage.UserActivity;
-
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
-
 /**
  * Created by Manish Chougule on 08-08-2019.
  */

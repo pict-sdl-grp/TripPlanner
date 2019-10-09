@@ -5,11 +5,10 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-    <uses-permission android:name="android.permission.CAMERA" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission. ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -22,12 +21,6 @@
 
         <activity android:name=".IntroPackage.WelcomeActivity"></activity>
         <activity android:name=".IntroPackage.PrefManager" />
-        <activity android:name=".NotificationsPackage.BasicMapsActivity" /> <!-- SDK CREDENTIALS -->
-
-        <activity android:name=".HomePackage.PlaceInfoPackage.WritePlaceReview"></activity>
-        <activity android:name=".HomePackage.PlaceInfoPackage.CalenderDialog"/>
-        <activity android:name=".HomePackage.PlaceInfoPackage.PlaceInfo" />
-
         <activity android:name=".TripsPackage.SelectToShareUserActivity"></activity>
         <activity android:name=".TripsPackage.SharedTripsActivity" />
         <activity android:name=".TripsPackage.SelectTripActivity" />
@@ -50,54 +43,30 @@
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
 
-
         <activity android:name=".ProfilePackage.Setting_Activity" />
-        <activity android:name=".ProfilePackage.EditProfile_Activity" />
+        <activity android:name=".ProfilePackage.EditProfile_Activity" /> <!-- Splash screen -->
         <activity
             android:name=".SplashScreen"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Black.NoTitleBar">
             <intent-filter>
-<!--                <action android:name="android.intent.action.VIEW" />-->
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
+        </activity> <!-- Main activity -->
         <activity android:name=".AuthPackage.AuthActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
-        </activity> <!-- Splash screen -->
+        </activity>
         <activity
             android:name=".UserPackage.UserActivity"
-            android:theme="@style/transparent" /> <!-- Main activity -->
+            android:theme="@style/transparent" />
         <activity android:name=".HomePackage.AutoSuggestPackage.MainSearchActivity" />
-
-        <meta-data
-            android:name="com.here.android.maps.appid"
-            android:value="4SxTSk1WVmA9G62J6qqD" />
-        <meta-data
-            android:name="com.here.android.maps.apptoken"
-            android:value="dHz3QjYEWM_cecRN_aAHqQ" />
-
-        <!-- cache directory file provider paths -->
-        <provider
-            android:name="android.support.v4.content.FileProvider"
-            android:authorities="${applicationId}.provider"
-            android:exported="false"
-            android:grantUriPermissions="true">
-            <meta-data
-                android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/file_path" />
-        </provider>
     </application>
-
-
-
 
 </manifest>

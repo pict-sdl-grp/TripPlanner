@@ -16,7 +16,6 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.CardView;
-import android.util.Base64;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -82,7 +81,6 @@ public class HomeFragment1 extends Fragment {
     SwipeRefreshLayout mySwipeRefreshLayout;
 
     SharedPreferences sharedPreferences;
-    SharedPreferences pref;
 
     ShimmerLayout shimmerLayout1;
     ShimmerLayout shimmerLayout2;
@@ -141,8 +139,6 @@ public class HomeFragment1 extends Fragment {
 
 
         sharedPreferences = getContext().getSharedPreferences("com.project.sdl.tripplanner", Context.MODE_PRIVATE);
-        pref = this.getActivity().getSharedPreferences(FirebaseAuth.getInstance().getCurrentUser().getUid(), Context.MODE_PRIVATE);
-
 
         mySwipeRefreshLayout.setOnRefreshListener(
                 new SwipeRefreshLayout.OnRefreshListener() {
@@ -865,22 +861,7 @@ public class HomeFragment1 extends Fragment {
                 CircularImageView circularImageView = new CircularImageView(getContext());
                 LinearLayout.LayoutParams params2 = new LinearLayout.LayoutParams(140, 140);
                 circularImageView.setLayoutParams(params2);
-                String imageCode = pref.getString("image","");
-
-                if(imageCode!=""){
-                    byte[] b = Base64.decode(imageCode, Base64.DEFAULT);
-                    Bitmap bitmap = BitmapFactory.decodeByteArray(b, 0, b.length);
-                    circularImageView.setImageBitmap(bitmap);
-
-                    Log.d("Profile Image","Selected Profile Image");
-
-                }else{
-                    Log.d("Profile Image","Default Profile Image");
-                    circularImageView.setImageResource(R.drawable.profile1);
-                }
-
-
-
+                circularImageView.setImageResource(R.drawable.profile1);
                 circularImageView.setBorderColor(Color.parseColor("#eeeeee"));
 
 

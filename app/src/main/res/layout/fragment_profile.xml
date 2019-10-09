@@ -248,7 +248,7 @@
                     android:layout_width="179dp"
                     android:layout_height="104dp"
                     android:layout_marginTop="8dp"
-                    android:layout_marginEnd="128dp"
+                    android:layout_marginEnd="84dp"
                     android:layout_marginBottom="8dp"
                     android:background="@drawable/bordertext"
                     android:ems="10"
@@ -278,7 +278,7 @@
                     android:visibility="invisible"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.24"
+                    app:layout_constraintHorizontal_bias="0.375"
                     app:layout_constraintStart_toEndOf="@+id/imageView4"
                     app:layout_constraintTop_toBottomOf="@+id/currenPlaceInProfile"
                     app:layout_constraintVertical_bias="0.104" />

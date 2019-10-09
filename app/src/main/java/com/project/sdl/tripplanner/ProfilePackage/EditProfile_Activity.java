@@ -58,7 +58,7 @@ public class EditProfile_Activity extends AppCompatActivity {
     FirebaseAuth mAuth;
     DatabaseReference mRef;
 
-    final static String PREF_DATA = "USER_DATA";
+//    final static String PREF_DATA = "USER_DATA";
     SharedPreferences.Editor editor ;
     SharedPreferences pref;
 
@@ -81,8 +81,8 @@ public class EditProfile_Activity extends AppCompatActivity {
         aboutYou = findViewById(R.id.aboutEdit);
         phoneNo = findViewById(R.id.phoneEdit);
 
-        editor = getSharedPreferences(PREF_DATA, Context.MODE_PRIVATE).edit();
-        pref = getSharedPreferences(PREF_DATA,Context.MODE_PRIVATE);
+        editor = getSharedPreferences(mUser.getUid(), Context.MODE_PRIVATE).edit();
+        pref = getSharedPreferences(mUser.getUid(),Context.MODE_PRIVATE);
 
         //Initially Displays the user data into fields
         displayData();

@@ -47,7 +47,7 @@ public class ProfileFragment extends Fragment {
     FirebaseAuth mAuth;
     DatabaseReference mRef;
 
-    SharedPreferences pref ;
+    SharedPreferences pref;
 
     @Nullable
     @Override
@@ -93,7 +93,8 @@ public class ProfileFragment extends Fragment {
         tick1 = root.findViewById(R.id.tick1Done);
         tick2 = root.findViewById(R.id.tick2Done);
 
-        pref = this.getActivity().getSharedPreferences(EditProfile_Activity.PREF_DATA, Context.MODE_PRIVATE);
+
+        pref = this.getActivity().getSharedPreferences(mUser.getUid(), Context.MODE_PRIVATE);
 
         displayUserData();
 
@@ -105,8 +106,9 @@ public class ProfileFragment extends Fragment {
     public void displayUserData(){
         mRef = FirebaseDatabase.getInstance().getReference("/users/" + mUser.getUid());
 
-        nameDisplay.setText(pref.getString(EditProfile_Activity.NAME,mUser.getDisplayName()));
-        emailDisplay.setText(mUser.getEmail());
+        String name = pref.getString(EditProfile_Activity.NAME,mUser.getDisplayName()) ;
+        nameDisplay.setText(name.length()<22?name:name.substring(0,20)+"...");
+        emailDisplay.setText(mUser.getEmail().length()>22 ? mUser.getEmail().substring(0,20)+"...":mUser.getEmail());
         currentPlace.setText("Pune, Maharashtra");
         phoneNo.setText(pref.getString(EditProfile_Activity.PHONE,null));
 

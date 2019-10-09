@@ -96,6 +96,7 @@ public class HomeFragment1 extends Fragment {
     JSONObject currentPlace;
     ArrayList<String> keysetArray;
     ArrayList<byte[]> placesImagesArray;
+    ArrayList<String> placesArray;
     ArrayList<byte[]> homeBgArray;
     TextView currentCityName;
     Boolean isFABOpen = false;
@@ -123,6 +124,7 @@ public class HomeFragment1 extends Fragment {
         storage = FirebaseStorage.getInstance();
         placesHolder = root.findViewById(R.id.placesHolder1);
         placesImagesArray = new ArrayList<byte[]>();
+        placesArray = new ArrayList<String>();
         fab = root.findViewById(R.id.fab);
         fab1 = root.findViewById(R.id.fab1);
         fab2 = root.findViewById(R.id.fab2);
@@ -131,7 +133,6 @@ public class HomeFragment1 extends Fragment {
 
 
         sharedPreferences = getContext().getSharedPreferences("com.project.sdl.tripplanner", Context.MODE_PRIVATE);
-
 
         mySwipeRefreshLayout.setOnRefreshListener(
                 new SwipeRefreshLayout.OnRefreshListener() {
@@ -290,6 +291,7 @@ public class HomeFragment1 extends Fragment {
                 startShimmerEffect2();
                 placesHolder.removeAllViews();
                 placesImagesArray.clear();
+                placesArray.clear();
                 onCompleteCount = 0;
 
 
@@ -621,6 +623,7 @@ public class HomeFragment1 extends Fragment {
                             e.printStackTrace();
                         }
                         placesImagesArray.add(bytes);
+                        placesArray.add(currentPlaceNearYou.toString());
                         placeBlock.setId(placesImagesArray.indexOf(bytes));
 
                         placesHolder.addView(placeBlock);
@@ -654,6 +657,7 @@ public class HomeFragment1 extends Fragment {
 
                             try {
                                 sharedPreferences.edit().putString("placesImagesArray", ObjectSerializer.serialize(placesImagesArray)).apply();
+                                sharedPreferences.edit().putString("placesArray", ObjectSerializer.serialize(placesArray)).apply();
                             } catch (IOException e) {
                                 e.printStackTrace();
                             }
@@ -682,15 +686,23 @@ public class HomeFragment1 extends Fragment {
 
             } else{
                     placesImagesArray = (ArrayList<byte[]>) ObjectSerializer.deserialize(sharedPreferences.getString("placesImagesArray", ObjectSerializer.serialize(new ArrayList<byte[]>())));
+                    placesArray = (ArrayList<String>) ObjectSerializer.deserialize(sharedPreferences.getString("placesArray", ObjectSerializer.serialize(new ArrayList<String>())));
                     Log.i("onDataChange: ","else im");
                     Bitmap bm = BitmapFactory.decodeByteArray(placesImagesArray.get(index), 0, placesImagesArray.get(index).length);
+
+                    JSONObject jsonObject = null;
+                    try {
+                        jsonObject = new JSONObject(placesArray.get(index));
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
 
                     imageItem.setImageBitmap(bm);
                     cardView.addView(imageItem);
                     placeBlock.addView(cardView);
-                    placeBlock.setTag(currentPlaceNearYou.toString());
+                    placeBlock.setTag(placesArray.get(index));
                     try {
-                        textView.setText(currentPlaceNearYou.getString("name"));
+                        textView.setText(jsonObject.getString("name"));
                         placeBlock.addView(textView);
                     } catch (JSONException e) {
                         e.printStackTrace();

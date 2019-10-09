@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/constraintLayout2"
     android:layout_width="match_parent"
-    android:layout_height="800dp">
+    android:layout_height="match_parent">
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
@@ -22,7 +22,7 @@
             <android.support.constraint.ConstraintLayout
                 android:id="@+id/constraintLayout"
                 android:layout_width="match_parent"
-                android:layout_height="220dp"
+                android:layout_height="230dp"
                 android:background="@color/colorPrimary"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="1.0"
@@ -52,35 +52,39 @@
 
                 <TextView
                     android:id="@+id/nameInProfile"
-                    android:layout_width="210dp"
+                    android:layout_width="220dp"
                     android:layout_height="39dp"
-                    android:layout_marginTop="68dp"
-                    android:layout_marginEnd="24dp"
+                    android:layout_marginTop="64dp"
+                    android:layout_marginEnd="8dp"
                     android:background="@drawable/round_corner_display"
+                    android:fontFamily="monospace"
                     android:hint="name"
                     android:paddingLeft="15dp"
                     android:paddingTop="8dp"
-                    android:text=""
+                    android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="Chaitanya Sonavane" />
 
                 <TextView
                     android:id="@+id/emailProf"
-                    android:layout_width="208dp"
+                    android:layout_width="220dp"
                     android:layout_height="40dp"
                     android:layout_marginStart="8dp"
-                    android:layout_marginTop="128dp"
+                    android:layout_marginTop="120dp"
                     android:layout_marginEnd="8dp"
                     android:background="@drawable/round_corner_display"
+                    android:fontFamily="monospace"
+                    android:textStyle="bold"
                     android:hint="email"
                     android:inputType="phone"
                     android:paddingLeft="15dp"
                     android:paddingTop="8dp"
-                    android:text=""
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.9"
+                    app:layout_constraintHorizontal_bias="1.0"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="csonwanecs18@gmail.com" />
 
                 <ImageView
                     android:id="@+id/settingInProfile"
@@ -88,10 +92,10 @@
                     android:layout_height="33dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.962"
+                    app:layout_constraintHorizontal_bias="0.95"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.058"
+                    app:layout_constraintVertical_bias="0.914"
                     app:srcCompat="@drawable/settings" />
 
             </android.support.constraint.ConstraintLayout>
@@ -111,26 +115,27 @@
 
             <android.support.constraint.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="450dp"
-                android:background="@color/backgrounDisplay">
+                android:layout_height="497dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginRight="16dp"
+                android:background="@color/backgrounDisplay"
+                app:layout_constraintEnd_toEndOf="parent">
 
 
                 <ImageView
                     android:id="@+id/imageView2"
-                    android:layout_width="30dp"
-                    android:layout_height="41dp"
+                    android:layout_width="32dp"
+                    android:layout_height="43dp"
                     android:layout_marginStart="36dp"
                     android:layout_marginTop="20dp"
                     android:layout_marginEnd="8dp"
-                    android:layout_marginBottom="8dp"
-                    android:src="@drawable/phone"
-                    app:layout_constraintBottom_toTopOf="@+id/imageView"
+                    android:src="@drawable/country"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.216" />
-
+                    app:layout_constraintVertical_bias="0.347" />
 
                 <ImageView
                     android:id="@+id/imageView"
@@ -139,11 +144,10 @@
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="8dp"
-                    android:layout_marginBottom="8dp"
-                    android:src="@drawable/country"
-                    app:layout_constraintBottom_toTopOf="@+id/imageView4"
+                    android:src="@drawable/edit"
+                    app:layout_constraintBottom_toTopOf="@+id/imageView2"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.076"
+                    app:layout_constraintHorizontal_bias="0.093"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintVertical_bias="0.715" />
@@ -153,32 +157,26 @@
                     android:layout_width="30dp"
                     android:layout_height="35dp"
                     android:layout_marginStart="36dp"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginTop="28dp"
                     android:layout_marginEnd="8dp"
-                    android:layout_marginBottom="8dp"
-                    app:layout_constraintBottom_toTopOf="@+id/divider3"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.391"
-                    app:srcCompat="@drawable/edit" />
+                    app:srcCompat="@drawable/phone" />
 
                 <ImageView
                     android:id="@+id/tick1Done"
                     android:layout_width="32dp"
                     android:layout_height="29dp"
                     android:layout_marginStart="8dp"
-                    android:layout_marginTop="8dp"
                     android:layout_marginEnd="8dp"
-                    android:layout_marginBottom="52dp"
+                    android:layout_marginBottom="44dp"
                     android:visibility="invisible"
                     app:layout_constraintBottom_toTopOf="@+id/tick2Done"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.114"
+                    app:layout_constraintHorizontal_bias="0.2"
                     app:layout_constraintStart_toEndOf="@+id/phoneInProfile"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.74"
                     app:srcCompat="@drawable/done" />
 
                 <ImageView
@@ -186,11 +184,11 @@
                     android:layout_width="32dp"
                     android:layout_height="30dp"
                     android:layout_marginStart="20dp"
-                    android:layout_marginTop="116dp"
+                    android:layout_marginTop="100dp"
                     android:layout_marginEnd="8dp"
                     android:visibility="invisible"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.019"
+                    app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toEndOf="@+id/currenPlaceInProfile"
                     app:layout_constraintTop_toTopOf="parent"
                     app:srcCompat="@drawable/done" />
@@ -210,6 +208,9 @@
                     android:paddingTop="5dp"
                     android:paddingBottom="5dp"
                     android:textSize="14sp"
+                    tools:text="Pune, Maharashtra"
+                    android:fontFamily="monospace"
+                    android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.05"
                     app:layout_constraintStart_toEndOf="@+id/imageView"
@@ -231,6 +232,9 @@
                     android:paddingTop="5dp"
                     android:paddingBottom="5dp"
                     android:textSize="14sp"
+                    android:fontFamily="monospace"
+                    android:textStyle="bold"
+                    tools:text="+918888193674"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.05"
@@ -238,13 +242,13 @@
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintVertical_bias="0.041" />
 
+
                 <TextView
                     android:id="@+id/aboutYouInProfile"
                     android:layout_width="179dp"
                     android:layout_height="104dp"
-                    android:layout_marginStart="8dp"
                     android:layout_marginTop="8dp"
-                    android:layout_marginEnd="8dp"
+                    android:layout_marginEnd="128dp"
                     android:layout_marginBottom="8dp"
                     android:background="@drawable/bordertext"
                     android:ems="10"
@@ -257,38 +261,27 @@
                     android:visibility="visible"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.051"
-                    app:layout_constraintStart_toEndOf="@+id/imageView4"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintVertical_bias="0.432" />
-
 
                 <TextView
                     android:id="@+id/aboutYou2"
                     android:layout_width="246dp"
                     android:layout_height="wrap_content"
                     android:background="@drawable/bordertext"
-                    android:paddingLeft="7dp"
-                    android:paddingTop="5dp"
-                    android:paddingBottom="5dp"
+                    android:fontFamily="monospace"
+                    android:paddingLeft="8dp"
+                    android:paddingTop="8dp"
+                    android:paddingBottom="8dp"
                     android:textSize="14sp"
+                    android:textStyle="bold"
                     android:visibility="invisible"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.161"
+                    app:layout_constraintHorizontal_bias="0.24"
                     app:layout_constraintStart_toEndOf="@+id/imageView4"
                     app:layout_constraintTop_toBottomOf="@+id/currenPlaceInProfile"
-                    app:layout_constraintVertical_bias="0.105" />
-
-                <View
-                    android:id="@+id/divider3"
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginBottom="8dp"
-                    android:background="#000"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent" />
+                    app:layout_constraintVertical_bias="0.104" />
 
             </android.support.constraint.ConstraintLayout>
         </LinearLayout>

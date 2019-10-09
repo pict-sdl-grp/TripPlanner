@@ -23,12 +23,13 @@ public class User {
     }
 
 
-    public User(String username,String email,String phoneNo,String aboutYou,String currentPlace,boolean isEmailVerified) {
+    public User(String username,String email,String phoneNo,String aboutYou,String currentPlace,boolean isEmailVerified,String currentPlaceId) {
         this.username = username;
         this.phoneNo = phoneNo;
         this.email = email;
         this.aboutYou = aboutYou;
         this.currentPlace = currentPlace;
         this.isEmailVerified = isEmailVerified;
+        this.currentPlaceId = currentPlaceId;
     }
 }

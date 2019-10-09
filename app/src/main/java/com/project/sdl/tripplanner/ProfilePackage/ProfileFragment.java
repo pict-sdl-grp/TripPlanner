@@ -1,6 +1,8 @@
 package com.project.sdl.tripplanner.ProfilePackage;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
@@ -8,6 +10,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,7 +28,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.mikhaellopez.circularimageview.CircularImageView;
 import com.project.sdl.tripplanner.AuthPackage.User;
+import com.project.sdl.tripplanner.HomePackage.HomeFragment;
 import com.project.sdl.tripplanner.R;
+import com.project.sdl.tripplanner.UserPackage.UserActivity;
 
 import java.io.InputStream;
 import java.net.HttpURLConnection;
@@ -47,11 +52,13 @@ public class ProfileFragment extends Fragment {
 
     CircularImageView profileImage;
     ImageView setting;
-
+    ImageView tick1,tick2;
 
     FirebaseUser mUser ;
     FirebaseAuth mAuth;
     DatabaseReference mRef;
+
+    SharedPreferences pref ;
 
     @Nullable
     @Override
@@ -68,19 +75,18 @@ public class ProfileFragment extends Fragment {
 //        },1000);
 
 
+        profileImage = root.findViewById(R.id.profileImageInProfile);
         setting =   root.findViewById(R.id.settingInProfile);
         editProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent editProfile_intent = new Intent(getContext(),EditProfile_Activity.class);
-                startActivity(editProfile_intent);
+                startActivity(new Intent(getContext(),EditProfile_Activity.class));
             }
         });
         setting.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent setting_intent=new Intent(getContext(),Setting_Activity.class);
-                startActivity(setting_intent);
+                startActivity(new Intent(getContext(),Setting_Activity.class));
             }
         });
 
@@ -95,8 +101,10 @@ public class ProfileFragment extends Fragment {
         phoneNo = root.findViewById(R.id.phoneInProfile);
         aboutYou1 = root.findViewById(R.id.aboutYouInProfile);
         aboutYou2 = root.findViewById(R.id.aboutYou2);
+        tick1 = root.findViewById(R.id.tick1Done);
+        tick2 = root.findViewById(R.id.tick2Done);
 
-
+        pref = this.getActivity().getSharedPreferences(EditProfile_Activity.PREF_DATA, Context.MODE_PRIVATE);
 
         displayUserData();
 
@@ -108,30 +116,51 @@ public class ProfileFragment extends Fragment {
     public void displayUserData(){
         mRef = FirebaseDatabase.getInstance().getReference("/users/" + mUser.getUid());
 
-        mRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                User userData = dataSnapshot.getValue(User.class);
+        nameDisplay.setText(pref.getString(EditProfile_Activity.NAME,mUser.getDisplayName()));
+        emailDisplay.setText(mUser.getEmail());
+        currentPlace.setText("Pune, Maharashtra");
+        phoneNo.setText(pref.getString(EditProfile_Activity.PHONE,null));
 
-                nameDisplay.setText(userData.username);
-                emailDisplay.setText(mUser.getEmail());
-                currentPlace.setText(userData.currentPlace);
-                phoneNo.setText(userData.phoneNo);
+        if(pref.getString(EditProfile_Activity.PLACE,null)!=null){
+            tick2.setVisibility(View.VISIBLE);
+        }else{
+            tick2.setVisibility(View.INVISIBLE);
+        }
+        if(pref.getString(EditProfile_Activity.PHONE,null)!=null){
+            tick1.setVisibility(View.VISIBLE);
+        }else{
+            tick1.setVisibility(View.INVISIBLE);
+        }
 
-                if(userData.aboutYou !=null){
-                    aboutYou2.setVisibility(View.VISIBLE);
-                    aboutYou2.setText(userData.aboutYou);
-                    aboutYou1.setVisibility(View.INVISIBLE);
-                }
-            }
+        if(pref.getString(EditProfile_Activity.ABOUTYOU,null) !=null){
+            aboutYou2.setVisibility(View.VISIBLE);
+            aboutYou2.setText(pref.getString(EditProfile_Activity.ABOUTYOU,null));
+            aboutYou1.setVisibility(View.INVISIBLE);
+        }
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                Log.e("onCancelled","Datasnapshot not caught");
-            }
-        });
+        String imageCode = pref.getString(EditProfile_Activity.PROFILE,"");
+
+        if(imageCode!=""){
+            byte[] b = Base64.decode(imageCode, Base64.DEFAULT);
+            Bitmap bitmap = BitmapFactory.decodeByteArray(b, 0, b.length);
+            profileImage.setImageBitmap(bitmap);
+            Log.d("Profile Image","Selected Profile Image");
+
+        }else{
+            profileImage.setImageResource(R.drawable.profile1);
+            Log.d("Profile Image","Default Profile Image");
+        }
+
     }
-//    public class ImageLoadTask extends AsyncTask<Void, Void, Bitmap> {
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        displayUserData();
+    }
+
+    //    public class ImageLoadTask extends AsyncTask<Void, Void, Bitmap> {
 //
 //        private String url;
 //        private ImageView imageView;

@@ -30,6 +30,8 @@ public class CalenderDialog extends AppCompatActivity {
 
         calendarView = findViewById(R.id.calendarView);
 
+        calendarView.setMaxDate(System.currentTimeMillis());
+
 
 
         calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
@@ -47,6 +49,7 @@ public class CalenderDialog extends AppCompatActivity {
 
 
     }
+
 
 
 

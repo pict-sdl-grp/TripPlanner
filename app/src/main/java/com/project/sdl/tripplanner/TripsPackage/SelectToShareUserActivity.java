@@ -8,12 +8,12 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -21,6 +21,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.mikhaellopez.circularimageview.CircularImageView;
 import com.project.sdl.tripplanner.R;
 
 import org.json.JSONArray;
@@ -177,6 +178,7 @@ public class SelectToShareUserActivity extends AppCompatActivity {
                         DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
                         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                         mDatabase.child("sharedTrips/"+paramKey+"/"+(paramKey+"separator"+user.getUid())).push().setValue(getIntent().getStringExtra("selectedTripId"));
+                        mDatabase.child("trips/"+user.getUid()+"/"+getIntent().getStringExtra("selectedTripId")+"/sharedWith").push().setValue(paramKey);
                         Toast.makeText(SelectToShareUserActivity.this, "Shared successfully!!!", Toast.LENGTH_LONG).show();
                     }
 
@@ -185,6 +187,7 @@ public class SelectToShareUserActivity extends AppCompatActivity {
                     DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
                     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                     mDatabase.child("sharedTrips/"+paramKey+"/"+(paramKey+"separator"+user.getUid())).push().setValue(getIntent().getStringExtra("selectedTripId"));
+                    mDatabase.child("trips/"+user.getUid()+"/"+getIntent().getStringExtra("selectedTripId")+"/sharedWith").push().setValue(paramKey);
                     Toast.makeText(SelectToShareUserActivity.this, "Shared successfully!!!", Toast.LENGTH_LONG).show();
                 }
 
@@ -206,7 +209,7 @@ public class SelectToShareUserActivity extends AppCompatActivity {
         LinearLayout.LayoutParams params1 = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         listItemBlock.setLayoutParams(params1);
         ViewGroup.MarginLayoutParams params2 = new ViewGroup.MarginLayoutParams(listItemBlock.getLayoutParams());
-        params2.setMargins(0, 0,0, 40);
+        params2.setMargins(0, 0,0, 10);
         RelativeLayout.LayoutParams layoutParams1 = new RelativeLayout.LayoutParams(params2);
         listItemBlock.setLayoutParams(layoutParams1);
         listItemBlock.setOrientation(LinearLayout.HORIZONTAL);
@@ -216,11 +219,44 @@ public class SelectToShareUserActivity extends AppCompatActivity {
         listItemBlock.setGravity(Gravity.CENTER_VERTICAL);
         listItemBlock.setTag(key);
 
-        ImageView imageView = new ImageView(this);
-        LinearLayout.LayoutParams params3 = new LinearLayout.LayoutParams(120, 120);
-        imageView.setLayoutParams(params3);
-        imageView.setScaleType(ImageView.ScaleType.FIT_XY);
+        final CircularImageView imageView = new CircularImageView(getApplicationContext());
+        LinearLayout.LayoutParams paramsw = new LinearLayout.LayoutParams((int) getResources().getDimension(R.dimen.card_review_image_width), (int) getResources().getDimension(R.dimen.card_review_image_height));
+        imageView.setLayoutParams(paramsw);
+        imageView.setBorderColor(Color.parseColor("#eeeeee"));
+//        ViewGroup.MarginLayoutParams paramsl = new ViewGroup.MarginLayoutParams(imageView.getLayoutParams());
+//        paramsl.setMargins((int) getResources().getDimension(R.dimen.card_review_image_marginLeft), (int) getResources().getDimension(R.dimen.card_review_image_marginTop), 0, 0);
+//        RelativeLayout.LayoutParams layoutParaml = new RelativeLayout.LayoutParams(paramsl);
+//        imageView.setLayoutParams(layoutParaml);
         imageView.setImageResource(R.drawable.profile1);
+
+        final FirebaseDatabase database = FirebaseDatabase.getInstance();
+        final DatabaseReference ref = database.getReference("users/"+key);
+        ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Map<String, Object> userHash = (HashMap<String,Object>) dataSnapshot.getValue();
+
+                if(String.valueOf(userHash.get("photoUrl")) != "null") {
+                    Log.i("photoUrlooo", String.valueOf(userHash.get("photoUrl")));
+
+                    Glide.with(getApplicationContext())
+                            .load(String.valueOf(userHash.get("photoUrl")))
+                            .thumbnail(Glide.with(getApplicationContext()).load(R.drawable.profile1))
+                            .into(imageView);
+
+
+                    ref.removeEventListener(this);
+
+                }
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
 
         TextView textView =new TextView(this);
         LinearLayout.LayoutParams params4 = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);

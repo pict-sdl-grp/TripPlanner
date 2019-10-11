@@ -4,11 +4,11 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.Typeface;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -27,6 +27,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -461,22 +462,22 @@ public class TripInfoActivity extends AppCompatActivity {
                     StorageReference storageRef = FirebaseStorage.getInstance().getReference();
 
                     try {
-                        storageRef.child("places/" + jsonObject.getString("id") + "/" + jsonObject.getJSONArray("imageRefs").get(0)).getBytes(Long.MAX_VALUE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
 
+                        storageRef.child("places/" + jsonObject.getString("id") + "/" + jsonObject.getJSONArray("imageRefs").get(0)).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                             @Override
-                            public void onSuccess(byte[] bytes) {
-                                // Use the bytes to display the image
-                                Bitmap bm = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-                                tripPlacesImagesArray.add(bytes);
-                                imageView.setImageBitmap(bm);
+                            public void onSuccess(Uri uri) {
 
-                            }
-                        }).addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception exception) {
-                                // Handle any errors
+                                String imageURL = uri.toString();
+
+                                if(getApplicationContext() != null) {
+                                    Glide.with(getApplicationContext())
+                                            .load(imageURL)
+                                            .into(imageView);
+                                }
+
                             }
                         });
+
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -594,26 +595,25 @@ public class TripInfoActivity extends AppCompatActivity {
         imageView.setScaleType(ImageView.ScaleType.FIT_XY);
         imageView.setImageResource(R.drawable.nat4);
 
-
         StorageReference storageRef = FirebaseStorage.getInstance().getReference();
 
         try {
-            storageRef.child("places/" + jsonObject.getString("id") + "/" + jsonObject.getJSONArray("imageRefs").get(0)).getBytes(Long.MAX_VALUE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
 
+            storageRef.child("places/" + jsonObject.getString("id") + "/" + jsonObject.getJSONArray("imageRefs").get(0)).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                 @Override
-                public void onSuccess(byte[] bytes) {
-                    // Use the bytes to display the image
-                    Bitmap bm = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-                    tripPlacesImagesArray.add(bytes);
-                    imageView.setImageBitmap(bm);
+                public void onSuccess(Uri uri) {
 
-                }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception exception) {
-                    // Handle any errors
+                    String imageURL = uri.toString();
+
+                    if(getApplicationContext() != null) {
+                        Glide.with(getApplicationContext())
+                                .load(imageURL)
+                                .into(imageView);
+                    }
+
                 }
             });
+
         } catch (JSONException e) {
             e.printStackTrace();
         }

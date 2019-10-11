@@ -1,14 +1,12 @@
 package com.project.sdl.tripplanner.ProfilePackage;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,12 +15,20 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.mikhaellopez.circularimageview.CircularImageView;
 import com.project.sdl.tripplanner.R;
+
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Created by Manish Chougule on 08-08-2019.
  */
@@ -67,7 +73,7 @@ public class ProfileFragment extends Fragment {
         editProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(getContext(),EditProfile_Activity.class));
+                startActivityForResult(new Intent(getContext(),EditProfile_Activity.class),0);
             }
         });
         setting.setOnClickListener(new View.OnClickListener() {
@@ -127,18 +133,37 @@ public class ProfileFragment extends Fragment {
             aboutYou1.setVisibility(View.INVISIBLE);
         }
 
-        String imageCode = pref.getString(EditProfile_Activity.PROFILE,"");
 
-        if(imageCode!=""){
-            byte[] b = Base64.decode(imageCode, Base64.DEFAULT);
-            Bitmap bitmap = BitmapFactory.decodeByteArray(b, 0, b.length);
-            profileImage.setImageBitmap(bitmap);
-            Log.d("Profile Image","Selected Profile Image");
+        final FirebaseDatabase database = FirebaseDatabase.getInstance();
+        final DatabaseReference ref = database.getReference("users/"+mUser.getUid());
+        ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Map<String, Object> userHash = (HashMap<String,Object>) dataSnapshot.getValue();
+                Log.i("photoUrlppp", String.valueOf(userHash.get("photoUrl")));
 
-        }else{
-            profileImage.setImageResource(R.drawable.profile1);
-            Log.d("Profile Image","Default Profile Image");
-        }
+                if(String.valueOf(userHash.get("photoUrl")) != "null") {
+//                    RequestOptions requestOptions = new RequestOptions();
+//                    requestOptions.placeholder(R.drawable.profile1);
+//                    requestOptions.error(R.drawable.profile1);
+
+                    if(getContext() != null) {
+                        Glide.with(getContext())
+//                                .setDefaultRequestOptions(requestOptions)
+                                .load(String.valueOf(userHash.get("photoUrl")))
+                                .thumbnail(Glide.with(getContext()).load(R.drawable.profile1))
+                                .into(profileImage);
+                    }
+                }
+
+                ref.removeEventListener(this);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
 
     }
 
@@ -147,39 +172,25 @@ public class ProfileFragment extends Fragment {
         super.onResume();
 
         displayUserData();
+
     }
 
-    //    public class ImageLoadTask extends AsyncTask<Void, Void, Bitmap> {
-//
-//        private String url;
-//        private ImageView imageView;
-//
-//        public ImageLoadTask(String url, ImageView imageView) {
-//            this.url = url;
-//            this.imageView = imageView;
-//        }
-//
-//        @Override
-//        protected Bitmap doInBackground(Void... params) {
-//            try {
-//                URL urlConnection = new URL(url);
-//                HttpURLConnection connection = (HttpURLConnection) urlConnection
-//                        .openConnection();
-//                connection.setDoInput(true);
-//                connection.connect();
-//                InputStream input = connection.getInputStream();
-//                Bitmap myBitmap = BitmapFactory.decodeStream(input);
-//                return myBitmap;
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//            }
-//            return null;
-//        }
-//
-//        @Override
-//        protected void onPostExecute(Bitmap result) {
-//            super.onPostExecute(result);
-//            imageView.setImageBitmap(result);
-//        }
-//    }
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch(requestCode) {
+            case (0) : {
+                if (resultCode == Activity.RESULT_OK) {
+                    if(data != null) {
+                        Log.i("photop", "llllll");
+                        String photoUrl = data.getStringExtra("photoUrl");
+                            Glide.with(getContext())
+                                    .load(photoUrl)
+                                    .into(profileImage);
+                    }
+                }
+                break;
+            }
+        }
+    }
 }

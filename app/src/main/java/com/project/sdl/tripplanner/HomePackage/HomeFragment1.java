@@ -3,14 +3,12 @@ package com.project.sdl.tripplanner.HomePackage;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.Typeface;
 import android.graphics.drawable.LayerDrawable;
+import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
@@ -28,7 +26,7 @@ import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
-import com.google.android.gms.tasks.OnFailureListener;
+import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -45,14 +43,12 @@ import com.project.sdl.tripplanner.HomePackage.AutoSuggestPackage.MainSearchActi
 import com.project.sdl.tripplanner.HomePackage.PlaceInfoPackage.PlaceInfo;
 import com.project.sdl.tripplanner.HomePackage.PlaceInfoPackage.ShowAllReviews;
 import com.project.sdl.tripplanner.HomePackage.PlaceInfoPackage.WritePlaceReview;
-import com.project.sdl.tripplanner.ObjectSerializer;
 import com.project.sdl.tripplanner.R;
 import com.project.sdl.tripplanner.TripsPackage.CreateTripFormActivity;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -97,9 +93,9 @@ public class HomeFragment1 extends Fragment {
     JSONObject currentLocation;
     JSONObject currentPlace;
     ArrayList<String> keysetArray;
-    ArrayList<byte[]> placesImagesArray;
+    ArrayList<String> placesImagesArray;
     ArrayList<String> placesArray;
-    ArrayList<byte[]> homeBgArray;
+    ArrayList<String> homeBgArray;
     TextView currentCityName;
     Boolean isFABOpen = false;
     int onCompleteCount = 0;
@@ -127,7 +123,7 @@ public class HomeFragment1 extends Fragment {
         userReviewContainer = root.findViewById(R.id.userReviewsContainer);
         storage = FirebaseStorage.getInstance();
         placesHolder = root.findViewById(R.id.placesHolder1);
-        placesImagesArray = new ArrayList<byte[]>();
+        placesImagesArray = new ArrayList<String>();
         placesArray = new ArrayList<String>();
         fab = root.findViewById(R.id.fab);
         fab1 = root.findViewById(R.id.fab1);
@@ -173,6 +169,8 @@ public class HomeFragment1 extends Fragment {
         });
 
 
+        sharedPreferences.edit().remove("placesImagesArray").commit();
+        sharedPreferences.edit().remove("homeBg").commit();
         searchIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -407,55 +405,37 @@ public class HomeFragment1 extends Fragment {
 
                 }
 
-                try {
-                    homeBgArray = (ArrayList<byte[]>) ObjectSerializer.deserialize(sharedPreferences.getString("homeBg", ObjectSerializer.serialize(new ArrayList<byte[]>())));
-                } catch (IOException e) {
-                    e.printStackTrace();
-
-                }
-
-                if(homeBgArray.size() == 0){
 
                     try {
                         System.out.printf("JSON: %s", currentPlace.toString(2));
 
                         StorageReference storageRef = storage.getReference();
-                        storageRef.child("places/" + currentPlaceId + "/" + currentPlace.getJSONArray("imageRefs").get(0)).getBytes(Long.MAX_VALUE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+
+                        storageRef.child("places/" + currentPlaceId + "/" + currentPlace.getJSONArray("imageRefs").get(0)).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                             @Override
-                            public void onSuccess(byte[] bytes) {
-                                // Use the bytes to display the image
-                                System.out.println(bytes);
-                                Bitmap bm = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-                                homebg.setImageBitmap(bm);
-                                homeBgArray.add(bytes);
-                                try {
-                                    sharedPreferences.edit().putString("homeBg", ObjectSerializer.serialize(homeBgArray)).apply();
-                                } catch (IOException e) {
-                                    e.printStackTrace();
+                            public void onSuccess(Uri uri) {
+
+                                String imageURL = uri.toString();
+
+                                if(getContext() != null) {
+                                    Glide.with(getContext())
+                                            .load(imageURL)
+                                            .into(homebg);
                                 }
+
                                 ratingBar.setVisibility(View.VISIBLE);
                                 countText.setVisibility(View.VISIBLE);
 
                                 try {
                                     TextView textView = (TextView) searchIcon.getChildAt(0);
                                     textView.setText(currentPlace.getString("name"));
-                                    ratingBar.setRating(Float.valueOf(currentPlace.getJSONObject("userRatings").getString("average")));
-                                    countText.setText(currentPlace.getJSONObject("userRatings").getString("count"));
+//                                    ratingBar.setRating(Float.valueOf(currentPlace.getJSONObject("userRatings").getString("average")));
+//                                    countText.setText(currentPlace.getJSONObject("userRatings").getString("count"));
                                 } catch (JSONException e) {
                                     e.printStackTrace();
                                 }
 
                                 stopShimmerEffect();
-
-
-                            }
-                        }).addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception exception) {
-                                // Handle any errors
-                                stopShimmerEffect();
-                                mySwipeRefreshLayout.setRefreshing(false);
-
                             }
                         });
 
@@ -464,30 +444,6 @@ public class HomeFragment1 extends Fragment {
                         e.printStackTrace();
                     }
                     Log.i("onDataChange: ","if");
-
-                }else{
-                    Log.i("onDataChange: ","else");
-                    Bitmap bm = BitmapFactory.decodeByteArray(homeBgArray.get(0), 0, homeBgArray.get(0).length);
-                    homebg.setImageBitmap(bm);
-
-                    ratingBar.setVisibility(View.VISIBLE);
-                    countText.setVisibility(View.VISIBLE);
-
-                    try {
-                        TextView textView = (TextView) searchIcon.getChildAt(0);
-                        textView.setText(currentPlace.getString("name"));
-                        ratingBar.setRating(Float.valueOf(currentPlace.getJSONObject("userRatings").getString("average")));
-                        countText.setText(currentPlace.getJSONObject("userRatings").getString("count"));
-                    } catch (JSONException e) {
-                        stopShimmerEffect();
-                        e.printStackTrace();
-                    }
-
-
-                    stopShimmerEffect();
-//                    mySwipeRefreshLayout.setRefreshing(false);
-                }
-
 
 
             }
@@ -591,7 +547,7 @@ public class HomeFragment1 extends Fragment {
             placeBlock.setOrientation(LinearLayout.VERTICAL);
 
             final CardView cardView = new CardView(getContext());
-            LinearLayout.LayoutParams paramt = new LinearLayout.LayoutParams(400, 400);
+            LinearLayout.LayoutParams paramt = new LinearLayout.LayoutParams((int) getResources().getDimension(R.dimen.place_image_width), (int) getResources().getDimension(R.dimen.place_image_width));
             cardView.setLayoutParams(paramt);
             cardView.setRadius(40);
 
@@ -600,37 +556,29 @@ public class HomeFragment1 extends Fragment {
 
 
             final TextView textView = new TextView(getContext());
-            LinearLayout.LayoutParams parmw = new LinearLayout.LayoutParams(400, ViewGroup.LayoutParams.WRAP_CONTENT);
+            LinearLayout.LayoutParams parmw = new LinearLayout.LayoutParams((int) getResources().getDimension(R.dimen.place_image_width), ViewGroup.LayoutParams.WRAP_CONTENT);
             textView.setLayoutParams(parmw);
             textView.setPadding(8, 8, 8, 8);
             textView.setTextSize(14);
             textView.setGravity(Gravity.CENTER_HORIZONTAL);
 
-
             try {
-                Log.i("placesImagesArray", String.valueOf((ArrayList<byte[]>) ObjectSerializer.deserialize(sharedPreferences.getString("placesImagesArray", ObjectSerializer.serialize(new ArrayList<byte[]>())))));
-
-
-                if(((ArrayList<byte[]>) ObjectSerializer
-                        .deserialize(sharedPreferences
-                                .getString("placesImagesArray",
-                                        ObjectSerializer
-                                                .serialize(new ArrayList<byte[]>())))).size() == 0){
-
-
-            try {
-                Log.i("onDataChange: ","if im");
+                Log.i("onDataChange: ", "if im");
                 System.out.printf("JSON: %s", currentPlaceNearYou.toString(2));
                 StorageReference storageRef = storage.getReference();
 
-                storageRef.child("places/" + id + "/" + currentPlaceNearYou.getJSONArray("imageRefs").get(0)).getBytes(Long.MAX_VALUE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
-
+                storageRef.child("places/" + id + "/" + currentPlaceNearYou.getJSONArray("imageRefs").get(0)).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                     @Override
-                    public void onSuccess(byte[] bytes) {
-                        // Use the bytes to display the image
-                        System.out.println(bytes);
-                        Bitmap bm = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-                        imageItem.setImageBitmap(bm);
+                    public void onSuccess(Uri uri) {
+
+                        String imageURL = uri.toString();
+
+                        if(getContext() != null) {
+                            Glide.with(getContext())
+                                    .load(imageURL)
+                                    .into(imageItem);
+                        }
+
                         cardView.addView(imageItem);
                         placeBlock.addView(cardView);
                         placeBlock.setTag(currentPlaceNearYou.toString());
@@ -640,9 +588,9 @@ public class HomeFragment1 extends Fragment {
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
-                        placesImagesArray.add(bytes);
+                        placesImagesArray.add(imageURL);
                         placesArray.add(currentPlaceNearYou.toString());
-                        placeBlock.setId(placesImagesArray.indexOf(bytes));
+                        placeBlock.setId(placesImagesArray.indexOf(imageURL));
 
                         placesHolder.addView(placeBlock);
 
@@ -671,26 +619,11 @@ public class HomeFragment1 extends Fragment {
                                 });
                             }
 
-                            Log.i("shimmer","stopped");
-
-                            try {
-                                sharedPreferences.edit().putString("placesImagesArray", ObjectSerializer.serialize(placesImagesArray)).apply();
-                                sharedPreferences.edit().putString("placesArray", ObjectSerializer.serialize(placesArray)).apply();
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
+                            Log.i("shimmer", "stopped");
 
                             stopShimmerEffect2();
                             mySwipeRefreshLayout.setRefreshing(false);
                         }
-
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception exception) {
-                        // Handle any errors
-                        stopShimmerEffect2();
-
                     }
                 });
 
@@ -700,70 +633,6 @@ public class HomeFragment1 extends Fragment {
                 stopShimmerEffect2();
             }
 
-
-
-            } else{
-                    placesImagesArray = (ArrayList<byte[]>) ObjectSerializer.deserialize(sharedPreferences.getString("placesImagesArray", ObjectSerializer.serialize(new ArrayList<byte[]>())));
-                    placesArray = (ArrayList<String>) ObjectSerializer.deserialize(sharedPreferences.getString("placesArray", ObjectSerializer.serialize(new ArrayList<String>())));
-                    Log.i("onDataChange: ","else im");
-                    Bitmap bm = BitmapFactory.decodeByteArray(placesImagesArray.get(index), 0, placesImagesArray.get(index).length);
-
-                    JSONObject jsonObject = null;
-                    try {
-                        jsonObject = new JSONObject(placesArray.get(index));
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-
-                    imageItem.setImageBitmap(bm);
-                    cardView.addView(imageItem);
-                    placeBlock.addView(cardView);
-                    placeBlock.setTag(placesArray.get(index));
-                    try {
-                        textView.setText(jsonObject.getString("name"));
-                        placeBlock.addView(textView);
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                    placeBlock.setId(index);
-
-                    placesHolder.addView(placeBlock);
-
-                    onCompleteCount++;
-                    Log.i("count", String.valueOf(onCompleteCount));
-
-                    if (onCompleteCount == keysetArray.size()) {
-                        for (int i = 0; i < placesHolder.getChildCount(); i++) {
-                            final int finalI = i;
-                            placesHolder.getChildAt(i).setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View view) {
-                                    Log.i("onClick: ", String.valueOf(view.getTag()));
-                                    Intent intent = new Intent(getContext(), PlaceInfo.class);
-                                    intent.putExtra("selectedPlace", String.valueOf(placesHolder.getChildAt(finalI).getTag()));
-                                    intent.putExtra("selectedPlaceImage", placesImagesArray.get(placesHolder.getChildAt(finalI).getId()));
-                                    intent.putExtra("currentParentId", currentPlaceId);
-                                    try {
-                                        intent.putExtra("currentLatitude", currentLocation.getString("latitude"));
-                                        intent.putExtra("currentLongitude", currentLocation.getString("longitude"));
-                                    } catch (JSONException e) {
-                                        e.printStackTrace();
-                                    }
-                                    startActivity(intent);
-                                }
-                            });
-                        }
-
-                        Log.i("shimmer","stopped");
-
-                        stopShimmerEffect2();
-                        mySwipeRefreshLayout.setRefreshing(false);
-                    }
-            }
-
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
 
         }
 
@@ -787,9 +656,9 @@ public class HomeFragment1 extends Fragment {
                         JSONObject jsonReview = new JSONObject(reviewHash);
 
                         int i = 0;
+                        double rating = 0.0;
                         for(String key:reviewHash.keySet()){
 
-                            if(i < 3) {
                                 try {
                                     Log.i("reviews", jsonReview.getString(key));
                                     createReviewLayout(jsonReview.getJSONObject(key));
@@ -797,14 +666,26 @@ public class HomeFragment1 extends Fragment {
                                 } catch (JSONException e) {
                                     e.printStackTrace();
                                 }
-                            }else{
-                                break;
+
+
+                            try {
+                                rating = rating + Double.parseDouble(jsonReview.getJSONObject(key).getString("rating"));
+                            } catch (JSONException e) {
+                                e.printStackTrace();
                             }
+
                             i++;
+
 
 
                         }
 
+                        ratingBar.setRating(Float.parseFloat(String.valueOf((float) (rating/(i)))));
+                        countText.setText(String.valueOf(i)+" Reviews");
+
+                    }else{
+                        ratingBar.setRating(0);
+                        countText.setText("");
                     }
 
                 }
@@ -832,7 +713,7 @@ public class HomeFragment1 extends Fragment {
                 LinearLayout.LayoutParams paramsc = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
                 cardView.setLayoutParams(paramsc);
                 ViewGroup.MarginLayoutParams paramscd = new ViewGroup.MarginLayoutParams(cardView.getLayoutParams());
-                paramscd.setMargins(10, 16, 10, 0);
+                paramscd.setMargins((int) getResources().getDimension(R.dimen.card_review_marginLeft), (int) getResources().getDimension(R.dimen.card_review_marginTop), (int) getResources().getDimension(R.dimen.card_review_marginRight), 0);
                 RelativeLayout.LayoutParams layoutParamscd = new RelativeLayout.LayoutParams(paramscd);
                 cardView.setLayoutParams(layoutParamscd);
 
@@ -842,7 +723,7 @@ public class HomeFragment1 extends Fragment {
                 LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
                 reviewBlock.setLayoutParams(params);
                 ViewGroup.MarginLayoutParams paramsh = new ViewGroup.MarginLayoutParams(reviewBlock.getLayoutParams());
-                paramsh.setMargins(0, 16, 0, 0);
+                paramsh.setMargins(0, (int) getResources().getDimension(R.dimen.card_review__block_marginTop), 0, 0);
                 RelativeLayout.LayoutParams layoutParamsh = new RelativeLayout.LayoutParams(paramsh);
                 reviewBlock.setLayoutParams(layoutParamsh);
                 reviewBlock.setOrientation(LinearLayout.VERTICAL);
@@ -852,17 +733,51 @@ public class HomeFragment1 extends Fragment {
                 LinearLayout.LayoutParams params1 = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
                 userBlock.setLayoutParams(params1);
                 ViewGroup.MarginLayoutParams paramsu = new ViewGroup.MarginLayoutParams(userBlock.getLayoutParams());
-                paramsu.setMargins(16, 16, 0, 0);
+                paramsu.setMargins((int) getResources().getDimension(R.dimen.card_review_user_marginLeft), (int) getResources().getDimension(R.dimen.card_review_user_marginTop), 0, 0);
                 RelativeLayout.LayoutParams layoutParamsu = new RelativeLayout.LayoutParams(paramsu);
                 reviewBlock.setLayoutParams(layoutParamsu);
                 userBlock.setOrientation(LinearLayout.HORIZONTAL);
+                userBlock.setGravity(Gravity.CENTER_VERTICAL);
 
                 //Make User Circular Image View
-                CircularImageView circularImageView = new CircularImageView(getContext());
-                LinearLayout.LayoutParams params2 = new LinearLayout.LayoutParams(140, 140);
+                final CircularImageView circularImageView = new CircularImageView(getContext());
+                LinearLayout.LayoutParams params2 = new LinearLayout.LayoutParams((int) getResources().getDimension(R.dimen.card_review_image_width), (int) getResources().getDimension(R.dimen.card_review_image_height));
                 circularImageView.setLayoutParams(params2);
-                circularImageView.setImageResource(R.drawable.profile1);
                 circularImageView.setBorderColor(Color.parseColor("#eeeeee"));
+                ViewGroup.MarginLayoutParams paramsl = new ViewGroup.MarginLayoutParams(circularImageView.getLayoutParams());
+                paramsl.setMargins((int) getResources().getDimension(R.dimen.card_review_image_marginLeft), (int) getResources().getDimension(R.dimen.card_review_image_marginTop), 0, 0);
+                RelativeLayout.LayoutParams layoutParaml = new RelativeLayout.LayoutParams(paramsl);
+                circularImageView.setLayoutParams(layoutParaml);
+                circularImageView.setImageResource(R.drawable.profile1);
+
+                final FirebaseDatabase database = FirebaseDatabase.getInstance();
+                final DatabaseReference ref = database.getReference("users/"+reviewJson.getString("userId"));
+                ref.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        Map<String, Object> userHash = (HashMap<String,Object>) dataSnapshot.getValue();
+
+                        if(String.valueOf(userHash.get("photoUrl")) != "null") {
+                            Log.i("photoUrlooo", String.valueOf(userHash.get("photoUrl")));
+
+                            Glide.with(getContext())
+                                    .load(String.valueOf(userHash.get("photoUrl")))
+                                    .thumbnail(Glide.with(getContext()).load(R.raw.video))
+                                    .into(circularImageView);
+
+
+                            ref.removeEventListener(this);
+
+                        }
+
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+
 
 
                 //Make container holder for rating and date
@@ -878,7 +793,7 @@ public class HomeFragment1 extends Fragment {
                 ratingBar.setLayoutParams(params4);
                 ratingBar.setIsIndicator(true);
                 ViewGroup.MarginLayoutParams params5 = new ViewGroup.MarginLayoutParams(ratingBar.getLayoutParams());
-                params5.setMargins(-120, 0, 0, 0);
+                params5.setMargins((int) getResources().getDimension(R.dimen.card_review_ratingBar_marginLeft), 0, 0, 0);
                 RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(params5);
                 ratingBar.setLayoutParams(layoutParams);
                 ratingBar.setNumStars(5);
@@ -892,10 +807,10 @@ public class HomeFragment1 extends Fragment {
 
                 //Make date text
                 TextView date = new TextView(getContext());
-                LinearLayout.LayoutParams params6 = new LinearLayout.LayoutParams(400, ViewGroup.LayoutParams.WRAP_CONTENT);
+                LinearLayout.LayoutParams params6 = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
                 date.setLayoutParams(params6);
                 ViewGroup.MarginLayoutParams paramsd = new ViewGroup.MarginLayoutParams(date.getLayoutParams());
-                paramsd.setMargins(0, -32, 0, 0);
+                paramsd.setMargins(0, (int) getResources().getDimension(R.dimen.card_review_date_marginTop), 0, 0);
                 RelativeLayout.LayoutParams layoutParamsd = new RelativeLayout.LayoutParams(paramsd);
                 date.setLayoutParams(layoutParamsd);
                 date.setText(reviewJson.getString("userName") + " on " + reviewJson.getString("date"));
@@ -912,7 +827,7 @@ public class HomeFragment1 extends Fragment {
                 LinearLayout.LayoutParams params7 = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
                 reviewTitle.setLayoutParams(params7);
                 ViewGroup.MarginLayoutParams params8 = new ViewGroup.MarginLayoutParams(reviewTitle.getLayoutParams());
-                params8.setMargins(16, 5, 0, 0);
+                params8.setMargins((int) getResources().getDimension(R.dimen.card_review_title_marginLeft), (int) getResources().getDimension(R.dimen.card_review_title_marginTop), 0, 0);
                 RelativeLayout.LayoutParams layoutParams1 = new RelativeLayout.LayoutParams(params8);
                 reviewTitle.setLayoutParams(layoutParams1);
                 reviewTitle.setText(reviewJson.getString("title"));
@@ -926,7 +841,7 @@ public class HomeFragment1 extends Fragment {
                 LinearLayout.LayoutParams params9 = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
                 reviewMain.setLayoutParams(params9);
                 ViewGroup.MarginLayoutParams params10 = new ViewGroup.MarginLayoutParams(reviewTitle.getLayoutParams());
-                params10.setMargins(16, 5, 0, 16);
+                params10.setMargins((int) getResources().getDimension(R.dimen.card_review_main_marginLeft), (int) getResources().getDimension(R.dimen.card_review_main_marginTop), 0, (int) getResources().getDimension(R.dimen.card_review_main_marginBottom));
                 RelativeLayout.LayoutParams layoutParams2 = new RelativeLayout.LayoutParams(params10);
                 reviewMain.setLayoutParams(layoutParams2);
                 String trimmedReview = "";

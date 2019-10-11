@@ -160,7 +160,6 @@ public class AuthActivity extends AppCompatActivity implements View.OnClickListe
                                         final FirebaseUser user = mAuth.getCurrentUser();
                                         UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
                                                 .setDisplayName(username.getText().toString())
-                                                .setPhotoUri(Uri.parse("https://ui-avatars.com/api/?name=" + username.getText().toString()))
                                                 .build();
 
                                         user.updateProfile(profileUpdates)
@@ -170,7 +169,6 @@ public class AuthActivity extends AppCompatActivity implements View.OnClickListe
                                                         if (task.isSuccessful()) {
                                                             mDatabase.child("users").child(user.getUid()).child("username").setValue(username.getText().toString());
                                                             mDatabase.child("users").child(user.getUid()).child("email").setValue(email.getText().toString());
-                                                            mDatabase.child("users").child(user.getUid()).child("photoUrl").setValue("https://ui-avatars.com/api/?name=" + username.getText().toString());
 
                                                             if (user != null) {
 

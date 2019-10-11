@@ -188,8 +188,8 @@
 <!--                android:layout_height="300dp"-->
 <!--                android:layout_marginTop="20dp"-->
 <!--                android:layout_marginLeft="20dp"-->
-<!--                android:layout_marginRight="20dp"-->
-<!--                android:background="@color/colorPrimary">-->
+<!--                app:cardBackgroundColor="#eee"-->
+<!--                android:layout_marginRight="20dp">-->
 
 <!--                <ImageView-->
 <!--                    android:layout_width="match_parent"-->
@@ -215,11 +215,40 @@
 <!--                    android:text="By Manish Chougule"-->
 <!--                    android:textSize="14dp" />-->
 
+<!--                <LinearLayout-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:orientation="horizontal"-->
+<!--                    android:gravity="center_vertical"-->
+<!--                    android:layout_marginTop="220dp"-->
+<!--                    android:layout_marginLeft="10dp"-->
+<!--                    android:layout_height="40dp">-->
+
+<!--                    <com.mikhaellopez.circularimageview.CircularImageView-->
+<!--                        android:layout_width="35dp"-->
+<!--                        android:layout_height="35dp"-->
+<!--                        android:src="@drawable/profile1"-->
+<!--                        app:civ_border_color="#EEEEEE"-->
+<!--                        app:civ_shadow="false"-->
+<!--                        app:civ_shadow_color="#8BC34A"-->
+<!--                        app:civ_shadow_radius="10" />-->
+
+<!--                    <com.mikhaellopez.circularimageview.CircularImageView-->
+<!--                        android:layout_width="35dp"-->
+<!--                        android:layout_height="35dp"-->
+<!--                        android:layout_marginLeft="-15dp"-->
+<!--                        android:src="@drawable/profile1"-->
+<!--                        app:civ_border_color="#EEEEEE"-->
+<!--                        app:civ_shadow="false"-->
+<!--                        app:civ_shadow_color="#8BC34A"-->
+<!--                        app:civ_shadow_radius="10" />-->
+
+<!--                </LinearLayout>-->
+
 <!--                <TextView-->
 <!--                    android:layout_width="wrap_content"-->
 <!--                    android:layout_height="wrap_content"-->
 <!--                    android:layout_marginLeft="10dp"-->
-<!--                    android:layout_marginTop="240dp"-->
+<!--                    android:layout_marginTop="260dp"-->
 <!--                    android:text="Featuring: 0 items"-->
 <!--                    android:textSize="14dp" />-->
 

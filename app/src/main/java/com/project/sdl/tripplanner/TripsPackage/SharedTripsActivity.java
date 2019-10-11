@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -14,6 +15,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -21,6 +23,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.mikhaellopez.circularimageview.CircularImageView;
 import com.project.sdl.tripplanner.R;
 
 import org.json.JSONException;
@@ -143,10 +146,10 @@ public class SharedTripsActivity extends AppCompatActivity {
     public void createTripCardLayout(JSONObject tripJson,int userInt){
 
         CardView cardView = new CardView(getApplicationContext());
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 600);
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, (int) getResources().getDimension(R.dimen.card_height));
         cardView.setLayoutParams(params);
         ViewGroup.MarginLayoutParams params1 = new ViewGroup.MarginLayoutParams(cardView.getLayoutParams());
-        params1.setMargins(40, 0, 40, 40);
+        params1.setMargins((int) getResources().getDimension(R.dimen.card_marginLeft), 0, (int) getResources().getDimension(R.dimen.card_marginRight), (int) getResources().getDimension(R.dimen.card_marginBottom1));
         RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(params1);
         cardView.setLayoutParams(layoutParams);
         try{
@@ -157,7 +160,7 @@ public class SharedTripsActivity extends AppCompatActivity {
         }
 
         ImageView imageView = new ImageView(getApplicationContext());
-        LinearLayout.LayoutParams params2 = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 300);
+        LinearLayout.LayoutParams params2 = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, (int) getResources().getDimension((R.dimen.card_image_height)));
         imageView.setLayoutParams(params2);
         imageView.setImageResource(R.drawable.nat4);
         imageView.setScaleType(ImageView.ScaleType.FIT_XY);
@@ -166,7 +169,7 @@ public class SharedTripsActivity extends AppCompatActivity {
         LinearLayout.LayoutParams params3 = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         tripName.setLayoutParams(params3);
         ViewGroup.MarginLayoutParams params4 = new ViewGroup.MarginLayoutParams(tripName.getLayoutParams());
-        params4.setMargins(20, 340,0, 0);
+        params4.setMargins((int) getResources().getDimension(R.dimen.card_tripName_marginLeft),(int) getResources().getDimension( R.dimen.card_tripName_marginTop),0, 0);
         RelativeLayout.LayoutParams layoutParams1 = new RelativeLayout.LayoutParams(params4);
         tripName.setLayoutParams(layoutParams1);
         try {
@@ -182,22 +185,83 @@ public class SharedTripsActivity extends AppCompatActivity {
         LinearLayout.LayoutParams params5 = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         creatorName.setLayoutParams(params5);
         ViewGroup.MarginLayoutParams params6 = new ViewGroup.MarginLayoutParams(creatorName.getLayoutParams());
-        params6.setMargins(20, 400,0, 0);
+        params6.setMargins((int) getResources().getDimension(R.dimen.card_createdBy_marginLeft),(int) getResources().getDimension( R.dimen.card_createdBy_marginTop),0, 0);
         RelativeLayout.LayoutParams layoutParams2 = new RelativeLayout.LayoutParams(params6);
         creatorName.setLayoutParams(layoutParams2);
+        creatorName.setText("By "+FirebaseAuth.getInstance().getCurrentUser().getDisplayName());
+        creatorName.setTextSize(14);
+
+        final LinearLayout sharedUsersHolder = new LinearLayout(getApplicationContext());
+        LinearLayout.LayoutParams paramsy = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, (int) getResources().getDimension(R.dimen.card_sharedUserHolder_image_height));
+        sharedUsersHolder.setLayoutParams(paramsy);
+        ViewGroup.MarginLayoutParams paramsi = new ViewGroup.MarginLayoutParams(sharedUsersHolder.getLayoutParams());
+        paramsi.setMargins((int) getResources().getDimension(R.dimen.card_sharedUserHolder_image_marginLeft),(int) getResources().getDimension( R.dimen.card_sharedUserHolder_image_marginTop),0, 0);
+        RelativeLayout.LayoutParams layoutParamsi = new RelativeLayout.LayoutParams(paramsi);
+        sharedUsersHolder.setLayoutParams(layoutParamsi);
+        sharedUsersHolder.setOrientation(LinearLayout.HORIZONTAL);
+        sharedUsersHolder.setGravity(Gravity.CENTER_VERTICAL);
+
+
         try {
-            creatorName.setText("By "+tripJson.getString("createdBy"));
+            int j = 0;
+            for (Iterator<String> it = tripJson.getJSONObject("sharedWith").keys(); it.hasNext(); ) {
+                String userKey = it.next();
+                Log.i("createTripCardLayout: ",tripJson.getJSONObject("sharedWith").getString(userKey));
+
+                final CircularImageView circularImageView = new CircularImageView(getApplicationContext());
+                LinearLayout.LayoutParams paramst = new LinearLayout.LayoutParams((int) getResources().getDimension(R.dimen.card_sharedUser_image_width), (int) getResources().getDimension(R.dimen.card_sharedUser_image_height));
+                circularImageView.setLayoutParams(paramst);
+                circularImageView.setBorderColor(Color.parseColor("#eeeeee"));
+                ViewGroup.MarginLayoutParams paramsl = new ViewGroup.MarginLayoutParams(circularImageView.getLayoutParams());
+                if(j != 0) {
+                    paramsl.setMargins((int) getResources().getDimension(R.dimen.card_sharedUser_image_marginLeft), 0, 0, 0);
+                }else{
+                    paramsl.setMargins(0, 0, 0, 0);
+                }
+                RelativeLayout.LayoutParams layoutParaml = new RelativeLayout.LayoutParams(paramsl);
+                circularImageView.setLayoutParams(layoutParaml);
+                circularImageView.setImageResource(R.drawable.profile1);
+
+                final FirebaseDatabase database = FirebaseDatabase.getInstance();
+                final DatabaseReference ref = database.getReference("users/"+tripJson.getJSONObject("sharedWith").getString(userKey));
+                ref.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        Map<String, Object> userHash = (HashMap<String,Object>) dataSnapshot.getValue();
+
+                        if(String.valueOf(userHash.get("photoUrl")) != "null") {
+
+                            Glide.with(getApplicationContext())
+                                    .load(String.valueOf(userHash.get("photoUrl")))
+                                    .thumbnail(Glide.with(getApplicationContext()).load(R.raw.video))
+                                    .into(circularImageView);
+
+                            sharedUsersHolder.addView(circularImageView);
+
+
+                            ref.removeEventListener(this);
+
+                        }
+
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+                j++;
+            }
+
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
-        creatorName.setTextSize(14);
 
         TextView itemsCount = new TextView(getApplicationContext());
         LinearLayout.LayoutParams params7 = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         itemsCount.setLayoutParams(params7);
         ViewGroup.MarginLayoutParams params8 = new ViewGroup.MarginLayoutParams(itemsCount.getLayoutParams());
-        params8.setMargins(20, 480,0, 0);
+        params8.setMargins((int) getResources().getDimension(R.dimen.card_items_marginLeft),(int) getResources().getDimension( R.dimen.card_items_marginTop),0, 0);
         RelativeLayout.LayoutParams layoutParams3 = new RelativeLayout.LayoutParams(params8);
         itemsCount.setLayoutParams(layoutParams3);
         try {
@@ -211,6 +275,7 @@ public class SharedTripsActivity extends AppCompatActivity {
         cardView.addView(imageView);
         cardView.addView(tripName);
         cardView.addView(creatorName);
+        cardView.addView(sharedUsersHolder);
         cardView.addView(itemsCount);
 
         tripCardHolder.addView(cardView);

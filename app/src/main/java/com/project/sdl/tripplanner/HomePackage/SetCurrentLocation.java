@@ -156,6 +156,8 @@ public class SetCurrentLocation extends FragmentActivity {
                             mDatabase.child("users").child(user.getUid()).child("currentLocation").setValue(position.getCoordinate());
                             mDatabase.child("users").child(user.getUid()).child("currentLocationCityName").setValue(cityName);
 
+                            positioningManager.removeListener(this);
+
                             Snackbar.make(findViewById(android.R.id.content), "Your current location is : "+cityName, 5000)
                                     .setAction("Close", new View.OnClickListener() {
                                         @Override

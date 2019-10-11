@@ -79,6 +79,7 @@ public class WelcomeActivity extends AppCompatActivity {
                 Intent intent = new Intent(getApplicationContext(), UserActivity.class);
                 intent.putExtra("signup","true");
                 startActivity(intent);
+                finish();
             }
         });
 
@@ -95,6 +96,7 @@ public class WelcomeActivity extends AppCompatActivity {
                     Intent intent = new Intent(getApplicationContext(), UserActivity.class);
                     intent.putExtra("signup","true");
                     startActivity(intent);
+                    finish();
                 }
             }
         });

@@ -165,7 +165,7 @@
             android:scaleY=".5"
             android:secondaryProgressTint="#fff"
             android:translationZ="20dp"
-            android:visibility="invisible" />
+            android:visibility="visible" />
 
         <TextView
             android:id="@+id/countText"
@@ -203,17 +203,6 @@
             android:scaleType="fitXY"
             android:src="@drawable/createtripdrawable"
             android:layout_height="270dp"/>
-
-        <Button
-            android:id="@+id/getStartedButton"
-            android:layout_width="300dp"
-            android:layout_marginTop="290dp"
-            android:layout_height="wrap_content"
-            android:background="@color/colorPrimary"
-            android:text="Welcome To Trip Planner"
-            android:textColor="#fff"
-            android:textStyle="bold"
-         />
 
 
     </RelativeLayout>

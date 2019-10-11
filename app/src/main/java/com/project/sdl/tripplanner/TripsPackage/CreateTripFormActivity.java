@@ -46,6 +46,8 @@ public class CreateTripFormActivity extends AppCompatActivity {
                     mDatabase.child("trips/"+user.getUid()+"/" + uuid + "/")
                             .setValue(trip);
 
+                    mDatabase.child("trips/"+user.getUid()+"/"+uuid+"/sharedWith").push().setValue(user.getUid());
+
                     Toast.makeText(getApplicationContext(), "Trip created!!!", Toast.LENGTH_SHORT).show();
 
                     tripName.setText("");

@@ -4,12 +4,10 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -22,7 +20,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.google.android.gms.tasks.OnFailureListener;
+import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -123,21 +121,22 @@ public class WishListFragment extends Fragment {
         StorageReference storageRef = FirebaseStorage.getInstance().getReference();
 
         try {
-            storageRef.child("places/" + jsonObject.getString("id") + "/" + jsonObject.getJSONArray("imageRefs").get(0)).getBytes(Long.MAX_VALUE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
 
+            storageRef.child("places/" + jsonObject.getString("id") + "/" + jsonObject.getJSONArray("imageRefs").get(0)).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                 @Override
-                public void onSuccess(byte[] bytes) {
-                    // Use the bytes to display the image
-                    Bitmap bm = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-                    imageView.setImageBitmap(bm);
+                public void onSuccess(Uri uri) {
 
-                }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception exception) {
-                    // Handle any errors
+                    String imageURL = uri.toString();
+
+                    if(getContext() != null) {
+                        Glide.with(getContext())
+                                .load(imageURL)
+                                .into(imageView);
+                    }
+
                 }
             });
+
         } catch (JSONException e) {
             e.printStackTrace();
         }

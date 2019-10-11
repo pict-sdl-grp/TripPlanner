@@ -108,7 +108,7 @@ public class WritePlaceReview extends AppCompatActivity {
 
                     Reviews review = new Reviews(rating, String.valueOf(monthVisited.getText()),
                             String.valueOf(visitTypeText.getText()), String.valueOf(reviewTitle.getText()),
-                            String.valueOf(mainReview.getText()),user.getDisplayName());
+                            String.valueOf(mainReview.getText()),user.getDisplayName(),FirebaseAuth.getInstance().getCurrentUser().getUid());
 
                     mDatabase.child("reviews/" + getIntent()
                             .getStringExtra("currentPlaceId") + "/" + UUID.randomUUID().toString() + "/")

@@ -17,7 +17,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
-import android.widget.SearchView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
@@ -53,7 +52,7 @@ public class EditProfile_Activity extends AppCompatActivity {
     Button save;
     ProgressBar imageLoader;
     Boolean isUploaded = false;
-    SearchView countryEdit;
+    public static EditText countryEdit;
 
     String photoUrl;
 
@@ -118,15 +117,29 @@ public class EditProfile_Activity extends AppCompatActivity {
                 backToProfile();
             }
         });
-        
 
-        countryEdit.setOnSearchClickListener(new View.OnClickListener() {
+        countryEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), MainSearchActivity.class);
+                intent.putExtra("editProfileSearch","true");
                 startActivity(intent);
             }
         });
+
+
+        countryEdit.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean b) {
+
+                if(b){
+                    Intent intent = new Intent(getApplicationContext(), MainSearchActivity.class);
+                    intent.putExtra("editProfileSearch","true");
+                    startActivity(intent);
+                }
+            }
+        });
+
 
         back_Image.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -222,6 +235,7 @@ public class EditProfile_Activity extends AppCompatActivity {
         name.setText(pref.getString(NAME,mUser.getDisplayName()));
         phoneNo.setText(pref.getString(PHONE,null));
         aboutYou.setText(pref.getString(ABOUTYOU,null));
+        countryEdit.setText(pref.getString(PLACE,null));
 
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
         final DatabaseReference ref = database.getReference("users/"+mUser.getUid());
@@ -263,7 +277,7 @@ public class EditProfile_Activity extends AppCompatActivity {
         editor.putString(NAME,userName);
         editor.putString(PHONE,userPhone);
         editor.putString(ABOUTYOU,userAbout);
-        editor.putString(PLACE,"Pune, Maharashtra");
+        editor.putString(PLACE, String.valueOf(countryEdit.getText()));
         editor.commit();
         Log.e("Data updated"," ID: "+ mUser.getUid());
 

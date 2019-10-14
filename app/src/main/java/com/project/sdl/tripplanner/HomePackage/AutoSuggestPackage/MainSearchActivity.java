@@ -221,7 +221,11 @@ public class MainSearchActivity extends AppCompatActivity {
     private void setupMapFragmentView() {
         // All permission requests are being handled. Create map fragment view. Please note
         // the HERE SDK requires all permissions defined above to operate properly.
-        m_mapFragmentView = new MapFragmentView(this);
+
+        String editProfileSearch = getIntent().getStringExtra("editProfileSearch");
+
+        m_mapFragmentView = new MapFragmentView(this,editProfileSearch);
+
     }
 
 

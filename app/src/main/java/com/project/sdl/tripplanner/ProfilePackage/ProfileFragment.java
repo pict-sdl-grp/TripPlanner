@@ -113,7 +113,7 @@ public class ProfileFragment extends Fragment {
         String name = pref.getString(EditProfile_Activity.NAME,mUser.getDisplayName()) ;
         nameDisplay.setText(name.length()<22?name:name.substring(0,20)+"...");
         emailDisplay.setText(mUser.getEmail().length()>22 ? mUser.getEmail().substring(0,20)+"...":mUser.getEmail());
-        currentPlace.setText("Pune, Maharashtra");
+        currentPlace.setText(pref.getString(EditProfile_Activity.PLACE,null).length()>19?pref.getString(EditProfile_Activity.PLACE,null).substring(0,16)+"...":pref.getString(EditProfile_Activity.PLACE,null));
         phoneNo.setText(pref.getString(EditProfile_Activity.PHONE,null));
 
         if(pref.getString(EditProfile_Activity.PLACE,null)!=null){

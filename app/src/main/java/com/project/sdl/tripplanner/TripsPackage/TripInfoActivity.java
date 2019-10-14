@@ -36,10 +36,12 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.here.android.mpa.common.GeoCoordinate;
+import com.project.sdl.tripplanner.NotificationPackage.Notification;
 import com.project.sdl.tripplanner.R;
 import com.project.sdl.tripplanner.UserPackage.UserActivity;
 
@@ -47,7 +49,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -110,6 +114,7 @@ public class TripInfoActivity extends AppCompatActivity {
             case R.id.share:
                 Intent intent = new Intent(getApplicationContext(),SelectToShareUserActivity.class);
                 intent.putExtra("selectedTripId",getIntent().getStringExtra("selectedTripId"));
+                intent.putExtra("selectedTripName",tripName.getText());
                 startActivity(intent);
                 return true;
             case R.id.delete:
@@ -227,6 +232,9 @@ public class TripInfoActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(),OrganizeTripActivity.class);
                 intent.putExtra("selectedTripUserId",getIntent().getStringExtra("selectedTripUserId"));
+                intent.putExtra("tripName",tripName.getText());
+                intent.putExtra("currentUserPhotoUrl",getIntent().getStringExtra("currentUserPhotoUrl"));
+
                 try {
                     intent.putExtra("id",tripJson.getString("id"));
                 } catch (JSONException e) {
@@ -377,6 +385,20 @@ public class TripInfoActivity extends AppCompatActivity {
                                             Log.i("check5", jsonPart2.getString(tripKey));
                                             DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
                                             mDatabase.child("sharedTrips/"+currentUserId+"/"+parentKey+"/"+tripKey).setValue(null);
+
+                                            //Handle Notification
+                                            SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+                                            Date date = new Date();
+                                            String id  = formatter.format(date).substring(11);
+
+                                            Notification notification = new Notification(id,"share",
+                                                    (user.getDisplayName() +" <b>deleted</b> a trip named <b>" +tripName.getText()+"</b> which was shared with you."),
+                                                    formatter.format(date),user.getDisplayName(),getIntent().getStringExtra("currentUserPhotoUrl"), ServerValue.TIMESTAMP,false);
+
+                                            mDatabase.child("notifications/").child(currentUserId).child(id).setValue(notification);
+
+
+
                                             p1[0] = null;
                                             finish();
                                         }
@@ -673,6 +695,41 @@ public class TripInfoActivity extends AppCompatActivity {
         switch(requestCode) {
             case (0) : {
                 if (resultCode == Activity.RESULT_OK) {
+
+                    JSONObject sharedWithJson;
+                    try {
+                        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
+                        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                        sharedWithJson = tripJson.getJSONObject("sharedWith");
+                        for (Iterator<String> it1 = sharedWithJson.keys(); it1.hasNext(); ) {
+                            String key = it1.next();
+
+                            if(sharedWithJson.getString(key).equals(FirebaseAuth.getInstance().getCurrentUser().getUid())){
+
+                            }else {
+                                Log.i("sharedKeys", sharedWithJson.getString(key));
+
+                                //Handle Notification
+                                SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+                                Date date = new Date();
+                                String id  = formatter.format(date).substring(11);
+
+                                Notification notification = new Notification(id,"share",
+                                        (user.getDisplayName() +" <b> is planning </b> a trip <b>" +tripName.getText()+"</b> on "+data.getStringArrayListExtra("dateRange").get(0).substring(4,11)+ " - "+
+                                                data.getStringArrayListExtra("dateRange").get(data.getStringArrayListExtra("dateRange").size()-1).substring(4,11)),
+                                        formatter.format(date),user.getDisplayName(),getIntent().getStringExtra("currentUserPhotoUrl"), ServerValue.TIMESTAMP,false);
+
+                                mDatabase.child("notifications/").child(sharedWithJson.getString(key)).child(id).setValue(notification);
+
+
+                            }
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+
+
                     addDates.setText(data.getStringArrayListExtra("dateRange").get(0).substring(4,11)+ " - "+
                             data.getStringArrayListExtra("dateRange").get(data.getStringArrayListExtra("dateRange").size()-1).substring(4,11));
 

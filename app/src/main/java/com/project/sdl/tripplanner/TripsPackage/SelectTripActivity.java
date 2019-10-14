@@ -21,13 +21,17 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
+import com.project.sdl.tripplanner.NotificationPackage.Notification;
 import com.project.sdl.tripplanner.R;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -38,6 +42,41 @@ public class SelectTripActivity extends AppCompatActivity {
     JSONObject tripJson;
     int myTripCount = 0;
     HashMap<String,JSONObject> tripJsonHashMap;
+    String currentUserPhotoUrl;
+
+    public void sendNotification(String tripName, String action, JSONObject tripJson){
+        JSONObject sharedWithJson;
+        try {
+            DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
+            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+            sharedWithJson = tripJson.getJSONObject("sharedWith");
+            for (Iterator<String> it1 = sharedWithJson.keys(); it1.hasNext(); ) {
+                String key = it1.next();
+
+                if(sharedWithJson.getString(key).equals(FirebaseAuth.getInstance().getCurrentUser().getUid())){
+
+                }else {
+                    Log.i("sharedKeys", sharedWithJson.getString(key));
+
+                    //Handle Notification
+                    SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+                    Date date = new Date();
+                    String id  = formatter.format(date).substring(11);
+
+                    Notification notification = new Notification(id,"share",
+                            (user.getDisplayName() +" <b>"+action+"</b> a place <b>"+getIntent().getStringExtra("currentPlaceName")+"</b> "+(action.equals("removed")?"from":"in")+" <b>"+tripName+"</b>."),
+                            formatter.format(date),user.getDisplayName(),currentUserPhotoUrl, ServerValue.TIMESTAMP,false);
+
+                    mDatabase.child("notifications/").child(sharedWithJson.getString(key)).child(id).setValue(notification);
+
+
+                }
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,23 +90,31 @@ public class SelectTripActivity extends AppCompatActivity {
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         final DatabaseReference ref = database.getReference("trips/"+user.getUid());
+
+        final FirebaseDatabase database1 = FirebaseDatabase.getInstance();
+        FirebaseUser user1 = FirebaseAuth.getInstance().getCurrentUser();
+        final DatabaseReference ref1 = database1.getReference("sharedTrips/"+user1.getUid());
+
+
+        final int[] check = {0};
         ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Map<String, Object> tripHash = (HashMap<String,Object>) dataSnapshot.getValue();
                 tripJson = new JSONObject(tripHash);
-                tripListContainer.removeAllViews();
-
 
 
                 final ArrayList<String> placesToTrip = new ArrayList<>();
 
+
                 for(String key : tripHash.keySet()){
-                    try {
-                        createTripListItem(tripJson.getJSONObject(key).getString("tripName"),key,myTripCount);
-                        myTripCount++;
-                    } catch (JSONException e) {
-                        e.printStackTrace();
+                    if(check[0] == 0) {
+                        try {
+                            createTripListItem(tripJson.getJSONObject(key).getString("tripName"), key, myTripCount, tripJson);
+                            myTripCount++;
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                     }
                 }
 
@@ -75,10 +122,12 @@ public class SelectTripActivity extends AppCompatActivity {
 
                     final int finalI = i;
                     final int finalI1 = i;
+
                     tripListContainer.getChildAt(i).setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
 
+                            check[0] = 1;
                             DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
                             FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
@@ -127,6 +176,9 @@ public class SelectTripActivity extends AppCompatActivity {
 //                                        e.printStackTrace();
 //                                    }
 
+
+                                    sendNotification(getIntent().getStringArrayListExtra("tripNames").get(finalI),"removed",tripJson.getJSONObject(String.valueOf(tripListContainer.getChildAt(finalI1).getTag())));
+
                                     Snackbar.make(findViewById(android.R.id.content), "removed from "+getIntent().getStringArrayListExtra("tripNames").get(finalI), 5000)
                                             .setAction("Close", new View.OnClickListener() {
                                                 @Override
@@ -164,6 +216,7 @@ public class SelectTripActivity extends AppCompatActivity {
                                         e1.printStackTrace();
                                     }
 
+                                    sendNotification(getIntent().getStringArrayListExtra("tripNames").get(finalI),"added",tripJson.getJSONObject(String.valueOf(tripListContainer.getChildAt(finalI1).getTag())));
 
                                     Snackbar.make(findViewById(android.R.id.content), "saved to "+getIntent().getStringArrayListExtra("tripNames").get(finalI), 5000)
                                             .setAction("View", new View.OnClickListener() {
@@ -175,6 +228,7 @@ public class SelectTripActivity extends AppCompatActivity {
                                                 }
                                             }).setActionTextColor(getResources().getColor(android.R.color.holo_green_light ))
                                             .show();
+
 
                                 }
 
@@ -204,6 +258,13 @@ public class SelectTripActivity extends AppCompatActivity {
                                 }
 
 
+                                try {
+                                    sendNotification(getIntent().getStringArrayListExtra("tripNames").get(finalI),"added",tripJson.getJSONObject(String.valueOf(tripListContainer.getChildAt(finalI1).getTag())));
+                                } catch (JSONException ex) {
+                                    ex.printStackTrace();
+                                }
+
+
                                 Snackbar.make(findViewById(android.R.id.content), "saved to "+getIntent().getStringArrayListExtra("tripNames").get(finalI), 5000)
                                         .setAction("View", new View.OnClickListener() {
                                             @Override
@@ -215,12 +276,8 @@ public class SelectTripActivity extends AppCompatActivity {
                                         }).setActionTextColor(getResources().getColor(android.R.color.holo_green_light ))
                                         .show();
 
+
                             }
-
-
-
-
-
 
 
 
@@ -230,8 +287,6 @@ public class SelectTripActivity extends AppCompatActivity {
                 }
 
 
-                ref.removeEventListener(this);
-
             }
 
             @Override
@@ -240,15 +295,17 @@ public class SelectTripActivity extends AppCompatActivity {
             }
         });
 
+
+
 //MY TRIPS LIST
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 //SHARED TRIPS LIST
 
+
+
         final int[] checkFinish = {0};
-        final FirebaseDatabase database1 = FirebaseDatabase.getInstance();
-        FirebaseUser user1 = FirebaseAuth.getInstance().getCurrentUser();
-        final DatabaseReference ref1 = database1.getReference("sharedTrips/"+user1.getUid());
+
         ref1.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -295,13 +352,13 @@ public class SelectTripActivity extends AppCompatActivity {
 //                                            int p = 0;
 //                                            for (String key : tripHash.keySet()) {
 
-                                                if(checkFinish[0] == 0) {
-                                                    try {
-                                                        createTripListItem(tripJson1.getString("tripName"), tripJson1.getString("id"), finalUserInt);
-                                                    } catch (JSONException e) {
-                                                        e.printStackTrace();
-                                                    }
+                                            if(checkFinish[0] == 0) {
+                                                try {
+                                                    createTripListItem(tripJson1.getString("tripName"), tripJson1.getString("id"), finalUserInt,tripJson1);
+                                                } catch (JSONException e) {
+                                                    e.printStackTrace();
                                                 }
+                                            }
 //                                                p++;
                                             final ArrayList<String> placesToTrip = new ArrayList<>();
                                             for (int i = myTripCount; i < tripListContainer.getChildCount(); i++) {
@@ -337,9 +394,9 @@ public class SelectTripActivity extends AppCompatActivity {
 
                                                                 mDatabase.child("trips/"+sharedByUserIdArray.get(tripListContainer.getChildAt(finalI).getId())+"/" + tripListContainer.getChildAt(finalI).getTag() + "/placesToHeaders")
                                                                         .setValue(null);
-//
-////
-//
+
+                                                                sendNotification(tripJsonHashMap.get(tripListContainer.getChildAt(finalI).getTag()).getString("tripName"),"removed",tripJsonHashMap.get(tripListContainer.getChildAt(finalI).getTag()));
+
                                                                 Snackbar.make(findViewById(android.R.id.content), "removed from "+tripJsonHashMap.get(tripListContainer.getChildAt(finalI).getTag()).getString("tripName"), 5000)
                                                                         .setAction("Close", new View.OnClickListener() {
                                                                             @Override
@@ -378,7 +435,10 @@ public class SelectTripActivity extends AppCompatActivity {
                                                                     e1.printStackTrace();
                                                                 }
 
-//
+
+                                                                sendNotification(tripJsonHashMap.get(tripListContainer.getChildAt(finalI).getTag()).getString("tripName"),"added",tripJsonHashMap.get(tripListContainer.getChildAt(finalI).getTag()));
+
+
                                                                 Snackbar.make(findViewById(android.R.id.content), "saved to "+tripJsonHashMap.get(tripListContainer.getChildAt(finalI).getTag()).getString("tripName"), 5000)
                                                                         .setAction("View", new View.OnClickListener() {
                                                                             @Override
@@ -424,6 +484,11 @@ public class SelectTripActivity extends AppCompatActivity {
 //
 
                                                             try {
+
+                                                                sendNotification(tripJsonHashMap.get(tripListContainer.getChildAt(finalI).getTag()).getString("tripName"),"added",tripJsonHashMap.get(tripListContainer.getChildAt(finalI).getTag()));
+
+
+
                                                                 Snackbar.make(findViewById(android.R.id.content), "saved to "+tripJsonHashMap.get(tripListContainer.getChildAt(finalI).getTag()).getString("tripName"), 5000)
                                                                         .setAction("View", new View.OnClickListener() {
                                                                             @Override
@@ -449,7 +514,6 @@ public class SelectTripActivity extends AppCompatActivity {
 
                                         }
 
-                                        ref.removeEventListener(this);
                                     }
 
                                     @Override
@@ -481,16 +545,15 @@ public class SelectTripActivity extends AppCompatActivity {
 
 
 
-
     }
 
-    public void createTripListItem(String name, String key,int userId){
+    public void createTripListItem(String name, String key, int userId, final JSONObject tripJson){
 
         LinearLayout listItemBlock = new LinearLayout(this);
         LinearLayout.LayoutParams params1 = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         listItemBlock.setLayoutParams(params1);
         ViewGroup.MarginLayoutParams params2 = new ViewGroup.MarginLayoutParams(listItemBlock.getLayoutParams());
-        params2.setMargins(0, 0,0, 40);
+        params2.setMargins(0, 0,0, 10);
         RelativeLayout.LayoutParams layoutParams1 = new RelativeLayout.LayoutParams(params2);
         listItemBlock.setLayoutParams(layoutParams1);
         listItemBlock.setOrientation(LinearLayout.HORIZONTAL);
@@ -519,6 +582,52 @@ public class SelectTripActivity extends AppCompatActivity {
 
         listItemBlock.addView(imageView);
         listItemBlock.addView(textView);
+
+
+        try {
+            for (Iterator<String> it = tripJson.getJSONObject("sharedWith").keys(); it.hasNext(); ) {
+                final String userKey = it.next();
+                Log.i("createTripCardLayout: ",tripJson.getJSONObject("sharedWith").getString(userKey));
+
+
+                final FirebaseDatabase database = FirebaseDatabase.getInstance();
+                final DatabaseReference ref = database.getReference("users/"+tripJson.getJSONObject("sharedWith").getString(userKey));
+                ref.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        Map<String, Object> userHash = (HashMap<String,Object>) dataSnapshot.getValue();
+
+                        if(String.valueOf(userHash.get("photoUrl")) != "null") {
+
+                            try {
+                                if(tripJson.getJSONObject("sharedWith").getString(userKey).equals(FirebaseAuth.getInstance().getCurrentUser().getUid())){
+                                    currentUserPhotoUrl = String.valueOf(userHash.get("photoUrl"));
+                                    ref.removeEventListener(this);
+
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+
+
+
+                        }
+
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+            }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+
+
 
         tripListContainer.addView(listItemBlock);
 

@@ -51,6 +51,7 @@ public class TripsFragment extends Fragment {
     FloatingActionButton fab;
     LinearLayout getStartedContainer;
     TextView shareText;
+    String currentUserPhotoUrl;
 
     @Nullable
     @Override
@@ -142,6 +143,7 @@ public class TripsFragment extends Fragment {
                                 public void onClick(View view) {
                                     Intent intent = new Intent(getContext(), TripInfoActivity.class);
                                     intent.putExtra("selectedTripId", String.valueOf(tripCardHolder.getChildAt(finalI).getTag()));
+                                    intent.putExtra("currentUserPhotoUrl", currentUserPhotoUrl);
                                     startActivity(intent);
                                 }
                             });
@@ -179,7 +181,7 @@ public class TripsFragment extends Fragment {
     }
 
 
-    public void createTripCardLayout(JSONObject tripJson, String key, int p, int i){
+    public void createTripCardLayout(final JSONObject tripJson, String key, int p, int i){
 
         CardView cardView = new CardView(getContext());
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, (int) getResources().getDimension(R.dimen.card_height));
@@ -238,23 +240,15 @@ public class TripsFragment extends Fragment {
 
 
         try {
-            int j = 0;
+            final int[] j = {0};
             for (Iterator<String> it = tripJson.getJSONObject("sharedWith").keys(); it.hasNext(); ) {
-                String userKey = it.next();
+                final String userKey = it.next();
                 Log.i("createTripCardLayout: ",tripJson.getJSONObject("sharedWith").getString(userKey));
 
                 final CircularImageView circularImageView = new CircularImageView(getContext());
                 LinearLayout.LayoutParams paramst = new LinearLayout.LayoutParams((int) getResources().getDimension(R.dimen.card_sharedUser_image_width), (int) getResources().getDimension(R.dimen.card_sharedUser_image_height));
                 circularImageView.setLayoutParams(paramst);
                 circularImageView.setBorderColor(Color.parseColor("#eeeeee"));
-                ViewGroup.MarginLayoutParams paramsl = new ViewGroup.MarginLayoutParams(circularImageView.getLayoutParams());
-                if(j != 0) {
-                    paramsl.setMargins((int) getResources().getDimension(R.dimen.card_sharedUser_image_marginLeft), 0, 0, 0);
-                }else{
-                    paramsl.setMargins(0, 0, 0, 0);
-                }
-                RelativeLayout.LayoutParams layoutParaml = new RelativeLayout.LayoutParams(paramsl);
-                circularImageView.setLayoutParams(layoutParaml);
                 circularImageView.setImageResource(R.drawable.profile1);
 
                 final FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -264,16 +258,34 @@ public class TripsFragment extends Fragment {
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         Map<String, Object> userHash = (HashMap<String,Object>) dataSnapshot.getValue();
 
-                        if(String.valueOf(userHash.get("photoUrl")) != "null") {
+                        if(String.valueOf(userHash.get("photoUrl")) != "null" && getContext() != null) {
+                            ViewGroup.MarginLayoutParams paramsl = new ViewGroup.MarginLayoutParams(circularImageView.getLayoutParams());
+
+                            try {
+                                if(tripJson.getJSONObject("sharedWith").getString(userKey).equals(FirebaseAuth.getInstance().getCurrentUser().getUid())){
+                                    currentUserPhotoUrl = String.valueOf(userHash.get("photoUrl"));
+
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+
+                            if(j[0] != 0) {
+                                paramsl.setMargins((int) getResources().getDimension(R.dimen.card_sharedUser_image_marginLeft), 0, 0, 0);
+                            }else{
+                                paramsl.setMargins(0, 0, 0, 0);
+                            }
+                            RelativeLayout.LayoutParams layoutParaml = new RelativeLayout.LayoutParams(paramsl);
+                            circularImageView.setLayoutParams(layoutParaml);
 
                             Glide.with(getContext())
                                     .load(String.valueOf(userHash.get("photoUrl")))
-                                    .thumbnail(Glide.with(getContext()).load(R.raw.video))
+                                    .thumbnail(Glide.with(getContext()).load(R.drawable.profile1))
                                     .into(circularImageView);
 
                             sharedUsersHolder.addView(circularImageView);
 
-
+                            j[0]++;
                             ref.removeEventListener(this);
 
                         }
@@ -285,7 +297,6 @@ public class TripsFragment extends Fragment {
 
                     }
                 });
-                j++;
             }
 
         } catch (JSONException e) {

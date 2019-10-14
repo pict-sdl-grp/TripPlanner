@@ -2,7 +2,8 @@
     <string name="app_name">TripPlanner</string>
     <string name="title_home">Home</string>
     <string name="title_trips">Dashboard</string>
-    <string name="title_notifications">WishList</string>
+    <string name="title_wishList">WishList</string>
+    <string name="title_notifications">Notifications</string>
     <string name="title_profile">Profile</string>
     <string name="title_activity_edit_profile_">EditProfile_Activity</string>
     <string name="search_title">Search query</string>

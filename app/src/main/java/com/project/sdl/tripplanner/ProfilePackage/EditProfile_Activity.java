@@ -17,6 +17,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.SearchView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
@@ -33,6 +34,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.mikhaellopez.circularimageview.CircularImageView;
+import com.project.sdl.tripplanner.HomePackage.AutoSuggestPackage.MainSearchActivity;
 import com.project.sdl.tripplanner.R;
 
 import java.io.ByteArrayOutputStream;
@@ -51,6 +53,7 @@ public class EditProfile_Activity extends AppCompatActivity {
     Button save;
     ProgressBar imageLoader;
     Boolean isUploaded = false;
+    SearchView countryEdit;
 
     String photoUrl;
 
@@ -91,6 +94,7 @@ public class EditProfile_Activity extends AppCompatActivity {
         name = findViewById(R.id.nameEdit);
         aboutYou = findViewById(R.id.aboutEdit);
         phoneNo = findViewById(R.id.phoneEdit);
+        countryEdit = findViewById(R.id.countryEdit);
         imageLoader = findViewById(R.id.imageLoader);
 
         editor = getSharedPreferences(mUser.getUid(), Context.MODE_PRIVATE).edit();
@@ -112,6 +116,15 @@ public class EditProfile_Activity extends AppCompatActivity {
             public void onClick(View view) {
                 saveToDatabase();
                 backToProfile();
+            }
+        });
+        
+
+        countryEdit.setOnSearchClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), MainSearchActivity.class);
+                startActivity(intent);
             }
         });
 

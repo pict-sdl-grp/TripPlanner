@@ -187,7 +187,7 @@ public class PlaceInfo extends AppCompatActivity {
 
 
 
-        sharedPreferences = getApplicationContext().getSharedPreferences("com.project.sdl.tripplanner", Context.MODE_PRIVATE);
+        sharedPreferences = getApplicationContext().getSharedPreferences(FirebaseAuth.getInstance().getCurrentUser().getUid(), Context.MODE_PRIVATE);
 
         TabLayout tabLayout = findViewById(R.id.tabLayout);
         scrollView = findViewById(R.id.placeInfoScrollBar);
@@ -236,7 +236,7 @@ public class PlaceInfo extends AppCompatActivity {
 
 
 //        ==========================================
-//        Handle Add Place To Trip
+//        Handle Add/Removed Place To Trip
 //        ==========================================
 
         addPlaceToTripIcon.setOnClickListener(new View.OnClickListener() {
@@ -261,6 +261,7 @@ public class PlaceInfo extends AppCompatActivity {
                                 Intent intent = new Intent(getApplicationContext(), SelectTripActivity.class);
                                 intent.putStringArrayListExtra("tripNames",tripNames);
                                 intent.putExtra("currentPlace",getIntent().getStringExtra("selectedPlace"));
+                                intent.putExtra("currentPlaceName",jsonObject.getString("name"));
                                 startActivity(intent);
                             } catch (JSONException e) {
                                 e.printStackTrace();
@@ -295,7 +296,10 @@ public class PlaceInfo extends AppCompatActivity {
                         wishlistNo.setVisibility(View.VISIBLE);
 
                     }else{
-                        wishlistHash.put(currentPlaceId,getIntent().getStringExtra("selectedPlace"));
+                        JSONObject jsonObject = new JSONObject(getIntent().getStringExtra("selectedPlace"));
+                        jsonObject.put("parentId",getIntent().getStringExtra("currentParentId"));
+
+                        wishlistHash.put(currentPlaceId,jsonObject.toString());
                         wishlistYes.setVisibility(View.VISIBLE);
                         wishlistNo.setVisibility(View.INVISIBLE);
                     }
@@ -303,6 +307,8 @@ public class PlaceInfo extends AppCompatActivity {
                     Log.i("onClick: ",wishlistHash.toString());
                     sharedPreferences.edit().putString("wishlistHash", ObjectSerializer.serialize(wishlistHash)).apply();
                 } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (JSONException e) {
                     e.printStackTrace();
                 }
             }
@@ -320,7 +326,10 @@ public class PlaceInfo extends AppCompatActivity {
                         wishlistNo.setVisibility(View.VISIBLE);
 
                     }else{
-                        wishlistHash.put(currentPlaceId,getIntent().getStringExtra("selectedPlace"));
+                        JSONObject jsonObject = new JSONObject(getIntent().getStringExtra("selectedPlace"));
+                        jsonObject.put("parentId",getIntent().getStringExtra("currentParentId"));
+
+                        wishlistHash.put(currentPlaceId,jsonObject.toString());
                         wishlistYes.setVisibility(View.VISIBLE);
                         wishlistNo.setVisibility(View.INVISIBLE);
                     }
@@ -328,6 +337,8 @@ public class PlaceInfo extends AppCompatActivity {
                     Log.i("onClick: ",wishlistHash.toString());
                     sharedPreferences.edit().putString("wishlistHash", ObjectSerializer.serialize(wishlistHash)).apply();
                 } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (JSONException e) {
                     e.printStackTrace();
                 }
             }

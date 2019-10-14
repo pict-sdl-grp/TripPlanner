@@ -49,10 +49,6 @@ public class Setting_Activity extends AppCompatActivity {
                 String selectedOption=options.get(i);
                 if(selectedOption.equals("Logout")) {
 
-                    sharedPreferences.edit().remove("placesImagesArray").commit();
-                    sharedPreferences.edit().remove("homeBg").commit();
-                    sharedPreferences.edit().remove("wishlistHash").commit();
-
                     FirebaseAuth.getInstance().signOut();
                     Intent AuthActivity_intent=new Intent(Setting_Activity.this, AuthActivity.class);
                     finishAffinity();

@@ -22,8 +22,10 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.project.sdl.tripplanner.HomePackage.PlaceInfoPackage.PlaceInfo;
 import com.project.sdl.tripplanner.ObjectSerializer;
 import com.project.sdl.tripplanner.R;
 
@@ -33,6 +35,8 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Iterator;
+
+import static com.project.sdl.tripplanner.HomePackage.HomeFragment1.currentLocation;
 
 /**
  * Created by Manish Chougule on 08-08-2019.
@@ -46,6 +50,13 @@ public class WishListFragment extends Fragment {
     LinearLayout wishListContainer;
     TextView toolbar_title;
 
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        initialize();
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -55,7 +66,7 @@ public class WishListFragment extends Fragment {
         wishListContainer = root.findViewById(R.id.wishListContainer);
         toolbar_title = root.findViewById(R.id.toolbar_title);
 
-        sharedPreferences = getContext().getSharedPreferences("com.project.sdl.tripplanner", Context.MODE_PRIVATE);
+        sharedPreferences = getContext().getSharedPreferences(FirebaseAuth.getInstance().getCurrentUser().getUid(), Context.MODE_PRIVATE);
 
         initialize();
 
@@ -64,6 +75,7 @@ public class WishListFragment extends Fragment {
     }
 
     public void initialize(){
+        wishListContainer.removeAllViews();
         wishlistHash = new HashMap<>();
         try {
             wishlistHash = (HashMap<String,String>) ObjectSerializer.deserialize(sharedPreferences.getString("wishlistHash", ObjectSerializer.serialize(new HashMap<String,String>())));
@@ -90,10 +102,10 @@ public class WishListFragment extends Fragment {
     }
 
 
-    public View createWishListItem(JSONObject jsonObject){
+    public View createWishListItem(final JSONObject jsonObject){
 
 
-        LinearLayout listItemBlock = new LinearLayout(getContext());
+        final LinearLayout listItemBlock = new LinearLayout(getContext());
         LinearLayout.LayoutParams params1 = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         listItemBlock.setLayoutParams(params1);
         ViewGroup.MarginLayoutParams params2 = new ViewGroup.MarginLayoutParams(listItemBlock.getLayoutParams());
@@ -131,7 +143,10 @@ public class WishListFragment extends Fragment {
                     if(getContext() != null) {
                         Glide.with(getContext())
                                 .load(imageURL)
+                                .thumbnail(Glide.with(getContext()).load(R.raw.video))
                                 .into(imageView);
+                        listItemBlock.setTag(imageURL);
+
                     }
 
                 }
@@ -159,6 +174,28 @@ public class WishListFragment extends Fragment {
 
         listItemBlock.addView(imageView);
         listItemBlock.addView(textView);
+
+
+
+
+        listItemBlock.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getContext(), PlaceInfo.class);
+                try {
+                    intent.putExtra("selectedPlace", jsonObject.toString());
+                    intent.putExtra("currentParentId", jsonObject.getString("parentId"));
+                    intent.putExtra("selectedPlaceImage", String.valueOf(listItemBlock.getTag()));
+                    intent.putExtra("currentLatitude", currentLocation.getString("latitude"));
+                    intent.putExtra("currentLongitude", currentLocation.getString("longitude"));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                startActivity(intent);
+            }
+        });
+
+
 
         wishListContainer.addView(listItemBlock);
 

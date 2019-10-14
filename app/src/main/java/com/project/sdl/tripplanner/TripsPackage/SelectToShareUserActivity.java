@@ -20,15 +20,19 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
 import com.mikhaellopez.circularimageview.CircularImageView;
+import com.project.sdl.tripplanner.NotificationPackage.Notification;
 import com.project.sdl.tripplanner.R;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -38,6 +42,8 @@ public class SelectToShareUserActivity extends AppCompatActivity {
     LinearLayout userListContainer;
     JSONObject userJson;
     Boolean isAlreadyShared=false;
+    String currentUserName = "";
+    String currentUserPhotoUrl = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +73,13 @@ public class SelectToShareUserActivity extends AppCompatActivity {
 
                             if(checkInt[0] == 0) {
                                 if (user.getUid().equals(userKey)) {
+
+                                    currentUserName = jsonObject.getString("username");
+                                    try{
+                                        currentUserPhotoUrl = jsonObject.getString("photoUrl");
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
 
                                 } else {
                                     createUserListItem(jsonObject.getString("username"), userKey, jsonObject);
@@ -177,6 +190,19 @@ public class SelectToShareUserActivity extends AppCompatActivity {
                         checkInt[0] = 1;
                         DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
                         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+                        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+                        Date date = new Date();
+                        String id  = formatter.format(date).substring(11);
+
+
+                        Notification notification = new Notification(id,"share",
+                                (user.getDisplayName() +" <b>shared</b> a trip named <b>" +getIntent().getStringExtra("selectedTripName")+"</b> with you."),
+                                formatter.format(date),currentUserName,currentUserPhotoUrl, ServerValue.TIMESTAMP,false);
+
+                        mDatabase.child("notifications/").child(paramKey).child(id).setValue(notification);
+
+
                         mDatabase.child("sharedTrips/"+paramKey+"/"+(paramKey+"separator"+user.getUid())).push().setValue(getIntent().getStringExtra("selectedTripId"));
                         mDatabase.child("trips/"+user.getUid()+"/"+getIntent().getStringExtra("selectedTripId")+"/sharedWith").push().setValue(paramKey);
                         Toast.makeText(SelectToShareUserActivity.this, "Shared successfully!!!", Toast.LENGTH_LONG).show();
@@ -186,6 +212,18 @@ public class SelectToShareUserActivity extends AppCompatActivity {
                     checkInt[0] = 1;
                     DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
                     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+
+                    SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+                    Date date = new Date();
+                    String id  = formatter.format(date).substring(11);
+
+                    Notification notification = new Notification(id,"share",
+                            (user.getDisplayName() +" <b>shared</b> a trip named <b>" +getIntent().getStringExtra("selectedTripName")+"</b> with you."),
+                            formatter.format(date),currentUserName,currentUserPhotoUrl,ServerValue.TIMESTAMP,false);
+
+                    mDatabase.child("notifications/").child(paramKey).child(id).setValue(notification);
+
                     mDatabase.child("sharedTrips/"+paramKey+"/"+(paramKey+"separator"+user.getUid())).push().setValue(getIntent().getStringExtra("selectedTripId"));
                     mDatabase.child("trips/"+user.getUid()+"/"+getIntent().getStringExtra("selectedTripId")+"/sharedWith").push().setValue(paramKey);
                     Toast.makeText(SelectToShareUserActivity.this, "Shared successfully!!!", Toast.LENGTH_LONG).show();

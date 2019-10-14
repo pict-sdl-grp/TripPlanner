@@ -20,15 +20,20 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
 import com.jmedeisis.draglinearlayout.DragLinearLayout;
+import com.project.sdl.tripplanner.NotificationPackage.Notification;
 import com.project.sdl.tripplanner.R;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 public class OrganizeTripActivity extends AppCompatActivity {
@@ -330,6 +335,43 @@ public class OrganizeTripActivity extends AppCompatActivity {
                                     mDatabase.child("trips/" + getIntent().getStringExtra("selectedTripUserId") + "/" + getIntent().getStringExtra("id") + "/positions").setValue(positions.toString());
                                     mDatabase.child("trips/" + getIntent().getStringExtra("selectedTripUserId") + "/" + getIntent().getStringExtra("id") + "/placesToHeaders").setValue(places.toString());
                                 }
+
+
+                                JSONObject sharedWithJson;
+                                try {
+                                    DatabaseReference mDatabase1 = FirebaseDatabase.getInstance().getReference();
+                                    FirebaseUser user1 = FirebaseAuth.getInstance().getCurrentUser();
+                                    sharedWithJson = tripJson.getJSONObject("sharedWith");
+                                    for (Iterator<String> it1 = sharedWithJson.keys(); it1.hasNext(); ) {
+                                        String key = it1.next();
+                                        Log.i("onClick: ",key);
+                                        if(sharedWithJson.getString(key).equals(FirebaseAuth.getInstance().getCurrentUser().getUid())){
+
+                                        }else {
+                                            Log.i("sharedKeys", sharedWithJson.getString(key));
+
+                                            //Handle Notification
+                                            SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+                                            Date date = new Date();
+                                            String id  = formatter.format(date).substring(11);
+
+                                            Notification notification = new Notification(id,"share",
+                                                    (user1.getDisplayName() +" <b>organized</b> a trip <b>" +getIntent().getStringExtra("tripName")+"</b> in different way."),
+                                                    formatter.format(date),user.getDisplayName(),getIntent().getStringExtra("currentUserPhotoUrl"), ServerValue.TIMESTAMP,false);
+
+                                            mDatabase1.child("notifications/").child(sharedWithJson.getString(key)).child(id).setValue(notification);
+
+
+                                        }
+                                    }
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+
+
+
+
+
                                 finish();
 
                             }
@@ -594,6 +636,40 @@ public class OrganizeTripActivity extends AppCompatActivity {
                                     mDatabase.child("trips/" + user.getUid() + "/" + getIntent().getStringExtra("id") + "/positions").setValue(positions.toString());
                                     mDatabase.child("trips/" + user.getUid() + "/" + getIntent().getStringExtra("id") + "/placesToHeaders").setValue(places.toString());
                                 }
+
+
+                                JSONObject sharedWithJson;
+                                try {
+                                    DatabaseReference mDatabase1 = FirebaseDatabase.getInstance().getReference();
+                                    FirebaseUser user1 = FirebaseAuth.getInstance().getCurrentUser();
+                                    sharedWithJson = tripJson.getJSONObject("sharedWith");
+                                    for (Iterator<String> it1 = sharedWithJson.keys(); it1.hasNext(); ) {
+                                        String key = it1.next();
+                                        Log.i("onClick: ",key);
+                                        if(sharedWithJson.getString(key).equals(FirebaseAuth.getInstance().getCurrentUser().getUid())){
+
+                                        }else {
+                                            Log.i("sharedKeys", sharedWithJson.getString(key));
+
+                                            //Handle Notification
+                                            SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+                                            Date date = new Date();
+                                            String id  = formatter.format(date).substring(11);
+
+                                            Notification notification = new Notification(id,"share",
+                                                    (user1.getDisplayName() +" <b>organized</b> a trip <b>" +getIntent().getStringExtra("tripName")+"</b> in different way."),
+                                                    formatter.format(date),user.getDisplayName(),getIntent().getStringExtra("currentUserPhotoUrl"), ServerValue.TIMESTAMP,false);
+
+                                            mDatabase1.child("notifications/").child(sharedWithJson.getString(key)).child(id).setValue(notification);
+
+
+                                        }
+                                    }
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+
+
                                 finish();
 
                             }

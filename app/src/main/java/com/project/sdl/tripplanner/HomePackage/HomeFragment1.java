@@ -90,7 +90,7 @@ public class HomeFragment1 extends Fragment {
     FloatingActionButton fab2;
 
     String currentPlaceId;
-    JSONObject currentLocation;
+    public static JSONObject currentLocation;
     JSONObject currentPlace;
     ArrayList<String> keysetArray;
     ArrayList<String> placesImagesArray;
@@ -760,10 +760,12 @@ public class HomeFragment1 extends Fragment {
                         if(String.valueOf(userHash.get("photoUrl")) != "null") {
                             Log.i("photoUrlooo", String.valueOf(userHash.get("photoUrl")));
 
-                            Glide.with(getContext())
-                                    .load(String.valueOf(userHash.get("photoUrl")))
-                                    .thumbnail(Glide.with(getContext()).load(R.raw.video))
-                                    .into(circularImageView);
+                            if(getContext() != null) {
+                                Glide.with(getContext())
+                                        .load(String.valueOf(userHash.get("photoUrl")))
+                                        .thumbnail(Glide.with(getContext()).load(R.drawable.profile1))
+                                        .into(circularImageView);
+                            }
 
 
                             ref.removeEventListener(this);

@@ -37,6 +37,7 @@ import java.util.Map;
 public class SharedTripsActivity extends AppCompatActivity {
 
     LinearLayout tripCardHolder;
+    String currentUserPhotoUrl;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,6 +107,7 @@ public class SharedTripsActivity extends AppCompatActivity {
                                                         Intent intent = new Intent(getApplicationContext(), TripInfoActivity.class);
                                                         intent.putExtra("selectedTripId", String.valueOf(tripCardHolder.getChildAt(finalI).getTag()));
                                                         intent.putExtra("selectedTripUserId", sharedByUserIdArray.get(tripCardHolder.getChildAt(finalI).getId()));
+                                                        intent.putExtra("currentUserPhotoUrl", currentUserPhotoUrl);
                                                         startActivity(intent);
                                                         finish();
                                                     }
@@ -143,7 +145,7 @@ public class SharedTripsActivity extends AppCompatActivity {
 
     }
 
-    public void createTripCardLayout(JSONObject tripJson,int userInt){
+    public void createTripCardLayout(final JSONObject tripJson, int userInt){
 
         CardView cardView = new CardView(getApplicationContext());
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, (int) getResources().getDimension(R.dimen.card_height));
@@ -188,7 +190,11 @@ public class SharedTripsActivity extends AppCompatActivity {
         params6.setMargins((int) getResources().getDimension(R.dimen.card_createdBy_marginLeft),(int) getResources().getDimension( R.dimen.card_createdBy_marginTop),0, 0);
         RelativeLayout.LayoutParams layoutParams2 = new RelativeLayout.LayoutParams(params6);
         creatorName.setLayoutParams(layoutParams2);
-        creatorName.setText("By "+FirebaseAuth.getInstance().getCurrentUser().getDisplayName());
+        try {
+            creatorName.setText("By "+tripJson.getString("createdBy"));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
         creatorName.setTextSize(14);
 
         final LinearLayout sharedUsersHolder = new LinearLayout(getApplicationContext());
@@ -203,24 +209,18 @@ public class SharedTripsActivity extends AppCompatActivity {
 
 
         try {
-            int j = 0;
+            final int[] j = {0};
             for (Iterator<String> it = tripJson.getJSONObject("sharedWith").keys(); it.hasNext(); ) {
-                String userKey = it.next();
+                final String userKey = it.next();
                 Log.i("createTripCardLayout: ",tripJson.getJSONObject("sharedWith").getString(userKey));
 
                 final CircularImageView circularImageView = new CircularImageView(getApplicationContext());
                 LinearLayout.LayoutParams paramst = new LinearLayout.LayoutParams((int) getResources().getDimension(R.dimen.card_sharedUser_image_width), (int) getResources().getDimension(R.dimen.card_sharedUser_image_height));
                 circularImageView.setLayoutParams(paramst);
                 circularImageView.setBorderColor(Color.parseColor("#eeeeee"));
-                ViewGroup.MarginLayoutParams paramsl = new ViewGroup.MarginLayoutParams(circularImageView.getLayoutParams());
-                if(j != 0) {
-                    paramsl.setMargins((int) getResources().getDimension(R.dimen.card_sharedUser_image_marginLeft), 0, 0, 0);
-                }else{
-                    paramsl.setMargins(0, 0, 0, 0);
-                }
-                RelativeLayout.LayoutParams layoutParaml = new RelativeLayout.LayoutParams(paramsl);
-                circularImageView.setLayoutParams(layoutParaml);
                 circularImageView.setImageResource(R.drawable.profile1);
+
+
 
                 final FirebaseDatabase database = FirebaseDatabase.getInstance();
                 final DatabaseReference ref = database.getReference("users/"+tripJson.getJSONObject("sharedWith").getString(userKey));
@@ -229,7 +229,25 @@ public class SharedTripsActivity extends AppCompatActivity {
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         Map<String, Object> userHash = (HashMap<String,Object>) dataSnapshot.getValue();
 
-                        if(String.valueOf(userHash.get("photoUrl")) != "null") {
+                        if(String.valueOf(userHash.get("photoUrl")) != "null" && getApplicationContext() != null) {
+                            ViewGroup.MarginLayoutParams paramsl = new ViewGroup.MarginLayoutParams(circularImageView.getLayoutParams());
+
+                            try {
+                                if(tripJson.getJSONObject("sharedWith").getString(userKey).equals(FirebaseAuth.getInstance().getCurrentUser().getUid())){
+                                    currentUserPhotoUrl = String.valueOf(userHash.get("photoUrl"));
+
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+
+                            if(j[0] != 0) {
+                                paramsl.setMargins((int) getResources().getDimension(R.dimen.card_sharedUser_image_marginLeft), 0, 0, 0);
+                            }else{
+                                paramsl.setMargins(0, 0, 0, 0);
+                            }
+                            RelativeLayout.LayoutParams layoutParaml = new RelativeLayout.LayoutParams(paramsl);
+                            circularImageView.setLayoutParams(layoutParaml);
 
                             Glide.with(getApplicationContext())
                                     .load(String.valueOf(userHash.get("photoUrl")))
@@ -238,7 +256,7 @@ public class SharedTripsActivity extends AppCompatActivity {
 
                             sharedUsersHolder.addView(circularImageView);
 
-
+                            j[0]++;
                             ref.removeEventListener(this);
 
                         }
@@ -250,7 +268,6 @@ public class SharedTripsActivity extends AppCompatActivity {
 
                     }
                 });
-                j++;
             }
 
         } catch (JSONException e) {

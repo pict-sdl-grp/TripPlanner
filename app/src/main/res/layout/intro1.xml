@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/bg_screen2">
+    android:background="@color/colorSecondary">
 
     <LinearLayout
         android:layout_width="521dp"
@@ -64,4 +64,14 @@
         android:textColor="@android:color/white"
         android:textSize="40dp"
         android:textStyle="bold" />
+
+    <ImageView
+        android:layout_width="220dp"
+        android:layout_height="340dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="96dp"
+        android:layout_marginTop="188dp"
+        android:scaleType="fitXY"
+        android:src="@drawable/intro1" />
 </RelativeLayout>

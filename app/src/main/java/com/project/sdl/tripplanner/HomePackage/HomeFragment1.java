@@ -19,6 +19,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
@@ -71,6 +72,8 @@ public class HomeFragment1 extends Fragment {
     LinearLayout placesHolder;
     LinearLayout placeLayout1;
     RelativeLayout introLayout;
+    Button welcomeButton;
+
 
     LinearLayout userReviewContainer;
 
@@ -132,6 +135,7 @@ public class HomeFragment1 extends Fragment {
         mySwipeRefreshLayout = root.findViewById(R.id.swiperefresh);
         placeLayout1 = root.findViewById(R.id.placeLayout1);
         introLayout = root.findViewById(R.id.introLayout);
+        welcomeButton = root.findViewById(R.id.welcomeButton);
 
 
         sharedPreferences = getContext().getSharedPreferences("com.project.sdl.tripplanner", Context.MODE_PRIVATE);
@@ -359,6 +363,8 @@ public class HomeFragment1 extends Fragment {
                     stopShimmerEffect2();
                     mySwipeRefreshLayout.setRefreshing(false);
 
+                    introLayout.setVisibility(View.VISIBLE);
+                    welcomeButton.setText("Data is not available.Try to explore other places");
                     homebg.setImageResource(R.drawable.nat4);
                     ratingBar.setVisibility(View.INVISIBLE);
                     countText.setVisibility(View.INVISIBLE);
@@ -366,7 +372,6 @@ public class HomeFragment1 extends Fragment {
                     textView.setText("Where to ?");
                     countText.setText("");
                     placeSelected = false;
-                    introLayout.setVisibility(View.VISIBLE);
                 }
 
 
@@ -484,6 +489,8 @@ public class HomeFragment1 extends Fragment {
 
                 }else{
                     stopShimmerEffect2();
+                    introLayout.setVisibility(View.VISIBLE);
+                    welcomeButton.setText("Data is not available.Try to explore other places");
                     mySwipeRefreshLayout.setRefreshing(false);
                 }
 

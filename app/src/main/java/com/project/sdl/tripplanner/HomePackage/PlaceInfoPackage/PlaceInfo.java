@@ -139,9 +139,9 @@ public class PlaceInfo extends AppCompatActivity {
             try {
                 JSONObject jsonObject = new JSONObject(s);
                 Log.i("route",jsonObject.getJSONObject("response").getJSONArray("route").getJSONObject(0).getJSONObject("summary").getString("text"));
-                String duration = String.valueOf(Integer.valueOf(jsonObject.getJSONObject("response").getJSONArray("route").getJSONObject(0).getJSONObject("summary").getString("travelTime"))/3600);
-                String distance = String.valueOf(Integer.valueOf(jsonObject.getJSONObject("response").getJSONArray("route").getJSONObject(0).getJSONObject("summary").getString("distance"))/1000);
-                suggestedDuration.setText("Suggested duration : More than "+duration+" hours");
+                String duration = convertSectoDay(Integer.valueOf(jsonObject.getJSONObject("response").getJSONArray("route").getJSONObject(0).getJSONObject("summary").getString("travelTime")));
+                String distance = String.valueOf((Double.valueOf(Integer.valueOf(jsonObject.getJSONObject("response").getJSONArray("route").getJSONObject(0).getJSONObject("summary").getString("distance"))/1000)));
+                suggestedDuration.setText("Suggested duration : More than "+duration);
                 suggestedDistance.setText("distance : "+distance+" km");
 
                 placeInfoShimmer.stopShimmerAnimation();
@@ -154,6 +154,23 @@ public class PlaceInfo extends AppCompatActivity {
             }
 
         }
+    }
+
+    public String convertSectoDay(int n)
+    {
+        int day = n / (24 * 3600);
+
+        n = n % (24 * 3600);
+        int hour = n / 3600;
+
+        n %= 3600;
+        int minutes = n / 60 ;
+
+        n %= 60;
+        int seconds = n;
+
+        return day+" days "+hour+" hrs "+minutes+" min "+seconds+" sec ";
+
     }
 
 

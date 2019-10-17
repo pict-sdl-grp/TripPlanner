@@ -74,6 +74,7 @@ public class TripInfoActivity extends AppCompatActivity {
     ArrayList<byte[]> tripPlacesImagesArray;
     SharedPreferences sharedPreferences;
     Map<String,View> listItems;
+    ImageView backButton;
 
     Toolbar toolbar;
 
@@ -159,6 +160,14 @@ public class TripInfoActivity extends AppCompatActivity {
         tripPlacesImagesArray = new ArrayList<>();
         sharedPreferences = getApplicationContext().getSharedPreferences("com.project.sdl.tripplanner", Context.MODE_PRIVATE);
         listItems = new HashMap<>();
+        backButton = findViewById(R.id.backButton);
+
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
 
 
 

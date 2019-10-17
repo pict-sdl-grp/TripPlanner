@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -19,6 +20,7 @@ public class CreateTripFormActivity extends AppCompatActivity {
 
     EditText tripName;
     TextView createText;
+    ImageView backButton;
 
 
 
@@ -31,6 +33,14 @@ public class CreateTripFormActivity extends AppCompatActivity {
         tripName = findViewById(R.id.tripName);
         createText = findViewById(R.id.createText);
 
+        backButton = findViewById(R.id.backButton);
+
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
 
         createText.setOnClickListener(new View.OnClickListener() {
             @Override

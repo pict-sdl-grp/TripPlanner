@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
@@ -47,6 +48,7 @@ public class OrganizeTripActivity extends AppCompatActivity {
     DragLinearLayout dragDropAndroidLinearLayout;
     int obstaclePos;
     ArrayList<View> arrayList;
+    ImageView backButton;
 
     public void createTripListItem(String type,String i){
 
@@ -201,6 +203,14 @@ public class OrganizeTripActivity extends AppCompatActivity {
         getSupportActionBar().hide();
 
         arrayList = new ArrayList<>();
+        backButton = findViewById(R.id.backButton);
+
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
 
         if(String.valueOf(getIntent().getStringExtra("selectedTripUserId")) != "null"){
             final FirebaseDatabase database = FirebaseDatabase.getInstance();

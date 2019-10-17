@@ -43,6 +43,7 @@ public class SelectTripActivity extends AppCompatActivity {
     int myTripCount = 0;
     HashMap<String,JSONObject> tripJsonHashMap;
     String currentUserPhotoUrl;
+    ImageView backButton;
 
     public void sendNotification(String tripName, String action, JSONObject tripJson){
         JSONObject sharedWithJson;
@@ -86,6 +87,14 @@ public class SelectTripActivity extends AppCompatActivity {
 
         tripListContainer = findViewById(R.id.selectTripContainer);
         tripJsonHashMap = new HashMap<>();
+        backButton = findViewById(R.id.backButton);
+
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
 
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();

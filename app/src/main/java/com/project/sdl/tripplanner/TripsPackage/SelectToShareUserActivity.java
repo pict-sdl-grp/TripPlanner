@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -44,6 +45,7 @@ public class SelectToShareUserActivity extends AppCompatActivity {
     Boolean isAlreadyShared=false;
     String currentUserName = "";
     String currentUserPhotoUrl = "";
+    ImageView backButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +53,14 @@ public class SelectToShareUserActivity extends AppCompatActivity {
         setContentView(R.layout.activity_select_to_share_user);
         userListContainer = findViewById(R.id.selectUserContainer);
         getSupportActionBar().hide();
+        backButton = findViewById(R.id.backButton);
+
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
 
         final int[] checkInt = {0};
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
